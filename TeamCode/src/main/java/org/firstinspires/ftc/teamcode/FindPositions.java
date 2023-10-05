@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.teamcode;
-/*
+package org.firstinspires.ftc.teamcode;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
- */
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-//@Config
+@Config
 @TeleOp
 public class FindPositions extends OpMode {
     GaliHardware robot = new GaliHardware();
@@ -19,10 +18,17 @@ public class FindPositions extends OpMode {
     public static double handPortTarget = 0.6;
     public static double handStarTarget = 0.1;
 
+    public static double heightOfLauncher = 0;
+
+    public static double onOrOff = 0;
+
+    public static double launcherExtenderDown = 0, launcherHold = 1,launcherExtenderUp = 0.67, launcherRelease = 0;
+
+
     @Override
     public void init(){
         robot.init(hardwareMap);
-        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         robot.elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
@@ -37,7 +43,10 @@ public class FindPositions extends OpMode {
         robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.shoulder.setPower(.25);
 
-        //robot.wrist.setPosition(wristTarget);
+        robot.launcherExtender.setPosition(heightOfLauncher);
+        robot.launcherStopper.setPosition(onOrOff);
+
+        robot.wrist.setPosition(wristTarget);
 
         robot.handPort.setPosition(handPortTarget);
         robot.handStar.setPosition(handStarTarget);

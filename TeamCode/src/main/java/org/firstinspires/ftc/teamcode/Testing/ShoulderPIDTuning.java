@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teamcode.Testing;
+package org.firstinspires.ftc.teamcode.Testing;
 /*
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.teamcode.GaliHardware;
+import org.firstinspires.ftc.teamcode.GaliHardware;
 
 //@Disabled
 //@Config
