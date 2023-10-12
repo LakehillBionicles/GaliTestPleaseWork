@@ -7,12 +7,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class GaliHardware extends LinearOpMode {
-    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, BOW = null, POW = null;
+    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, BOW = null, POW = null, handPort = null, handStar = null;
     public DcMotor elbow = null, shoulder = null;
-    public Servo handPort = null, handStar = null, wrist = null, launcherExtender = null, launcherStopper = null;
+    public Servo wrist = null, launcherExtender = null, launcherStopper = null, fingerStar = null, fingerPort = null;
 
-    public double handPortOpen = 0, handPortClosed = 0;
-    public double handStarOpen = 0, handStarClosed = 0;
+    public double fingerPortOpen = 0, fingerPortClosed = 1;
+    public double fingerStarOpen = 0, fingerStarClosed = 1;
 
     public double wristScore = 0, wristPickup = 0;
 
@@ -41,11 +41,13 @@ public class GaliHardware extends LinearOpMode {
         elbow = hwMap.get(DcMotor.class, "elbow");
         shoulder = hwMap.get(DcMotor.class,"shoulder");
 
-        handPort = hwMap.get(Servo.class, "handPort");
-        handStar = hwMap.get(Servo.class, "handStar");
+        handPort = hwMap.get(DcMotor.class, "handPort");
+        handStar = hwMap.get(DcMotor.class, "handStar");
         wrist = hwMap.get(Servo.class, "wrist");
         launcherExtender = hwMap.get(Servo.class, "launcherExtender");
         launcherStopper = hwMap.get(Servo.class, "launcherStopper");
+        fingerStar = hwMap.get(Servo.class, "fingerStar");
+        fingerPort = hwMap.get(Servo.class, "fingerPort");
 
         fpd.setDirection(DcMotorSimple.Direction.FORWARD);
         bpd.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -57,7 +59,8 @@ public class GaliHardware extends LinearOpMode {
 
         elbow.setDirection(DcMotorSimple.Direction.REVERSE);
         shoulder.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        handPort.setDirection(DcMotorSimple.Direction.FORWARD);
+        handStar.setDirection(DcMotorSimple.Direction.REVERSE);
         fpd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bpd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fsd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -68,7 +71,8 @@ public class GaliHardware extends LinearOpMode {
 
         elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+        handPort.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        handStar.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fsd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -79,7 +83,8 @@ public class GaliHardware extends LinearOpMode {
 
         elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        handPort.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        handStar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 }
