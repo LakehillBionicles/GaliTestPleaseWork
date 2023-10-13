@@ -43,7 +43,7 @@ public class LauncherTest extends LinearOpMode {
                 resetRuntime();
                 counter = counter -0.01;
             }
-            telemetry.addData("heightOfLauncher", robot.launcherExtenderUp + counter);
+            //telemetry.addData("heightOfLauncher", robot.launcherExtenderUp + counter);
             telemetry.addData("counter", counter);
             telemetry.update();
         }
