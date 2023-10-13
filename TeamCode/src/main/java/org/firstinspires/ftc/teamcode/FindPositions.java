@@ -14,15 +14,17 @@ public class FindPositions extends OpMode {
 
     public static int elbowTarget = 0;
     public static int shoulderTarget = 0;
-    public static double wristTarget = 1;
-    public static double handPortTarget = 0.6;
-    public static double handStarTarget = 0.1;
+    public static double wristTarget = 0;
+    public static double fingerPortTarget = 0;
+    public static double fingerStarTarget = 0;
+    public static double aimerTarget = 0;
+    public static double triggerTarget = 0;
 
-    public static double heightOfLauncher = 0;
+    //public static double heightOfLauncher = 0;
 
-    public static double onOrOff = 0;
+    //public static double onOrOff = 0;
 
-    public static double launcherExtenderDown = 0, launcherHold = 1,launcherExtenderUp = 0.67, launcherRelease = 0;
+    //public static double aimerDown = 0, triggerUp = 1,aimerUp = 0.67, triggerDown = 0;
 
 
     @Override
@@ -43,13 +45,18 @@ public class FindPositions extends OpMode {
         robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.shoulder.setPower(.25);
 
-        robot.launcherExtender.setPosition(heightOfLauncher);
-        robot.launcherStopper.setPosition(onOrOff);
+        //robot.launcherExtender.setPosition(heightOfLauncher);
+        //robot.launcherStopper.setPosition(onOrOff);
+
+        robot.aimer.setPosition(aimerTarget);
+        robot.trigger.setPosition(triggerTarget);
 
         robot.wrist.setPosition(wristTarget);
+        robot.fingerPort.setPosition(fingerPortTarget);
+        robot.fingerStar.setPosition(fingerStarTarget);
 
-        robot.handPort.setPosition(handPortTarget);
-        robot.handStar.setPosition(handStarTarget);
+        //robot.handPort.setPosition(handPortTarget);
+        //robot.handStar.setPosition(handStarTarget);
 
         telemetry.addData("elbowPos", robot.elbow.getCurrentPosition());
         telemetry.addData("shoulderPos", robot.shoulder.getCurrentPosition());

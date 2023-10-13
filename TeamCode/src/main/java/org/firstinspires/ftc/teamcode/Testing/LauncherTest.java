@@ -23,16 +23,16 @@ public class LauncherTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             if(gamepad1.b){
-                robot.launcherStopper.setPosition(robot.launcherRelease);
+                //robot.launcherStopper.setPosition(robot.launcherRelease);
             }
             if(gamepad1.x){
-                robot.launcherStopper.setPosition(robot.launcherHold);
+                //robot.launcherStopper.setPosition(robot.launcherHold);
             }
             if (gamepad1.y){
-                robot.launcherExtender.setPosition(highAngle-counter);
+                //robot.launcherExtender.setPosition(highAngle-counter);
             }
             if (gamepad1.a){
-                robot.launcherExtender.setPosition(robot.launcherExtenderDown);
+                //robot.launcherExtender.setPosition(robot.launcherExtenderDown);
             }
 
             if (gamepad1.dpad_up&&(getRuntime()>0.6)){

@@ -16,12 +16,12 @@ public class IntakePrototype extends OpMode {
     @Override
     public void init(){
         robot.init(hardwareMap);
-        robot.BOW.setDirection(DcMotorSimple.Direction.REVERSE);
+        //robot.BOW.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
     public void loop(){
-        robot.POW.setPower(power);
-        robot.BOW.setPower(power);
+        //robot.POW.setPower(power);
+        //robot.BOW.setPower(power);
     }
 }
