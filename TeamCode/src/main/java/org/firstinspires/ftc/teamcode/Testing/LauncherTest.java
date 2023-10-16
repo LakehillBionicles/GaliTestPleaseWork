@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.GaliHardware;
 @Config
-
 @TeleOp
 public class LauncherTest extends LinearOpMode {
     GaliHardware robot = new GaliHardware();

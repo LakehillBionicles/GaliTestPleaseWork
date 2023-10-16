@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Testing;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.GaliHardware;
 
 @Config
 @TeleOp
@@ -37,21 +39,21 @@ public class FindPositions extends OpMode {
 
     @Override
     public void loop(){
-        robot.elbow.setTargetPosition(elbowTarget);
+        /*robot.elbow.setTargetPosition(elbowTarget);
         robot.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.elbow.setPower(.25);
 
         robot.shoulder.setTargetPosition(shoulderTarget);
         robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.shoulder.setPower(.25);
+        robot.shoulder.setPower(.25);*/
 
         //robot.launcherExtender.setPosition(heightOfLauncher);
         //robot.launcherStopper.setPosition(onOrOff);
 
-        robot.aimer.setPosition(aimerTarget);
-        robot.trigger.setPosition(triggerTarget);
+        //robot.aimer.setPosition(aimerTarget);
+        //robot.trigger.setPosition(triggerTarget);
 
-        robot.wrist.setPosition(wristTarget);
+        //robot.wrist.setPosition(wristTarget);
         robot.fingerPort.setPosition(fingerPortTarget);
         robot.fingerStar.setPosition(fingerStarTarget);
 
