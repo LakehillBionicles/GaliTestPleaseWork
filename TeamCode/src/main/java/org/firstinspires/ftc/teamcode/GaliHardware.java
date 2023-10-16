@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class GaliHardware extends LinearOpMode {
     public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, handPort = null, handStar = null;
     public DcMotor elbow = null, shoulder = null;
-    public Servo wrist = null, aimer = null, trigger = null, fingerStar = null, fingerPort = null;
+    public Servo wristPort = null, wristStar = null, aimer = null, trigger = null, fingerStar = null, fingerPort = null;
 
     public static double fingerPortOpen = 0, fingerPortClosed = .15;
     public static double fingerStarOpen = 0.3, fingerStarClosed = .15;
@@ -39,7 +39,8 @@ public class GaliHardware extends LinearOpMode {
         handPort = hwMap.get(DcMotor.class, "handPort");
         handStar = hwMap.get(DcMotor.class, "handStar");
 
-        wrist = hwMap.get(Servo.class, "wrist");
+        wristPort = hwMap.get(Servo.class, "wristPort");
+        wristStar = hwMap.get(Servo.class, "wristStar");
         fingerStar = hwMap.get(Servo.class, "fingerStar");
         fingerPort = hwMap.get(Servo.class, "fingerPort");
 

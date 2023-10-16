@@ -16,7 +16,8 @@ public class FindPositions extends OpMode {
 
     public static int elbowTarget = 0;
     public static int shoulderTarget = 0;
-    public static double wristTarget = 0;
+    public static double wristTargetPort = 0;
+    public static double wristTargetStar = 0;
     public static double fingerPortTarget = 0;
     public static double fingerStarTarget = 0;
     public static double aimerTarget = 0;
@@ -53,9 +54,10 @@ public class FindPositions extends OpMode {
         //robot.aimer.setPosition(aimerTarget);
         //robot.trigger.setPosition(triggerTarget);
 
-        //robot.wrist.setPosition(wristTarget);
-        robot.fingerPort.setPosition(fingerPortTarget);
-        robot.fingerStar.setPosition(fingerStarTarget);
+        robot.wristPort.setPosition(wristTargetPort);
+        robot.wristStar.setPosition(wristTargetStar);
+        //robot.fingerPort.setPosition(fingerPortTarget);
+        //robot.fingerStar.setPosition(fingerStarTarget);
 
         //robot.handPort.setPosition(handPortTarget);
         //robot.handStar.setPosition(handStarTarget);
