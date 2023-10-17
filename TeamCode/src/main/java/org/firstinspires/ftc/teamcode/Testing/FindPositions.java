@@ -23,11 +23,11 @@ public class FindPositions extends OpMode {
     public static double aimerTarget = 0;
     public static double triggerTarget = 0;
 
-    //public static double heightOfLauncher = 0;
+    public static double heightOfLauncher = 0;
 
-    //public static double onOrOff = 0;
+    public static double onOrOff = 0;
 
-    //public static double aimerDown = 0, triggerUp = 1,aimerUp = 0.67, triggerDown = 0;
+    //public static double aimerDown = 0, triggerUp = 1,aimerUp = 0.5, triggerDown = 0;
 
 
     @Override
@@ -48,8 +48,8 @@ public class FindPositions extends OpMode {
         robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.shoulder.setPower(.25);*/
 
-        //robot.launcherExtender.setPosition(heightOfLauncher);
-        //robot.launcherStopper.setPosition(onOrOff);
+        robot.aimer.setPosition(heightOfLauncher);
+        robot.trigger.setPosition(onOrOff);
 
         //robot.aimer.setPosition(aimerTarget);
         //robot.trigger.setPosition(triggerTarget);
