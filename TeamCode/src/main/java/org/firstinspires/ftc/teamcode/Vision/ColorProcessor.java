@@ -9,7 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-public class ConeDetection extends OpenCvPipeline {
+public class ColorProcessor extends OpenCvPipeline {
 
     /*
         YELLOW  = Parking Left
@@ -39,8 +39,8 @@ public class ConeDetection extends OpenCvPipeline {
 
     // Anchor point definitions
      // Running variable storing the parking position
-    private static volatile ConeDetection.ParkingPosition bluePosition = ParkingPosition.ONE;
-    private static volatile ConeDetection.RedParkingPosition redPosition = RedParkingPosition.NOTSEEN;
+    private static volatile ColorProcessor.ParkingPosition bluePosition = ParkingPosition.ONE;
+    private static volatile ColorProcessor.RedParkingPosition redPosition = RedParkingPosition.NOTSEEN;
     int anchorWidth = 4;
 
     int bottomHeight = 1;
