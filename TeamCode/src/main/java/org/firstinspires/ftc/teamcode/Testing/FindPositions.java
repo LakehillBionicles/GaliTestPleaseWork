@@ -17,9 +17,9 @@ public class FindPositions extends OpMode {
     public static int elbowTarget = 0;
     public static int shoulderTarget = 0;
     public static double wristTargetPort = 0;
-    public static double wristTargetStar = 0;
+    public static double wristTargetStar = 1-wristTargetPort;
     public static double fingerPortTarget = 0;
-    public static double fingerStarTarget = 0;
+    public static double fingerStarTarget = 1;
     public static double aimerTarget = 0;
     public static double triggerTarget = 0;
 

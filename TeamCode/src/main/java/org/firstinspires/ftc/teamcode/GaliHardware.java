@@ -14,7 +14,8 @@ public class GaliHardware extends LinearOpMode {
     public static double fingerPortOpen = 0, fingerPortClosed = .15;
     public static double fingerStarOpen = 0.3, fingerStarClosed = .15;
 
-    public static double wristUp = 0, wristScore = 0, wristPickup = 0;//TODO: find wrist positions
+    public static double wristUpPort = 0, wristScorePort = 0, wristPickupPort = 1;//TODO: find wrist positions
+    public static double wristUpStar = 1, wristScoreStar = 0, wristPickupStar = 0;//TODO: find wrist positions
 
     public static double aimerDown = 0, triggerUp = 1, aimerUp = 0.67, triggerDown = 0; //TODO: find trigger positions
 
