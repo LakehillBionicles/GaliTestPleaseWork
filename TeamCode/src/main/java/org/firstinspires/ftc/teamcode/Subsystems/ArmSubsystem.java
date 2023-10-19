@@ -11,10 +11,10 @@ public class ArmSubsystem extends SubsystemBase {
     private final Servo wrist;
 
     public enum ArmPos {
-        DOWN_FRONT(0, 0, 0.0),//TODO: find wristPos
-        LOW_FRONT(350, 380, 0.0),//TODO: find wristPos
+        DOWN_FRONT(0, 0, 0.68),
+        LOW_FRONT(569*2, 614, 0.4),
         MID_FRONT(450, 270, 0.0),//TODO: find wristPos
-        HIGH_FRONT(960, 525, 0.0),//TODO: find wristPos
+        HIGH_FRONT(1060*2, 850, 0.50),
         LOW_BACK(0, 0, 0.0),
         MID_BACK(0, 0, 0.0),
         HIGH_BACK(0, 0, 0.0);

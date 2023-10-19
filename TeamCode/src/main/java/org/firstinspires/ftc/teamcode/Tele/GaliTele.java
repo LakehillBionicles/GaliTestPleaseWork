@@ -43,8 +43,8 @@ public class GaliTele extends LinearOpMode {
             robot.fsd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             robot.bsd.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
-            robot.shoulder.setPower(-gamepad2.left_stick_y);
-            robot.elbow.setPower(-gamepad2.right_stick_y);
+            elbowToPosition(getArmTarget());
+            shoulderToPosition(getArmTarget());
 
             if(!previousGamepad1.back && gamepad1.back){ handOn = !handOn;}
 
@@ -57,10 +57,9 @@ public class GaliTele extends LinearOpMode {
             robot.fingerPort.setPosition(getFingerPosPort());
             robot.fingerStar.setPosition(getFingerPosStar());
 
-            /*
             robot.aimer.setPosition(getAimerPos());
             robot.trigger.setPosition(getTriggerPos());
-            */
+
         }
     }
     public double getFingerPosPort(){
@@ -75,10 +74,10 @@ public class GaliTele extends LinearOpMode {
 
     public double getFingerPosStar(){
         if (gamepad2.right_bumper){
-            fingerPosPort = fingerStarClosed;
+            fingerPosStar = fingerStarClosed;
         }
         if (gamepad2.right_trigger>0){
-            fingerPosPort = fingerStarOpen;
+            fingerPosStar = fingerStarOpen;
         }
         return fingerPosStar;
     }
@@ -90,8 +89,11 @@ public class GaliTele extends LinearOpMode {
         if (gamepad2.b){
             wristPosPort = wristPickupPort;
         }
-        if (gamepad2.x){
-            wristPosPort = wristScorePort;
+        if (gamepad2.dpad_left){
+            wristPosPort = wristScoreLowPort;
+        }
+        if (gamepad2.dpad_up){
+            wristPosPort = wristScoreHighPort;
         }
         return wristPosPort;
     }
@@ -103,8 +105,11 @@ public class GaliTele extends LinearOpMode {
         if (gamepad2.b){
             wristPosStar = wristPickupStar;
         }
-        if (gamepad2.x){
-            wristPosStar = wristScoreStar;
+        if (gamepad2.dpad_left){
+            wristPosStar = wristScoreLowStar;
+        }
+        if(gamepad2.dpad_up){
+            wristPosStar = wristScoreHighStar;
         }
         return wristPosStar;
     }
@@ -133,9 +138,6 @@ public class GaliTele extends LinearOpMode {
         if(gamepad2.dpad_up){
             armTarget = HIGH_FRONT;
         }
-        if(gamepad2.dpad_right){
-            armTarget = MID_FRONT;
-        }
         if(gamepad2.dpad_left){
             armTarget = LOW_FRONT;
         }
@@ -154,6 +156,17 @@ public class GaliTele extends LinearOpMode {
         return handPower;
     }
 
+    public void elbowToPosition(ArmSubsystem.ArmPos targetPos){
+        robot.elbow.setTargetPosition(targetPos.getElbowPos());
+        robot.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.elbow.setPower(1);
+    }
+
+    public void shoulderToPosition(ArmSubsystem.ArmPos targetPos){
+        robot.shoulder.setTargetPosition(targetPos.getShoulderPos());
+        robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.shoulder.setPower(1);
+    }
     public void armToPosition(ArmSubsystem.ArmPos targetPos){
         setArmTarget(targetPos.getElbowPos(), targetPos.getShoulderPos());
         setArmMode(DcMotor.RunMode.RUN_TO_POSITION);
