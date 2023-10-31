@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
 import static org.firstinspires.ftc.teamcode.GaliHardware.aimerDown;
-import static org.firstinspires.ftc.teamcode.GaliHardware.aimerUp;
 import static org.firstinspires.ftc.teamcode.GaliHardware.triggerDown;
 import static org.firstinspires.ftc.teamcode.GaliHardware.triggerUp;
 
@@ -27,7 +26,7 @@ public class LauncherTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             if(gamepad1.b){
-                robot.aimer.setPosition(aimerUp+counter);
+                robot.aimer.setPosition(highAngle);
             }
             if(gamepad1.x){
                 robot.aimer.setPosition(aimerDown);
@@ -47,9 +46,6 @@ public class LauncherTest extends LinearOpMode {
                 resetRuntime();
                 counter = counter -0.01;
             }
-            telemetry.addData("heightOfLauncher", aimerUp + counter);
-            telemetry.addData("counter", counter);
-            telemetry.update();
         }
 
     }

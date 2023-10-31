@@ -1,25 +1,30 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+@Config
 public class ArmSubsystem extends SubsystemBase {
     private final DcMotor elbow, shoulder;
     private final Servo wrist;
 
+
     public enum ArmPos {
         DOWN_FRONT(0, 0, 0.68),
-        LOW_FRONT(569*2, 614, 0.4),
+        LOW_FRONT(1000, 500, 0.4),
         MID_FRONT(450, 270, 0.0),//TODO: find wristPos
-        HIGH_FRONT(1060*2, 850, 0.50),
+        HIGH_FRONT(1700, 1700, 0.50),
         LOW_BACK(0, 0, 0.0),
         MID_BACK(0, 0, 0.0),
         HIGH_BACK(0, 0, 0.0);
 
-        public final int elbowPos, shoulderPos;
+        public final int elbowPos;
+        public final int shoulderPos;
         public final double wristPos;
 
         ArmPos(int elbowPos, int shoulderPos, double wristPos){this.elbowPos = elbowPos; this.shoulderPos = shoulderPos; this.wristPos = wristPos;}

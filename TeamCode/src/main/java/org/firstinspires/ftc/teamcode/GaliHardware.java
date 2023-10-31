@@ -1,15 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
+import org.java_websocket.framing.ContinuousFrame;
+
 public class GaliHardware extends LinearOpMode {
-    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, handPort = null, handStar = null;
+    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, handStar = null, wrist = null;
     public DcMotor elbow = null, shoulder = null;
-    public Servo wristPort = null, wristStar = null, aimer = null, trigger = null, fingerStar = null, fingerPort = null;
+    public Servo aimer = null, trigger = null, fingerStar = null, fingerPort = null;
+    public CRServo handPort = null;
 
     public static double fingerPortOpen = 0, fingerPortClosed = .15;
     public static double fingerStarOpen = 0.3, fingerStarClosed = .15;
@@ -19,13 +28,19 @@ public class GaliHardware extends LinearOpMode {
 
     public static double aimerDown = 0, triggerUp = 1, aimerUp = 0.5, triggerDown = 0;
 
+    public static int wristUp = 0;
+    public static int wristPickup = -1600;
+
+    public static int wristScore = 0;
+
     HardwareMap hwMap = null;
 
     public GaliHardware() {}
 
     @Override
-    public void runOpMode() {}
-
+    public void runOpMode() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+    }
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
@@ -37,11 +52,10 @@ public class GaliHardware extends LinearOpMode {
         elbow = hwMap.get(DcMotor.class, "elbow");
         shoulder = hwMap.get(DcMotor.class,"shoulder");
 
-        handPort = hwMap.get(DcMotor.class, "handPort");
+        handPort = hwMap.crservo.get("handPort");
+        wrist = hwMap.get(DcMotor.class, "wrist");
         handStar = hwMap.get(DcMotor.class, "handStar");
 
-        wristPort = hwMap.get(Servo.class, "wristPort");
-        wristStar = hwMap.get(Servo.class, "wristStar");
         fingerStar = hwMap.get(Servo.class, "fingerStar");
         fingerPort = hwMap.get(Servo.class, "fingerPort");
 
@@ -55,8 +69,9 @@ public class GaliHardware extends LinearOpMode {
 
         elbow.setDirection(DcMotorSimple.Direction.REVERSE);
         shoulder.setDirection(DcMotorSimple.Direction.REVERSE);
+        wrist.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        handPort.setDirection(DcMotorSimple.Direction.FORWARD);
+        handPort.setDirection(CRServo.Direction.FORWARD);
         handStar.setDirection(DcMotorSimple.Direction.REVERSE);
 
         fpd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -66,17 +81,20 @@ public class GaliHardware extends LinearOpMode {
 
         elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        handPort.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         handStar.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wrist.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         fpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fsd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bsd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wrist.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         elbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        handPort.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         handStar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wrist.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
