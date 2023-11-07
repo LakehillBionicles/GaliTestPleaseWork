@@ -34,8 +34,8 @@ public class FindPositions extends OpMode {
     public void init(){
         robot.init(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot.elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armPort.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armStar.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     @Override
@@ -54,16 +54,15 @@ public class FindPositions extends OpMode {
         //robot.aimer.setPosition(aimerTarget);
         //robot.trigger.setPosition(triggerTarget);
 
-        robot.wristPort.setPosition(wristTargetPort);
-        robot.wristStar.setPosition(1-wristTargetPort);
+        robot.wrist.setPosition(wristTargetPort);
         //robot.fingerPort.setPosition(fingerPortTarget);
         //robot.fingerStar.setPosition(fingerStarTarget);
 
         //robot.handPort.setPosition(handPortTarget);
         //robot.handStar.setPosition(handStarTarget);
 
-        telemetry.addData("elbowPos", robot.elbow.getCurrentPosition());
+        /*telemetry.addData("elbowPos", robot.elbow.getCurrentPosition());
         telemetry.addData("shoulderPos", robot.shoulder.getCurrentPosition());
-        telemetry.update();
+        telemetry.update();*/
     }
 }

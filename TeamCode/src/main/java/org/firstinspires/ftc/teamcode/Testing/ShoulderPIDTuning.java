@@ -28,9 +28,9 @@ public class ShoulderPIDTuning extends OpMode {
         //controller = new PIDController(p, i, d);
        // telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        robot.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //robot.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //robot.wrist.setPosition(1);
     }
@@ -39,13 +39,13 @@ public class ShoulderPIDTuning extends OpMode {
     public void loop(){
         //controller.setPID(p, i, d);
 
-        double state = robot.shoulder.getCurrentPosition();
+        //double state = robot.shoulder.getCurrentPosition();
         //double pid = controller.calculate(state, reference);
 
         //robot.shoulder.setPower(pid);
 
         telemetry.addData("reference", reference);
-        telemetry.addData("state", state);
+        //telemetry.addData("state", state);
         //telemetry.addData("power", pid);
         telemetry.update();
     }

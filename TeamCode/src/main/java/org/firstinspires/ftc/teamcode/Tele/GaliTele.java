@@ -17,9 +17,9 @@ public class GaliTele extends LinearOpMode {
     ArmSubsystem.ArmPos armTarget = DOWN_FRONT;
 
     public double fingerPosPort = fingerPortClosed, fingerPosStar = fingerStarClosed,
-            wristPosPort, wristPosStar, aimerPos = aimerDown, triggerPos = triggerUp, handPower = 0;
+            wristPosPort, wristPosStar, aimerPos = aimerDown, triggerPos = triggerUp, intakePower = 0;
 
-    public boolean handOn = false;
+    public boolean intakeOn = false;
 
     Gamepad currentGamepad1 = new Gamepad();
     Gamepad currentGamepad2 = new Gamepad();
@@ -27,9 +27,6 @@ public class GaliTele extends LinearOpMode {
     Gamepad previousGamepad2 = new Gamepad();
     public void runOpMode() {
         robot.init(hardwareMap);
-
-        resetArm();
-
         waitForStart();
 
         while (opModeIsActive()) {
@@ -43,16 +40,13 @@ public class GaliTele extends LinearOpMode {
             robot.fsd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             robot.bsd.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
-            elbowToPosition(getArmTarget());
-            shoulderToPosition(getArmTarget());
+            setArmPower(-gamepad2.left_stick_y);
 
-            if(!previousGamepad1.back && gamepad1.back){ handOn = !handOn;}
+            if(!previousGamepad1.back && gamepad1.back){ intakeOn = !intakeOn;}
 
-            robot.handPort.setPower(getHandPower());
-            robot.handStar.setPower(getHandPower());
+            robot.intake.setPower(getHandPower());
 
-            robot.wristPort.setPosition(getWristPosPort());
-            robot.wristStar.setPosition(getWristPosStar());
+            robot.wrist.setPosition(getWristPosPort());
 
             robot.fingerPort.setPosition(getFingerPosPort());
             robot.fingerStar.setPosition(getFingerPosStar());
@@ -60,6 +54,10 @@ public class GaliTele extends LinearOpMode {
             robot.aimer.setPosition(getAimerPos());
             robot.trigger.setPosition(getTriggerPos());
 
+            telemetry.addData("BOW", robot.bpd.getCurrentPosition());
+            telemetry.addData("POW", robot.fpd.getCurrentPosition());
+            telemetry.addData("SOW", robot.SOW.getCurrentPosition());
+            telemetry.update();
         }
     }
     public double getFingerPosPort(){
@@ -148,15 +146,15 @@ public class GaliTele extends LinearOpMode {
     }
 
     public double getHandPower(){
-        if(handOn){
-            handPower = .75;
+        if(intakeOn){
+            intakePower = .75;
         } else {
-            handPower = 0;
+            intakePower = 0;
         }
-        return handPower;
+        return intakePower;
     }
 
-    public void elbowToPosition(ArmSubsystem.ArmPos targetPos){
+    /*public void elbowToPosition(ArmSubsystem.ArmPos targetPos){
         robot.elbow.setTargetPosition(targetPos.getElbowPos());
         robot.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.elbow.setPower(1);
@@ -189,10 +187,10 @@ public class GaliTele extends LinearOpMode {
 
         robot.elbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.shoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
+    }*/
 
     public void setArmPower(double power) {
-        robot.elbow.setPower(power);
-        robot.shoulder.setPower(power);
+        robot.armPort.setPower(power);
+        robot.armStar.setPower(power);
     }
 }

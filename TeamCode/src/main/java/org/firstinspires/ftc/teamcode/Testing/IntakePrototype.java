@@ -1,27 +1,28 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.GaliHardware;
 
-//@Config
+@Config
 @TeleOp
 public class IntakePrototype extends OpMode {
-    GaliHardware robot = new GaliHardware();
+    //GaliHardware robot = new GaliHardware();
     public static double power = 0;
+    public DcMotor intake;
 
     @Override
     public void init(){
-        robot.init(hardwareMap);
-        //robot.BOW.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        intake.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     @Override
     public void loop(){
-        //robot.POW.setPower(power);
-        //robot.BOW.setPower(power);
+        intake.setPower(power);
     }
 }
