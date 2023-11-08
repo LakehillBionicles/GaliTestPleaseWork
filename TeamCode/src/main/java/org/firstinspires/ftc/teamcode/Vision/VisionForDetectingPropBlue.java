@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.Vision;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,8 +23,8 @@ public class VisionForDetectingPropBlue extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, webcamName), cameraMonitorViewId);
-        org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor blueColorProcessor = new BlueColorProcessor();
-        camera.setPipeline(blueColorProcessor);
+        org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor BlueColorProcessor = new BlueColorProcessor();
+        camera.setPipeline(BlueColorProcessor);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -33,12 +35,34 @@ public class VisionForDetectingPropBlue extends LinearOpMode {
             }
         });
         while (!isStarted()) {
-            telemetry.addData("Pos: ", blueColorProcessor.pos);
+            telemetry.addData("Pos: ", BlueColorProcessor.pos);
+            /*
+            try {
+                telemetry.addData("leftTotal", blueColorProcessor.leftTotal);
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                telemetry.addData("rightTotal", blueColorProcessor.rightTotal);
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                telemetry.addData("centerTotal", blueColorProcessor.centerTotal);
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                telemetry.update();
+            } catch (NullPointerException ignored) {
+            }
+
+             */
+            telemetry.addData("left", BlueColorProcessor.leftTotal);
+            telemetry.addData("center", BlueColorProcessor.centerTotal);
+            telemetry.addData("right", BlueColorProcessor.leftTotal);
             telemetry.update();
         }
         waitForStart();
         while(opModeIsActive()){
-            telemetry.addData("Pos: ", blueColorProcessor.pos);
+            telemetry.addData("Pos: ", BlueColorProcessor.pos);
             telemetry.update();
         }
     }
