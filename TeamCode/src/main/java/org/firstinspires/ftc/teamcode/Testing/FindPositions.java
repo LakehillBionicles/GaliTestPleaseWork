@@ -14,14 +14,13 @@ import org.firstinspires.ftc.teamcode.GaliHardware;
 public class FindPositions extends OpMode {
     GaliHardware robot = new GaliHardware();
 
-    public static int elbowTarget = 0;
-    public static int shoulderTarget = 0;
-    public static double wristTargetPort = 0.68;
-    //public static double wristTargetStar = 1-wristTargetPort;
+    public static double elbowTarget = 0;
+    public static double wristTarget = 0;
     public static double fingerPortTarget = 0;
-    public static double fingerStarTarget = 1;
+    public static double fingerStarTarget = 0;
     public static double aimerTarget = 0;
     public static double triggerTarget = 0;
+    public static double intakePower = 0;
 
     //public static double heightOfLauncher = 0;
 
@@ -34,35 +33,23 @@ public class FindPositions extends OpMode {
     public void init(){
         robot.init(hardwareMap);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        robot.armPort.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.armStar.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.portArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.starArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     @Override
     public void loop(){
-        /*robot.elbow.setTargetPosition(elbowTarget);
-        robot.elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.elbow.setPower(.25);
-
-        robot.shoulder.setTargetPosition(shoulderTarget);
-        robot.shoulder.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.shoulder.setPower(.25);*/
-
         //robot.launcherExtender.setPosition(heightOfLauncher);
         //robot.launcherStopper.setPosition(onOrOff);
 
-        //robot.aimer.setPosition(aimerTarget);
-        //robot.trigger.setPosition(triggerTarget);
+        robot.aimer.setPosition(aimerTarget);
+        robot.trigger.setPosition(triggerTarget);
 
-        robot.wrist.setPosition(wristTargetPort);
+        //robot.elbow.setPosition(elbowTarget);
+        //robot.wrist.setPosition(wristTarget);
         //robot.fingerPort.setPosition(fingerPortTarget);
         //robot.fingerStar.setPosition(fingerStarTarget);
 
-        //robot.handPort.setPosition(handPortTarget);
-        //robot.handStar.setPosition(handStarTarget);
-
-        /*telemetry.addData("elbowPos", robot.elbow.getCurrentPosition());
-        telemetry.addData("shoulderPos", robot.shoulder.getCurrentPosition());
-        telemetry.update();*/
+        //robot.intake.setPower(intakePower);
     }
 }
