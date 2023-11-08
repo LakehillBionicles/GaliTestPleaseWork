@@ -22,6 +22,7 @@ public class GaliAutobase extends LinearOpMode {
     public GaliHardware robot = new GaliHardware();
     public RedColorProcessor RedColorProcessor;
     public BlueColorProcessor BlueColorProcessor;
+    public String  propPos = "notSeen";
 
     public BNO055IMU imu;
     private String webcam1 = "Webcam 1";
@@ -32,10 +33,8 @@ public class GaliAutobase extends LinearOpMode {
     double tagsize = 0.166;
     OpenCvCamera camera;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode(){
         robot.init(hardwareMap);
-
-
     }
     public void propDetection(String color){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -43,10 +42,12 @@ public class GaliAutobase extends LinearOpMode {
         if(Objects.equals(color, "blue")) {
             BlueColorProcessor = new BlueColorProcessor();
             camera.setPipeline(BlueColorProcessor);
+            propPos = org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
         }
         if(Objects.equals(color, "red")){
             RedColorProcessor = new RedColorProcessor();
             camera.setPipeline(RedColorProcessor);
+            propPos = org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
         }
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

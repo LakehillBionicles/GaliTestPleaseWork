@@ -27,7 +27,7 @@ public class RedColorProcessor extends OpenCvPipeline {
     public static int RightPointx2 = 270;
     public static int RightPointy2 = 80;
 
-    public String pos = "notSeen";
+    public static String pos = "notSeen";
 
 
     private Mat workingMat = new Mat();

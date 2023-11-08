@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Tele;
 import static org.firstinspires.ftc.teamcode.Subsystems.ArmSubsystem.ArmPos.*;
 import static org.firstinspires.ftc.teamcode.GaliHardware.*;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,9 +13,19 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.GaliHardware;
 import org.firstinspires.ftc.teamcode.Subsystems.ArmSubsystem;
+@Config
 
 @TeleOp
 public class GaliTele extends LinearOpMode {
+    public static double fingerPortOpen = 0.4, fingerPortClosed = 0;
+    public static double fingerStarOpen = 0.6, fingerStarClosed = 1;
+
+    public static double wristDown = 0.525, wristScore = 0.85;
+
+    public static double elbowDown = 0.062, elbowScore = 0.33;
+
+    public static double aimerDown = 0, triggerUp = 1, aimerUp = 0.5, triggerDown = 0;
+
     GaliHardware robot = new GaliHardware();
     ArmSubsystem.ArmPos armTarget = DOWN_FRONT;
 
@@ -26,6 +39,8 @@ public class GaliTele extends LinearOpMode {
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
     public void runOpMode() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
         robot.init(hardwareMap);
         waitForStart();
 

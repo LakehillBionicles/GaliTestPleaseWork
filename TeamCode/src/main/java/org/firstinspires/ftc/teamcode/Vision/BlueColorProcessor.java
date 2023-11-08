@@ -32,7 +32,7 @@ public class BlueColorProcessor extends OpenCvPipeline {
     public static int RightPointx2 = 240;
     public static int RightPointy2 = 180;
 
-    public String pos = "notSeen";
+    public static String pos = "notSeen";
     Scalar leftTotal = Scalar.all(0);
     Scalar centerTotal = Scalar.all(0);
     Scalar rightTotal = Scalar.all(0);
