@@ -76,6 +76,10 @@ public class GaliTele extends LinearOpMode {
                 robot.fingerPort.setPosition(.4);
                 robot.fingerStar.setPosition(.6);
             }
+            if(gamepad2.x){
+                robot.wrist.setPosition(wristLift);
+                robot.elbow.setPosition(elbowLift);
+            }
 
             //robot.wrist.setPosition(getWristPosPort());
 
