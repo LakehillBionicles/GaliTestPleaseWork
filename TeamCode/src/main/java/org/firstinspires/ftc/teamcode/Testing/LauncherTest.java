@@ -26,10 +26,10 @@ public class LauncherTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             if(gamepad1.b){
-                robot.aimer.setPosition(highAngle);
+                //robot.aimer.setPosition(highAngle);
             }
             if(gamepad1.x){
-                robot.aimer.setPosition(aimerDown);
+                //robot.aimer.setPosition(aimerDown);
             }
             if (gamepad1.y){
                 robot.trigger.setPosition(triggerUp);

@@ -33,6 +33,7 @@ public class GaliTele extends LinearOpMode {
             wristPosPort, wristPosStar, aimerPos = aimerDown, triggerPos = triggerUp, intakePower = 0;
 
     public boolean intakeOn = false;
+    public boolean intakeSpit = false;
 
     Gamepad currentGamepad1 = new Gamepad();
     Gamepad currentGamepad2 = new Gamepad();
@@ -55,9 +56,10 @@ public class GaliTele extends LinearOpMode {
             robot.fsd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             robot.bsd.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
 
-            setArmPower(.75*(-gamepad2.left_stick_y));
+            setArmPower(-gamepad2.left_stick_y);
 
-            if(!previousGamepad2.back && gamepad2.back){ intakeOn = !intakeOn;}
+            if(!previousGamepad1.back && gamepad1.back){ intakeOn = !intakeOn;}
+            if(!previousGamepad1.x && gamepad1.x){ intakeSpit = !intakeSpit;}
 
             robot.intake.setPower(getHandPower());
 
@@ -91,7 +93,7 @@ public class GaliTele extends LinearOpMode {
 
             telemetry.addData("BOW", robot.bpd.getCurrentPosition());
             telemetry.addData("POW", robot.fpd.getCurrentPosition());
-            telemetry.addData("SOW", robot.SOW.getCurrentPosition());
+            //telemetry.addData("SOW", robot.SOW.getCurrentPosition());
             telemetry.update();
         }
     }
@@ -166,8 +168,10 @@ public class GaliTele extends LinearOpMode {
 
     public double getHandPower(){
         if(intakeOn){
-            intakePower = .8;
-        } else {
+            intakePower = .5;
+        } else if(intakeSpit) {
+            intakePower = -.5;
+        } else{
             intakePower = 0;
         }
         return intakePower;
