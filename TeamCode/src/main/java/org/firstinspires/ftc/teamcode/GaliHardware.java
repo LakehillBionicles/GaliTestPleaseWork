@@ -17,11 +17,12 @@ public class GaliHardware extends LinearOpMode {
     public static double fingerPortOpen = 0.4, fingerPortClosed = 0;
     public static double fingerStarOpen = 0.6, fingerStarClosed = 1;
 
-    public static double wristDown = 0.525, wristScore = 0.85, wristLift = 0.7;
+    public static double wristDown = 0.3, wristScore = 0.7, wristLift = 0.7;
 
-    public static double elbowDown = 0.062, elbowScore = 0.33, elbowLift = 0.2;
+    public static double elbowDown = 0.1, elbowScore = 0.36, elbowLift = 0.3;
 
-    public static double aimerDown = 1, triggerUp = .35, aimerUp = 0.5, triggerDown = 0;
+    public static double triggerUp = .3, triggerDown = 0;
+    public static int aimerDown = 0, aimerUp = -180;
 
     HardwareMap hwMap = null;
 
