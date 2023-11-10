@@ -54,9 +54,11 @@ public class GaliTele extends LinearOpMode {
             robot.bpd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
             robot.fsd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
             robot.bsd.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x);
-
-            setArmPower(.75*(-gamepad2.left_stick_y));
-
+            if(robot.elbow.getPosition()!=elbowDown||(robot.portArm.getCurrentPosition()+robot.starArm.getCurrentPosition()/2)>3000) {
+                setArmPower(.75 * (-gamepad2.left_stick_y));
+            }else{
+                robot.elbow.setPosition(elbowLift);
+            }
             if(!previousGamepad2.back && gamepad2.back){ intakeOn = !intakeOn;}
 
             robot.intake.setPower(getHandPower());
