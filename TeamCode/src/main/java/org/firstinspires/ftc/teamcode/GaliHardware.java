@@ -19,7 +19,7 @@ public class GaliHardware extends LinearOpMode {
 
     public static double wristDown = 0.3, wristScore = 0.7, wristLift = 0.7;
 
-    public static double elbowDown = 0.1, elbowScore = 0.36, elbowLift = 0.3;
+    public static double elbowDown = 0.1, elbowScore = 0.36, elbowLift = 0.23;
 
     public static double triggerUp = .3, triggerDown = 0;
     public static int aimerDown = 0, aimerUp = -180;
@@ -63,7 +63,7 @@ public class GaliHardware extends LinearOpMode {
 
         intake.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        aimer.setDirection(DcMotorSimple.Direction.FORWARD);
+        aimer.setDirection(DcMotorSimple.Direction.REVERSE);
 
         fpd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bpd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

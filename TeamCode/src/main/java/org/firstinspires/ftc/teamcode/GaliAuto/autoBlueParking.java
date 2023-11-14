@@ -13,5 +13,6 @@ public class autoBlueParking extends GaliAutobase {
         while(!isStarted()){
             telemetry.addData("position",propPos);
         }
+
     }
 }

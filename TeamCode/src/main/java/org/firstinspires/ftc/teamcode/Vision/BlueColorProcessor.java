@@ -19,18 +19,18 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 
 public class BlueColorProcessor extends OpenCvPipeline {
-    public static int leftPointx1 = 0;
+    public static int leftPointx1 = 15;
     public static int leftPointy1 = 100;
-    public static int leftPointx2 = 80;
-    public static int leftPointy2 = 180;
-    public static int CenterPointx1 = 80;
-    public static int CenterPointy1 = 100;
+    public static int leftPointx2 = 20;
+    public static int leftPointy2 = 105;
+    public static int CenterPointx1 = 120;
+    public static int CenterPointy1 = 115;
     public static int CenterPointx2 = 160;
-    public static int CenterPointy2 = 180;
-    public static int RightPointx1 = 160;
-    public static int RightPointy1 = 100;
-    public static int RightPointx2 = 240;
-    public static int RightPointy2 = 180;
+    public static int CenterPointy2 = 155;
+    public static int RightPointx1 = 270;
+    public static int RightPointy1 = 120;
+    public static int RightPointx2 = 310;
+    public static int RightPointy2 = 160;
 
     public static String pos = "notSeen";
     Scalar leftTotal = Scalar.all(0);

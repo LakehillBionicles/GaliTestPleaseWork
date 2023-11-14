@@ -57,8 +57,8 @@ public class GaliAutobase extends LinearOpMode {
         robot.wrist.setPosition(wristDown);
     }
     public void armUp(){
-        robot.elbow.setPosition(elbowScore);
         robot.wrist.setPosition(wristScore);
+        robot.elbow.setPosition(elbowScore);
     }
     public void fingersClosed(){
         robot.fingerStar.setPosition(fingerStarClosed);
