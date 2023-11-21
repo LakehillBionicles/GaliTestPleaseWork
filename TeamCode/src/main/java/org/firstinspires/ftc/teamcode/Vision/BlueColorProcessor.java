@@ -19,23 +19,28 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 
 public class BlueColorProcessor extends OpenCvPipeline {
-    public static int leftPointx1 = 15;
-    public static int leftPointy1 = 100;
-    public static int leftPointx2 = 20;
-    public static int leftPointy2 = 105;
-    public static int CenterPointx1 = 120;
+    public static int leftPointx1 = 0;
+    public static int leftPointy1 = 115;
+    public static int leftPointx2 = 50;
+    public static int leftPointy2 = 155;
+    public static int CenterPointx1 = 60;
     public static int CenterPointy1 = 115;
-    public static int CenterPointx2 = 160;
+    public static int CenterPointx2 = 220;
     public static int CenterPointy2 = 155;
-    public static int RightPointx1 = 270;
+    public static int RightPointx1 = 240;
     public static int RightPointy1 = 120;
-    public static int RightPointx2 = 310;
+    public static int RightPointx2 = 320;
     public static int RightPointy2 = 160;
 
     public static String pos = "notSeen";
-    Scalar leftTotal = Scalar.all(0);
-    Scalar centerTotal = Scalar.all(0);
-    Scalar rightTotal = Scalar.all(0);
+    public static Scalar leftTotal = Scalar.all(0);
+    public static Scalar centerTotal = Scalar.all(0);
+    public static Scalar rightTotal = Scalar.all(0);
+    public static double centerRed = 0;
+    public static double centerGreen = 0;
+    public static double leftBlue = 0;
+    public static double centerBlue = 0;
+    public static double rightBlue = 0;
     @Override
     public Mat processFrame(Mat input) {
         Point leftLeft = new Point(leftPointx1, leftPointy1);
@@ -53,8 +58,14 @@ public class BlueColorProcessor extends OpenCvPipeline {
         leftTotal = Core.sumElems(matLeft);
         centerTotal = Core.sumElems(matCenter);
         rightTotal = Core.sumElems(matRight);
-        if (leftTotal.val[2] > centerTotal.val[2]) {
-            if (leftTotal.val[2] > rightTotal.val[2]) {
+        centerRed = Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height());
+        centerBlue = Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height());
+        centerGreen = Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height());
+        leftBlue = Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height());
+        centerBlue = Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height());
+        rightBlue = Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height());
+        if (leftBlue > centerBlue) {
+            if (leftBlue > rightBlue) {
                 pos = "left";
                 Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(0, 0, 255));
 
@@ -64,7 +75,7 @@ public class BlueColorProcessor extends OpenCvPipeline {
 
             }
         } else {
-            if (centerTotal.val[2] > rightTotal.val[2]) {
+            if (centerBlue > rightBlue) {
                 pos = "center";
                 Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(0, 0, 255));
 

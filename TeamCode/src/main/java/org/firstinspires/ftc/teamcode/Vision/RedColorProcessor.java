@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -14,56 +15,70 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @Config
 
 public class RedColorProcessor extends OpenCvPipeline {
-    public static int leftPointx1 = 10;
-    public static int leftPointy1 = 10;
-    public static int leftPointx2 = 90;
-    public static int leftPointy2 = 80;
-    public static int CenterPointx1 = 100;
-    public static int CenterPointy1 = 10;
-    public static int CenterPointx2 = 180;
-    public static int CenterPointy2 = 80;
-    public static int RightPointx1 = 190;
-    public static int RightPointy1 = 10;
-    public static int RightPointx2 = 270;
-    public static int RightPointy2 = 80;
+    public static int leftPointx1 = 0;
+    public static int leftPointy1 = 115;
+    public static int leftPointx2 = 50;
+    public static int leftPointy2 = 155;
+    public static int CenterPointx1 = 60;
+    public static int CenterPointy1 = 115;
+    public static int CenterPointx2 = 220;
+    public static int CenterPointy2 = 155;
+    public static int RightPointx1 = 240;
+    public static int RightPointy1 = 115;
+    public static int RightPointx2 = 320;
+    public static int RightPointy2 = 150;
 
     public static String pos = "notSeen";
-
-
-    private Mat workingMat = new Mat();
-    public RedColorProcessor(){
-    }
-
+    public static Scalar leftTotal = Scalar.all(0);
+    public static Scalar centerTotal = Scalar.all(0);
+    public static Scalar rightTotal = Scalar.all(0);
+    public static double leftRed = 0;
+    public static double centerRed = 0;
+    public static double rightRed = 0;
+    public static double leftRedRatio = 0;
+    public static double centerRedRatio = 0;
+    public static double rightRedRatio = 0;
     @Override
     public Mat processFrame(Mat input) {
-        input.copyTo(workingMat);
-        if(workingMat.empty()) {
-            return input;
-        }
-        Mat matLeft = workingMat.submat(leftPointx1,leftPointx2, leftPointy1, leftPointy2);
-        Mat matCenter = workingMat.submat(CenterPointx1,CenterPointx2, CenterPointy1, CenterPointy2);
-        Mat matRight = workingMat.submat(190,270, 20, 80);
-        Imgproc.rectangle(workingMat,new Rect(leftPointx1, leftPointy1, leftPointx2, leftPointy2), new Scalar(0, 255, 0));
-        Imgproc.rectangle(workingMat,new Rect(CenterPointx1, CenterPointy1, CenterPointx2, CenterPointy2), new Scalar(0, 255, 0));
-        Imgproc.rectangle(workingMat,new Rect(RightPointx1, RightPointy1, RightPointx2, RightPointy2), new Scalar(0, 255, 0));
+        Point leftLeft = new Point(leftPointx1, leftPointy1);
+        Point leftRight = new Point(leftPointx2, leftPointy2);
+        Point centerLeft = new Point(CenterPointx1, CenterPointy1);
+        Point centerRight = new Point(CenterPointx2, CenterPointy2);
+        Point rightLeft = new Point(RightPointx1, RightPointy1);
+        Point rightRight = new Point(RightPointx2, RightPointy2);
+        Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
+        Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
+        Mat matRight = input.submat(new Rect(rightLeft, rightRight));
+        Imgproc.rectangle(input,new Rect(leftLeft,leftRight), new Scalar(0, 255, 0));
+        Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
+        Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
 
-        double leftTotal = Core.sumElems(matLeft).val[1];
-        double centerTotal = Core.sumElems(matCenter).val[1];
-        double rightTotal = Core.sumElems(matRight).val[1];
-
-        if(leftTotal>centerTotal){
-            if(leftTotal>rightTotal){
+        leftTotal = Core.sumElems(matLeft);
+         centerTotal = Core.sumElems(matCenter);
+         rightTotal = Core.sumElems(matRight);
+        leftRed = Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height());
+        centerRed = Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height());
+        rightRed = Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height());
+        leftRedRatio = (Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height()))));
+        centerRedRatio = (Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height()))));
+        rightRedRatio = (Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height()))));
+        if(leftRedRatio>centerRedRatio){
+            if(leftRedRatio>rightRedRatio){
                 pos = "left";
+                Imgproc.rectangle(input,new Rect(leftLeft,leftRight), new Scalar(255, 0, 0));
             }else{
+                Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(255, 0, 0));
                 pos = "center";
             }
         }else{
-            if(centerTotal>rightTotal){
+            if(centerRedRatio>rightRedRatio){
+                Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(255, 0, 0));
                 pos = "center";
             }else{
                 pos = "right";
+                Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(255, 0, 0));
             }
         }
-        return workingMat;
+        return input;
     }
 }

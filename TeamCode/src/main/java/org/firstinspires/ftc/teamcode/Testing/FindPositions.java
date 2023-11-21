@@ -43,17 +43,17 @@ public class FindPositions extends OpMode {
         //robot.launcherExtender.setPosition(heightOfLauncher);
         //robot.launcherStopper.setPosition(onOrOff);
 
-        robot.aimer.setTargetPosition(aimerTarget);
+        /*robot.aimer.setTargetPosition(aimerTarget);
         robot.aimer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.aimer.setPower(.25);
 
-        robot.trigger.setPosition(triggerTarget);
+        robot.trigger.setPosition(triggerTarget);*/
 
         //robot.elbow.setPosition(elbowTarget);
         //robot.wrist.setPosition(wristTarget);
         //robot.fingerPort.setPosition(fingerPortTarget);
         //robot.fingerStar.setPosition(fingerStarTarget);
 
-        //robot.intake.setPower(intakePower);
+        robot.intake.setPower(intakePower);
     }
 }
