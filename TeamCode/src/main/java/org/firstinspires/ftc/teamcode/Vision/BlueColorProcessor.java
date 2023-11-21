@@ -41,6 +41,9 @@ public class BlueColorProcessor extends OpenCvPipeline {
     public static double leftBlue = 0;
     public static double centerBlue = 0;
     public static double rightBlue = 0;
+    public static double leftBlueRatio = 0;
+    public static double centerBlueRatio = 0;
+    public static double rightBlueRatio = 0;
     @Override
     public Mat processFrame(Mat input) {
         Point leftLeft = new Point(leftPointx1, leftPointy1);
@@ -52,20 +55,20 @@ public class BlueColorProcessor extends OpenCvPipeline {
         Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
         Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
         Mat matRight = input.submat(new Rect(rightLeft, rightRight));
-        Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(0, 255, 0));
-        Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
-        Imgproc.rectangle(input, new Rect(rightLeft, rightRight), new Scalar(0, 255, 0));
+        Imgproc.rectangle(input,new Rect(leftLeft,leftRight), new Scalar(0, 255, 0));
+        Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
+        Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
         leftTotal = Core.sumElems(matLeft);
         centerTotal = Core.sumElems(matCenter);
         rightTotal = Core.sumElems(matRight);
-        centerRed = Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height());
-        centerBlue = Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height());
-        centerGreen = Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height());
         leftBlue = Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height());
         centerBlue = Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height());
         rightBlue = Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height());
-        if (leftBlue > centerBlue) {
-            if (leftBlue > rightBlue) {
+        leftBlueRatio = (Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height()))));
+        centerBlueRatio = (Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height()))));
+        rightBlueRatio = (Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height()))));
+        if (leftBlueRatio > centerBlueRatio) {
+            if (leftBlueRatio > rightBlueRatio) {
                 pos = "left";
                 Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(0, 0, 255));
 
@@ -75,7 +78,7 @@ public class BlueColorProcessor extends OpenCvPipeline {
 
             }
         } else {
-            if (centerBlue > rightBlue) {
+            if (centerBlueRatio > rightBlueRatio) {
                 pos = "center";
                 Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(0, 0, 255));
 
