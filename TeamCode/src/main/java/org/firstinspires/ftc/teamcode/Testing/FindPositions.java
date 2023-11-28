@@ -49,11 +49,11 @@ public class FindPositions extends OpMode {
 
         robot.trigger.setPosition(triggerTarget);*/
 
-        //robot.elbow.setPosition(elbowTarget);
-        //robot.wrist.setPosition(wristTarget);
-        //robot.fingerPort.setPosition(fingerPortTarget);
-        //robot.fingerStar.setPosition(fingerStarTarget);
+        robot.elbow.setPosition(elbowTarget);
+        robot.wrist.setPosition(wristTarget);
+        robot.fingerPort.setPosition(fingerPortTarget);
+        robot.fingerStar.setPosition(fingerStarTarget);
 
-        robot.intake.setPower(intakePower);
+        //robot.intake.setPower(intakePower);
     }
 }
