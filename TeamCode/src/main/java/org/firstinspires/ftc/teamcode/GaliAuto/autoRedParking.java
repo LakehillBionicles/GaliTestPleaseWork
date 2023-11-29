@@ -1,12 +1,6 @@
 package org.firstinspires.ftc.teamcode.GaliAuto;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlue;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlue;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue;
-import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRed;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRedRatio;
-import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRed;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
-import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRed;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
 

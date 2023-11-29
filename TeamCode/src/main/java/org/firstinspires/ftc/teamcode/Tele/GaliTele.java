@@ -50,7 +50,7 @@ public class GaliTele extends LinearOpMode {
 
             robot.intake.setPower(getHandPower());
             setArmPower((-gamepad2.left_stick_y));
-
+            /*
             if(gamepad2.left_bumper){
                 robot.wrist.setPosition(wristScore);
                 robot.elbow.setPosition(elbowScore);
@@ -59,10 +59,27 @@ public class GaliTele extends LinearOpMode {
                 robot.wrist.setPosition(wristDown);
             }
 
-            if(gamepad2.a){
+             */
+            if(gamepad1.left_bumper){
+                robot.wrist.setPosition(0.6);
+            }
+            if(gamepad1.right_bumper){
+                robot.elbow.setPosition(elbowScore);
+                robot.wrist.setPosition(wristScore);
+            }
+            if(gamepad1.left_trigger>0){
+                robot.wrist.setPosition(0.6);
+            }
+            if(gamepad1.right_trigger>0){
+                robot.elbow.setPosition(elbowDown);
+                robot.wrist.setPosition(wristDown);
+            }
+
+
+            if(gamepad1.a){
                 robot.fingerPort.setPosition(fingerPortClosed);
                 robot.fingerStar.setPosition(fingerStarClosed);
-            } else if(gamepad2.b){
+            } else if(gamepad1.b){
                 robot.fingerPort.setPosition(fingerPortOpen);
                 robot.fingerStar.setPosition(fingerStarOpen);
             }

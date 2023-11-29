@@ -5,7 +5,7 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueR
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
+@Autonomous
 public class autoBlueParking extends GaliAutobase{
 
     @Override
