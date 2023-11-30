@@ -82,7 +82,7 @@ public class GaliAutobase extends LinearOpMode {
         robot.fingerPort.setPosition(fingerPortOpen);
     }
     public void aprilTagAlignment(){
-        resetCamer();
+        resetCamera();
         aprilTagDetection();
     }
     public void aprilTagDetection(){
@@ -157,11 +157,11 @@ public class GaliAutobase extends LinearOpMode {
             sleep(20);
         }
     }
-    public void resetCamer(){
+    public void resetCamera(){
         camera.stopStreaming();
         camera.closeCameraDeviceAsync(() -> {});
     }
-    public void camerStartup(String cameraName){
+    public void cameraStartup(String cameraName){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cameraName), cameraMonitorViewId);
     }

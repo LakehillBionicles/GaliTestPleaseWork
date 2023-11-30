@@ -20,18 +20,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class BlueColorProcessor extends OpenCvPipeline {
     public static int leftPointx1 = 0;
-    public static int leftPointy1 = 115;
-    public static int leftPointx2 = 50;
-    public static int leftPointy2 = 155;
-    public static int CenterPointx1 = 60;
-    public static int CenterPointy1 = 115;
+    public static int leftPointy1 = 135;
+    public static int leftPointx2 = 100;
+    public static int leftPointy2 = 190;
+    public static int CenterPointx1 = 100;
+    public static int CenterPointy1 = 135;
     public static int CenterPointx2 = 220;
-    public static int CenterPointy2 = 155;
-    public static int RightPointx1 = 240;
-    public static int RightPointy1 = 120;
-    public static int RightPointx2 = 320;
-    public static int RightPointy2 = 160;
-
+    public static int CenterPointy2 = 175;
     public static String pos = "notSeen";
     public static Scalar leftTotal = Scalar.all(0);
     public static Scalar centerTotal = Scalar.all(0);
@@ -44,29 +39,24 @@ public class BlueColorProcessor extends OpenCvPipeline {
     public static double leftBlueRatio = 0;
     public static double centerBlueRatio = 0;
     public static double rightBlueRatio = 0;
+    public static double blueTolerance = 0.5;
     @Override
     public Mat processFrame(Mat input) {
         Point leftLeft = new Point(leftPointx1, leftPointy1);
         Point leftRight = new Point(leftPointx2, leftPointy2);
         Point centerLeft = new Point(CenterPointx1, CenterPointy1);
         Point centerRight = new Point(CenterPointx2, CenterPointy2);
-        Point rightLeft = new Point(RightPointx1, RightPointy1);
-        Point rightRight = new Point(RightPointx2, RightPointy2);
         Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
         Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
-        Mat matRight = input.submat(new Rect(rightLeft, rightRight));
         Imgproc.rectangle(input,new Rect(leftLeft,leftRight), new Scalar(0, 255, 0));
         Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
-        Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
         leftTotal = Core.sumElems(matLeft);
         centerTotal = Core.sumElems(matCenter);
-        rightTotal = Core.sumElems(matRight);
         leftBlue = Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height());
         centerBlue = Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height());
-        rightBlue = Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height());
         leftBlueRatio = (Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height()))));
         centerBlueRatio = (Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height()))));
-        rightBlueRatio = (Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height()))));
+        /*
         if (leftBlueRatio > centerBlueRatio) {
             if (leftBlueRatio > rightBlueRatio) {
                 pos = "left";
@@ -88,9 +78,23 @@ public class BlueColorProcessor extends OpenCvPipeline {
 
             }
         }
+
+         */
+        if(leftBlueRatio>blueTolerance){
+            pos = "left";
+            Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(0, 0, 255));
+        }
+        else if(centerBlueRatio>blueTolerance){
+            pos = "center";
+            Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(0, 0, 255));
+        }
+        else{
+            pos = "right";
+            Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(255, 255, 255));
+            Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(255, 255, 255));
+        }
         matLeft.release();
         matCenter.release();
-        matRight.release();
         return input;
     }
 }

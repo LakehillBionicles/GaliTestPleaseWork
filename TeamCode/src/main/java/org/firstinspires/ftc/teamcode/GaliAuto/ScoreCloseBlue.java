@@ -40,12 +40,14 @@ public class ScoreCloseBlue extends GaliAutobase {
         waitForStart();
 
         drive.followTrajectorySequence(park);
-        robot.wrist.setPosition(wristScore);
+        robot.wrist.setPosition(.6);
         robot.elbow.setPosition(elbowScore);
+        robot.wrist.setPosition(wristScore);
         sleep(2000);
         robot.fingerPort.setPosition(fingerPortOpen);
         robot.fingerStar.setPosition(fingerStarOpen);
         sleep(3000);
+        robot.wrist.setPosition(.6);
         robot.elbow.setPosition(elbowDown);
         robot.wrist.setPosition(wristDown);
         sleep(3000);
