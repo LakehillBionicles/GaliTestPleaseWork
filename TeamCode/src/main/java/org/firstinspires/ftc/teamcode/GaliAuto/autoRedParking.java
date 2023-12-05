@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.GaliAuto;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRedRatio;
-import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
+//import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
 
@@ -15,7 +15,6 @@ public class autoRedParking extends GaliAutobase{
         //Objects.equals(propPos, "notSeen")&&
         while(!isStarted()){
             telemetry.addData("position",pos);
-            telemetry.addData("leftBlue",leftRedRatio);
             telemetry.addData("centerBlue",centerRedRatio);
             telemetry.addData("rightBlue",rightRedRatio);
             telemetry.update();
