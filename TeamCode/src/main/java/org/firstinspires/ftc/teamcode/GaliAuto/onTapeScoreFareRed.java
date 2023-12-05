@@ -58,10 +58,10 @@ public class onTapeScoreFareRed extends GaliAutobase{
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .lineToLinearHeading(new Pose2d(-27, 7, Math.toRadians(92)))
-                .turn(Math.toRadians(-200))
-                .lineToLinearHeading(new Pose2d(-27, 60, Math.toRadians(-90)))//25
-                .lineToLinearHeading(new Pose2d(-37, 86, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-55, 0, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-40, 86, Math.toRadians(-89)))
                 .build();
 
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
@@ -72,8 +72,10 @@ public class onTapeScoreFareRed extends GaliAutobase{
                 .build();
 
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .lineToLinearHeading(new Pose2d(-27, 5, Math.toRadians(-92)))
-                .lineToLinearHeading(new Pose2d(-50, 5, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-55, 0, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-22, 86, Math.toRadians(-89)))
                 .build();
 
 
@@ -111,15 +113,14 @@ public class onTapeScoreFareRed extends GaliAutobase{
             robot.wrist.setPosition(wristDown);
 
              */
-        /*
             drive.followTrajectorySequence(left1);
             robot.wrist.setPosition(wristTape);
             robot.elbow.setPosition(elbowTape);
             sleep(3000);
             robot.fingerPort.setPosition(fingerPortOpen);
             sleep(3000);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
+            robot.wrist.setPosition(wristDown);
+            robot.elbow.setPosition(elbowDown);
             sleep(1000);
             drive.followTrajectorySequence(left2);
             sleep(3000);
@@ -129,17 +130,29 @@ public class onTapeScoreFareRed extends GaliAutobase{
             robot.wrist.setPosition(wristDown);
             sleep(3000);
 
-         */
+
+        /*
         drive.followTrajectorySequence(right1);
         robot.wrist.setPosition(wristTape);
         robot.elbow.setPosition(elbowTape);
         sleep(3000);
         robot.fingerPort.setPosition(fingerPortOpen);
         sleep(3000);
-        robot.wrist.setPosition(wristScore);
-        robot.elbow.setPosition(elbowScore);
+        robot.wrist.setPosition(wristDown);
+        robot.elbow.setPosition(elbowDown);
         sleep(1000);
         drive.followTrajectorySequence(right2);
+        robot.wrist.setPosition(wristScore);
+        robot.elbow.setPosition(elbowScore);
+        sleep(3000);
+        robot.fingerStar.setPosition(fingerStarOpen);
+        sleep(2000);
+        robot.wrist.setPosition(wristDown);
+        robot.elbow.setPosition(elbowDown);
+        robot.fingerStar.setPosition(fingerStarOpen);
+        robot.fingerPort.setPosition(fingerPortOpen);
+
+         */
         /*
         drive.followTrajectorySequence(left2);
         sleep(3000);
