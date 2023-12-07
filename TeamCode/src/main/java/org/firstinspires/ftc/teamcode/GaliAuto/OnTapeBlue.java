@@ -83,7 +83,7 @@ public class OnTapeBlue extends GaliAutobase{
         }
         waitForStart();
 
-        if(propPos == "center"){
+        if(Objects.equals(propPos, "center")){
             telemetry.addData("Pos", propPos);
             telemetry.update();
             drive.followTrajectorySequence(center1);
@@ -102,7 +102,7 @@ public class OnTapeBlue extends GaliAutobase{
             robot.elbow.setPosition(elbowDown);
             robot.wrist.setPosition(wristDown);
         sleep(3000);
-        } else if(propPos == "left"){
+        } else if(Objects.equals(propPos, "left")){
             drive.followTrajectorySequence(left1);
             robot.wrist.setPosition(wristTape);
             robot.elbow.setPosition(elbowTape);

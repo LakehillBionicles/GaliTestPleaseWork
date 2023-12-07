@@ -25,9 +25,7 @@ import org.firstinspires.ftc.teamcode.Roadrunner.trajectorysequence.TrajectorySe
 import java.util.Objects;
 
 @Autonomous
-
-
-public class onTapeScoreFareRed extends GaliAutobase{
+public class onTapeScoreFareBlue extends GaliAutobase{
     Pose2d startPose = new Pose2d(0, 0, 0);
     public static double forWard = 0;
     public static double turn1 = 0;
@@ -39,46 +37,46 @@ public class onTapeScoreFareRed extends GaliAutobase{
         robot.fingerStar.setPosition(fingerStarClosed);
 
         cameraStartup("Webcam 1");
-        propDetection("red");
+        propDetection("blue");
 
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(-27, -15, Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(-40, -15, Math.toRadians(182)))
-                .lineToLinearHeading(new Pose2d(-40, -3, Math.toRadians(182)))
-                .lineToLinearHeading(new Pose2d(-52, -3, Math.toRadians(182)))
+                .lineToLinearHeading(new Pose2d(-27, 15, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-40, 15, Math.toRadians(-182)))
+                .lineToLinearHeading(new Pose2d(-40, 3, Math.toRadians(-182)))
+                .lineToLinearHeading(new Pose2d(-52, 3, Math.toRadians(-182)))
                 .build();
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
-                .lineToLinearHeading(new Pose2d(-60, -3, Math.toRadians(274)))
-                .lineToLinearHeading(new Pose2d(-60, 70, Math.toRadians(274)))
-                .lineToLinearHeading(new Pose2d(-34, 86, Math.toRadians(274)))
+                .lineToLinearHeading(new Pose2d(-60, 3, Math.toRadians(-274)))
+                .lineToLinearHeading(new Pose2d(-60, -70, Math.toRadians(-274)))
+                .lineToLinearHeading(new Pose2d(-34, -86, Math.toRadians(-274)))
                 .build();
 
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-29, 0))
-                .turn(Math.toRadians(105))
-                .lineToLinearHeading(new Pose2d(-27, -15, Math.toRadians(100)))
-                .lineToLinearHeading(new Pose2d(-27, 3, Math.toRadians(92)))
+                .turn(Math.toRadians(-105))
+                .lineToLinearHeading(new Pose2d(-27, 15, Math.toRadians(-100)))
+                .lineToLinearHeading(new Pose2d(-27, -3, Math.toRadians(-92)))
                 .build();
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .lineToLinearHeading(new Pose2d(-27, 6, Math.toRadians(92)))
-                .lineToLinearHeading(new Pose2d(-27, 5, Math.toRadians(-92)))
-                .lineToLinearHeading(new Pose2d(-55, 5, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-40, 86, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-27, -6, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-27, -5, Math.toRadians(92)))
+                .lineToLinearHeading(new Pose2d(-55, -5, Math.toRadians(89)))
+                .lineToLinearHeading(new Pose2d(-55, -70, Math.toRadians(89)))
+                .lineToLinearHeading(new Pose2d(-40, -86, Math.toRadians(89)))
                 .build();
 
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(0)))
                 .turn(Math.toRadians(-105))
-                .lineToLinearHeading(new Pose2d(-27, 15, Math.toRadians(-100)))
-                .lineToLinearHeading(new Pose2d(-27, 2, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-27, -15, Math.toRadians(100)))
+                .lineToLinearHeading(new Pose2d(-27, -2, Math.toRadians(92)))
                 .build();
 
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(-92)))
-                .lineToLinearHeading(new Pose2d(-55, 0, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-22, 86, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(92)))
+                .lineToLinearHeading(new Pose2d(-55, 0, Math.toRadians(89)))
+                .lineToLinearHeading(new Pose2d(-55, -70, Math.toRadians(89)))
+                .lineToLinearHeading(new Pose2d(-22, -86, Math.toRadians(89)))
                 .build();
 
 
@@ -156,6 +154,6 @@ public class onTapeScoreFareRed extends GaliAutobase{
             robot.elbow.setPosition(elbowDown);
             robot.fingerStar.setPosition(fingerStarOpen);
             robot.fingerPort.setPosition(fingerPortOpen);
-            }
         }
     }
+}
