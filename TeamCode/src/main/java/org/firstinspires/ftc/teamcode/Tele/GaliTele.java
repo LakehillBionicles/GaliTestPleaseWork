@@ -28,6 +28,7 @@ public class GaliTele extends LinearOpMode {
     Gamepad currentGamepad2 = new Gamepad();
     Gamepad previousGamepad1 = new Gamepad();
     Gamepad previousGamepad2 = new Gamepad();
+    double pulseArmTimer = 0;
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -39,6 +40,16 @@ public class GaliTele extends LinearOpMode {
             previousGamepad2.copy(currentGamepad2);
             currentGamepad1.copy(gamepad1);
             currentGamepad2.copy(gamepad2);
+            if(gamepad2.dpad_up){
+                pulseArmTimer = getRuntime();
+                robot.elbow.setPosition(elbowScore);
+                robot.wrist.setPosition(wristScore);
+            }
+            if(pulseArmTimer+0.5>getRuntime()){
+                setArmPower((1));
+            }else{
+                setArmPower((-gamepad2.left_stick_y));
+            }
 
             robot.fpd.setPower(-gamepad1.left_stick_y + gamepad1.left_stick_x + gamepad1.right_stick_x);
             robot.bpd.setPower(-gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
@@ -60,17 +71,18 @@ public class GaliTele extends LinearOpMode {
             }
 
              */
-            if(gamepad1.left_bumper){
+            intakeSpit = gamepad1.x;
+            if(gamepad2.left_bumper){
                 robot.wrist.setPosition(0.6);
             }
-            if(gamepad1.right_bumper){
+            if(gamepad2.right_bumper){
                 robot.elbow.setPosition(elbowScore);
                 robot.wrist.setPosition(wristScore);
             }
-            if(gamepad1.left_trigger>0){
+            if(gamepad2.left_trigger>0){
                 robot.wrist.setPosition(0.6);
             }
-            if(gamepad1.right_trigger>0){
+            if(gamepad2.right_trigger>0){
                 robot.elbow.setPosition(elbowDown);
                 robot.wrist.setPosition(wristDown);
             }
@@ -79,7 +91,16 @@ public class GaliTele extends LinearOpMode {
             if(gamepad1.a){
                 robot.fingerPort.setPosition(fingerPortClosed);
                 robot.fingerStar.setPosition(fingerStarClosed);
-            } else if(gamepad1.b){
+            }
+            if(gamepad1.b){
+                robot.fingerPort.setPosition(fingerPortOpen);
+                robot.fingerStar.setPosition(fingerStarOpen);
+            }
+            if(gamepad2.a){
+                robot.fingerPort.setPosition(fingerPortClosed);
+                robot.fingerStar.setPosition(fingerStarClosed);
+            }
+            if(gamepad2.b){
                 robot.fingerPort.setPosition(fingerPortOpen);
                 robot.fingerStar.setPosition(fingerStarOpen);
             }
@@ -149,8 +170,10 @@ public class GaliTele extends LinearOpMode {
 
     public double getHandPower(){
         if(intakeOn){
-            intakePower = .8;
-        } else {
+            intakePower = 1;
+        } else if(intakeSpit){
+            intakePower = -1;
+        }else{
             intakePower = 0;
         }
         return intakePower;

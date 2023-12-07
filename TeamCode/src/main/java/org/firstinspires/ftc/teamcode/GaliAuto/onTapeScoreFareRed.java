@@ -64,7 +64,7 @@ public class onTapeScoreFareRed extends GaliAutobase{
                 .lineToLinearHeading(new Pose2d(-27, 5, Math.toRadians(-92)))
                 .lineToLinearHeading(new Pose2d(-55, 5, Math.toRadians(-89)))
                 .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-40, 86, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-40, 87, Math.toRadians(-89)))
                 .build();
 
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)

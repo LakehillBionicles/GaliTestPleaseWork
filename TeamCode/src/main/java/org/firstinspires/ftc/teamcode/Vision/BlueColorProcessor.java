@@ -39,7 +39,7 @@ public class BlueColorProcessor extends OpenCvPipeline {
     public static double leftBlueRatio = 0;
     public static double centerBlueRatio = 0;
     public static double rightBlueRatio = 0;
-    public static double blueTolerance = 0.5;
+    public static double blueTolerance = 0.55;
     @Override
     public Mat processFrame(Mat input) {
         Point leftLeft = new Point(leftPointx1, leftPointy1);

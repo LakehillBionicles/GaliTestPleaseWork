@@ -37,7 +37,7 @@ public class OnTapeRed extends GaliAutobase{
         robot.fingerStar.setPosition(fingerStarClosed);
 
         cameraStartup("Webcam 1");
-        propDetection("red");
+        propDetection("blue");
 
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-40, 0))
