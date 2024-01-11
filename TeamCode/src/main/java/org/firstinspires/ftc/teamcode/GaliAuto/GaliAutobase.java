@@ -102,6 +102,7 @@ public class GaliAutobase extends LinearOpMode {
 
             }
         });
+        /*
         while (!opModeIsActive()){
             telemetry.addData("isItInOpMode","yes");
             telemetry.update();
@@ -156,6 +157,8 @@ public class GaliAutobase extends LinearOpMode {
 
             sleep(20);
         }
+
+         */
     }
     public void resetCamera(){
         camera.stopStreaming();
