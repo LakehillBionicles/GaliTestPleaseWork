@@ -11,7 +11,7 @@ public class v3Hardware {
 
     intake = null, aimer = null, portArm = null, starArm = null;
 
-    public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoy = null, wrist = null, door = null, trigger = null;
+    public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null;
     public TouchSensor handTS = null;
 
     public static double doorOpen = 0, doorClosed = 0;
@@ -22,7 +22,7 @@ public class v3Hardware {
     public static double shoulderPortDown = 0; public static double shoulderStarDown = 0;
     public static double shoulderPortScore = 0; public static double shoulderStarScore = 0;
 
-    public static double extendyBoyRetract = 0; public static double extendyBoyExtend = 0;
+    public static double extendyBoiRetract = 0; public static double extendyBoiExtend = 0;
 
     public static double wristDown = 0; public static double wristStar = 0; public static double wristPort = 0;
 
@@ -53,7 +53,7 @@ public class v3Hardware {
         wrist = hwMap.get(Servo.class, "wrist");
         shoulderPort = hwMap.get(Servo.class, "shoulderPort");
         shoulderStar = hwMap.get(Servo.class, "shoulderStar");
-        extendyBoy = hwMap.get(Servo.class, "extendyBoy");
+        extendyBoi = hwMap.get(Servo.class, "extendyBoi");
         door = hwMap.get(Servo.class, "door");
         handTS = hwMap.get(TouchSensor.class, "handTS");
         fpd.setDirection(DcMotorSimple.Direction.REVERSE);

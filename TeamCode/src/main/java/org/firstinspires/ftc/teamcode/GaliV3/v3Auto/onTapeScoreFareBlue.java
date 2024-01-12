@@ -1,5 +1,4 @@
-package org.firstinspires.ftc.teamcode.GaliAuto;
-
+package org.firstinspires.ftc.teamcode.GaliV3.v3Auto;
 import static org.firstinspires.ftc.teamcode.GaliHardware.elbowDown;
 import static org.firstinspires.ftc.teamcode.GaliHardware.elbowScore;
 import static org.firstinspires.ftc.teamcode.GaliHardware.elbowTape;
@@ -13,35 +12,27 @@ import static org.firstinspires.ftc.teamcode.GaliHardware.wristTape;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
 
 import java.util.Objects;
-@Disabled
-
-@Autonomous
-public class onTapeScoreFareBlue extends GaliAutobase{
+public class onTapeScoreFareBlue extends v3autoBase{
     Pose2d startPose = new Pose2d(0, 0, 0);
     public static double forWard = 0;
     public static double turn1 = 0;
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap);
+        super.runOpMode();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        robot.fingerPort.setPosition(fingerPortClosed);
-        robot.fingerStar.setPosition(fingerStarClosed);
-
         cameraStartup("Webcam 1");
         propDetection("blue");
-
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(-27, 18, Math.toRadians(0)))
                 .lineToLinearHeading(new Pose2d(-40, 18, Math.toRadians(-182)))
@@ -97,68 +88,42 @@ public class onTapeScoreFareBlue extends GaliAutobase{
         waitForStart();
         if(Objects.equals(pos, "center")) {
             drive.followTrajectorySequence(center1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
-            sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristDown);
-            robot.elbow.setPosition(elbowDown);
             sleep(1000);
-            drive.followTrajectorySequence(center2);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
-            sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.intake.setPower(-0.5);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            robot.fingerStar.setPosition(fingerStarOpen);
-            robot.wrist.setPosition(wristDown);
+            robot.intake.setPower(0);
+            drive.followTrajectorySequence(center2);
+            scoreBack();
+            sleep(1000);
+            robot.door.setPosition(v3Hardware.doorOpen);
+            sleep(2000);
+            resetArm();
             sleep(3000);
         }else if(Objects.equals(pos, "left")){
             drive.followTrajectorySequence(left1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
-            sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristDown);
-            robot.elbow.setPosition(elbowDown);
             sleep(1000);
+            robot.intake.setPower(-0.5);
+            sleep(2000);
+            robot.intake.setPower(0);
             drive.followTrajectorySequence(left2);
             sleep(1500);
-            robot.elbow.setPosition(elbowScore);
-            robot.wrist.setPosition(wristScore);
+            scoreBack();
             sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.door.setPosition(v3Hardware.doorOpen);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            robot.fingerStar.setPosition(fingerStarOpen);
-            robot.wrist.setPosition(wristDown);
-            sleep(3000);
-
+            resetArm();
         }else{
             drive.followTrajectorySequence(right1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
-            sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristDown);
-            robot.elbow.setPosition(elbowDown);
             sleep(1000);
-            drive.followTrajectorySequence(right2);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
-            sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.intake.setPower(-0.5);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            robot.fingerStar.setPosition(fingerStarOpen);
-            robot.wrist.setPosition(wristDown);
+            robot.intake.setPower(0);
+            drive.followTrajectorySequence(right2);
+            scoreBack();
+            sleep(3000);
+            robot.door.setPosition(v3Hardware.doorOpen);
+            sleep(2000);
+            resetArm();
             sleep(4000);
         }
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.GaliAuto;
+package org.firstinspires.ftc.teamcode.GaliV3.v3Auto;
 
 import static org.firstinspires.ftc.teamcode.GaliHardware.elbowDown;
 import static org.firstinspires.ftc.teamcode.GaliHardware.elbowScore;
@@ -17,25 +17,19 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
 
 import java.util.Objects;
-import java.util.Vector;
 
-@Autonomous
-public class OnTapeBlue extends GaliAutobase{
+public class scoreCloseBlue extends v3autoBase{
     Pose2d startPose = new Pose2d(0, 0, 0);
     @Override
     public void runOpMode() {
-        robot.init(hardwareMap);
+        super.runOpMode();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        robot.fingerPort.setPosition(fingerPortClosed);
-        robot.fingerStar.setPosition(fingerStarClosed);
-
         cameraStartup("Webcam 1");
         propDetection("blue");
 
@@ -87,55 +81,43 @@ public class OnTapeBlue extends GaliAutobase{
             telemetry.addData("Pos", propPos);
             telemetry.update();
             drive.followTrajectorySequence(center1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
+            sleep(1000);
+            robot.intake.setPower(-0.5);
             sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
+            robot.intake.setPower(0);
+            scoreBack();
             sleep(1000);
             drive.followTrajectorySequence(center2);
             sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.door.setPosition(v3Hardware.doorOpen);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.wrist.setPosition(wristDown);
-        sleep(3000);
+            resetArm();
         } else if(Objects.equals(propPos, "left")){
             drive.followTrajectorySequence(left1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
+            sleep(1000);
+            robot.intake.setPower(-0.5);
             sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
+            robot.intake.setPower(0);
+            scoreBack();
             sleep(1000);
             drive.followTrajectorySequence(left2);
             sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.door.setPosition(v3Hardware.doorOpen);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.wrist.setPosition(wristDown);
-            sleep(3000);
+            resetArm();
         } else {
             drive.followTrajectorySequence(right1);
-            robot.wrist.setPosition(wristTape);
-            robot.elbow.setPosition(elbowTape);
+            sleep(1000);
+            robot.intake.setPower(-0.5);
             sleep(3000);
-            robot.fingerPort.setPosition(fingerPortOpen);
-            sleep(3000);
-            robot.wrist.setPosition(wristScore);
-            robot.elbow.setPosition(elbowScore);
+            robot.intake.setPower(0);
+            scoreBack();
             sleep(1000);
             drive.followTrajectorySequence(right2);
             sleep(3000);
-            robot.fingerStar.setPosition(fingerStarOpen);
+            robot.door.setPosition(v3Hardware.doorOpen);
             sleep(2000);
-            robot.elbow.setPosition(elbowDown);
-            robot.wrist.setPosition(wristDown);
-            sleep(3000);
+            resetArm();
         }
     }
 }

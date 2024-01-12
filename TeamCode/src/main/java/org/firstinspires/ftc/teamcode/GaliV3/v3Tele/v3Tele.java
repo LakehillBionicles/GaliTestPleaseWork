@@ -8,7 +8,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.doorOpen;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowStar;
-import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoyExtend;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiExtend;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortScore;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarDown;
@@ -29,11 +29,17 @@ public class v3Tele extends teleBase {
     boolean intakeOn = false, intakeSpit = false;
     public static double intakePower = 0.8;
     double doorTimer = 0;
-    double extendyBoyTimer = 0;
+    double extendyBoiTimer = 0;
 
     @Override
-    public void runOpMode() throws InterruptedException {
-        super.runOpMode();
+    public void runOpMode(){
+        robot.init(hardwareMap);
+        robot.door.setPosition(v3Hardware.doorClosed);
+        robot.extendyBoi.setPosition(v3Hardware.extendyBoiRetract);
+        robot.elbow.setPosition(v3Hardware.elbowNorminal);
+        robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
+        robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
+        robot.wrist.setPosition(v3Hardware.wristDown);
         waitForStart();
         while (opModeIsActive()) {
             previousGamepad1.copy(currentGamepad1);
@@ -75,15 +81,15 @@ public class v3Tele extends teleBase {
                 robot.elbow.setPosition(elbowStar);
                 robot.shoulderStar.setPosition(shoulderStarScore);
                 robot.shoulderPort.setPosition(shoulderPortScore);
-                extendyBoyTimer = getRuntime();
+                extendyBoiTimer = getRuntime();
             }
             if(gamepad2.dpad_down){
                 robot.wrist.setPosition(wristDown);
                 robot.elbow.setPosition(elbowNorminal);
                 robot.shoulderStar.setPosition(shoulderStarDown);
                 robot.shoulderPort.setPosition(shoulderPortDown);}
-            if(extendyBoyTimer+0.3<=getRuntime()&&extendyBoyTimer+1>=getRuntime()){
-                robot.extendyBoy.setPosition(extendyBoyExtend);
+            if(extendyBoiTimer +0.3<=getRuntime()&& extendyBoiTimer +1>=getRuntime()){
+                robot.extendyBoi.setPosition(extendyBoiExtend);
             }
             if(robot.handTS.isPressed()){
                 robot.door.setPosition(doorOpen);
