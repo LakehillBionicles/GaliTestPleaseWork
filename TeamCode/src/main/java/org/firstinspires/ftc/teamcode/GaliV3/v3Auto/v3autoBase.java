@@ -1,5 +1,17 @@
 package org.firstinspires.ftc.teamcode.GaliV3.v3Auto;
 
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.doorClosed;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiRetract;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortDown;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortLift;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortScore;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarDown;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarScore;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristDown;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristPort;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -74,22 +86,23 @@ public class v3autoBase extends LinearOpMode {
     }
 
     public void resetArm(){
-        robot.door.setPosition(v3Hardware.doorClosed);
-        robot.extendyBoi.setPosition(v3Hardware.extendyBoiRetract);
-        sleep(2000);
-        robot.elbow.setPosition(v3Hardware.elbowNorminal);
-        robot.wrist.setPosition(v3Hardware.wristDown);
-        sleep(1500);
-        robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
-        robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
+        robot.shoulderStar.setPosition(shoulderStarScore-0.04);
+        robot.shoulderPort.setPosition(shoulderPortScore+0.04);
+        robot.elbow.setPosition(elbowNorminal);
+        sleep(1000);
+        robot.extendyBoi.setPosition(extendyBoiRetract);
+        sleep(1000);
+        robot.wrist.setPosition(wristDown);
+        robot.door.setPosition(doorClosed);
+        robot.shoulderStar.setPosition(shoulderStarDown);
+        robot.shoulderPort.setPosition(shoulderPortDown);
     }
     public void scorePort(){
-        robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
-        robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
-        sleep(1500);
-        robot.elbow.setPosition(v3Hardware.elbowPort);
-        robot.wrist.setPosition(v3Hardware.wristPort);
-        sleep(1000);
+        robot.wrist.setPosition(wristPort);
+        robot.elbow.setPosition(elbowPort);
+        robot.shoulderStar.setPosition(shoulderStarScore);
+        robot.shoulderPort.setPosition(shoulderPortScore);
+        sleep(500);
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);
     }
     public void scoreStar(){

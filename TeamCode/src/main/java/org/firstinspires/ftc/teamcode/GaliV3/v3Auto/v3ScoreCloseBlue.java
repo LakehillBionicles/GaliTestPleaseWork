@@ -1,15 +1,5 @@
 package org.firstinspires.ftc.teamcode.GaliV3.v3Auto;
 
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowDown;
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowScore;
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowTape;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerPortClosed;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerPortOpen;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerStarClosed;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerStarOpen;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristDown;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristScore;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristTape;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
@@ -17,14 +7,15 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
 
 import java.util.Objects;
-
-public class scoreCloseBlue extends v3autoBase{
+@Autonomous
+public class v3ScoreCloseBlue extends v3autoBase{
     Pose2d startPose = new Pose2d(0, 0, 0);
     @Override
     public void runOpMode() {
@@ -34,16 +25,17 @@ public class scoreCloseBlue extends v3autoBase{
         propDetection("blue");
 
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-40, 0))
-                .lineTo(new Vector2d(-29, 0))
+                .lineTo(new Vector2d(-40, -2))
+                .turn(Math.toRadians(110))
                 .build();
 
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
-                .lineTo(new Vector2d(-25, 0))
-                .turn(Math.toRadians(107))
-                .lineToLinearHeading(new Pose2d(-32, -33, Math.toRadians(98)))
+                .turn(Math.toRadians(-20))
+                .lineTo(new Vector2d(-41., -31))
                 .build();
-
+        TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
+                .lineTo((new Vector2d(-10, -30)))
+                .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-29, 0))
                 .turn(Math.toRadians(-105))
@@ -77,21 +69,22 @@ public class scoreCloseBlue extends v3autoBase{
         }
         waitForStart();
 
-        if(Objects.equals(propPos, "center")){
-            telemetry.addData("Pos", propPos);
-            telemetry.update();
-            drive.followTrajectorySequence(center1);
-            sleep(1000);
-            robot.intake.setPower(-0.5);
-            sleep(3000);
-            robot.intake.setPower(0);
-            scoreBack();
-            sleep(1000);
-            drive.followTrajectorySequence(center2);
-            sleep(3000);
-            robot.door.setPosition(v3Hardware.doorOpen);
-            sleep(2000);
-            resetArm();
+        //if(Objects.equals(propPos, "center")){
+        drive.followTrajectorySequence(center1);
+        sleep(1000);
+        robot.intake.setPower(-0.5);
+        sleep(1000);
+        robot.intake.setPower(0);
+        scoreBack();
+        sleep(1000);
+        drive.followTrajectorySequence(center2);
+        sleep(3000);
+        robot.door.setPosition(v3Hardware.doorOpen);
+        sleep(2000);
+        resetArm();
+        sleep(1000);
+        drive.followTrajectorySequence(center3);
+            /*
         } else if(Objects.equals(propPos, "left")){
             drive.followTrajectorySequence(left1);
             sleep(1000);
@@ -119,5 +112,7 @@ public class scoreCloseBlue extends v3autoBase{
             sleep(2000);
             resetArm();
         }
+
+             */
     }
 }

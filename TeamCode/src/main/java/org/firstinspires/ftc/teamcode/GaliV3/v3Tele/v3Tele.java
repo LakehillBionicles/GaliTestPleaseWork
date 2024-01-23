@@ -9,7 +9,9 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowStar;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiExtend;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiRetract;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortDown;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortLift;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortScore;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarScore;
@@ -27,9 +29,10 @@ public class v3Tele extends teleBase {
     Gamepad previousGamepad2 = new Gamepad();
     public double drivePower = 1;
     boolean intakeOn = false, intakeSpit = false;
-    public static double intakePower = 0.8;
-    double doorTimer = 0;
-    double extendyBoiTimer = 0;
+    public static double intakePower = -0.8;
+    double doorTimer = -2;
+    double extendyBoiTimer = -2;
+    String doorPos = "closed";
 
     @Override
     public void runOpMode(){
@@ -69,12 +72,14 @@ public class v3Tele extends teleBase {
             robot.elbow.setPosition(elbowNorminal);
             robot.shoulderStar.setPosition(shoulderStarScore);
             robot.shoulderPort.setPosition(shoulderPortScore);
+            robot.extendyBoi.setPosition(extendyBoiRetract);
             }
             if(gamepad2.dpad_left){
                 robot.wrist.setPosition(wristPort);
                 robot.elbow.setPosition(elbowPort);
                 robot.shoulderStar.setPosition(shoulderStarScore);
                 robot.shoulderPort.setPosition(shoulderPortScore);
+                extendyBoiTimer = getRuntime();
             }
             if(gamepad2.dpad_right){
                 robot.wrist.setPosition(wristStar);
@@ -87,28 +92,44 @@ public class v3Tele extends teleBase {
                 robot.wrist.setPosition(wristDown);
                 robot.elbow.setPosition(elbowNorminal);
                 robot.shoulderStar.setPosition(shoulderStarDown);
-                robot.shoulderPort.setPosition(shoulderPortDown);}
+                robot.shoulderPort.setPosition(shoulderPortDown);
+                robot.extendyBoi.setPosition(extendyBoiRetract);
+            }
             if(extendyBoiTimer +0.3<=getRuntime()&& extendyBoiTimer +1>=getRuntime()){
                 robot.extendyBoi.setPosition(extendyBoiExtend);
             }
-            if(robot.handTS.isPressed()){
+            if(gamepad2.b){
+                robot.door.setPosition(doorClosed);
+                doorPos = "closed";
+            }
+            if(gamepad2.y){
+                robot.shoulderPort.setPosition(shoulderPortLift);
+                robot.shoulderStar.setPosition(v3Hardware.shoulderStarLift);
+                extendyBoiTimer = getRuntime();
+                robot.wrist.setPosition(v3Hardware.wristLift);
+            }
+            if(robot.handTS.isPressed()|| gamepad2.a){
                 robot.door.setPosition(doorOpen);
                 doorTimer = getRuntime();
+                doorPos = "open";
             }
-            if(doorTimer+2>getRuntime()&&robot.shoulderPort.getPosition()!=shoulderPortDown&&robot.shoulderStar.getPosition()!=shoulderStarDown) {
+            else if(doorTimer+2>getRuntime()&&robot.shoulderPort.getPosition()!=shoulderPortDown&&robot.shoulderStar.getPosition()!=shoulderStarDown&&doorPos.equals("open")) {
                 robot.door.setPosition(doorOpen);
             }else{
                 robot.door.setPosition(doorClosed);
+                doorPos = "closed";
             }
             if(gamepad1.dpad_up){
                 robot.aimer.setPower(0.3);}
             if(gamepad1.dpad_down){
                 robot.aimer.setPower(-0.3);}
+            if(gamepad1.dpad_right){
+                robot.aimer.setPower(0);}
             if(gamepad1.right_bumper&& gamepad1.left_bumper){
-                robot.trigger.setPosition(v3Hardware.triggerRelease);
+                robot.trigger.setPosition(1);
             }
             if(gamepad1.left_trigger>0){
-                robot.trigger.setPosition(v3Hardware.triggerHold);
+                robot.trigger.setPosition(0);
             }
         }
     }

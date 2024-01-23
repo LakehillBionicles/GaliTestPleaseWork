@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDri
 //@Disabled
 
 public class TurnTest extends LinearOpMode {
-    public static double ANGLE = 90; // deg
+    public static double ANGLE = 180; // deg
 
     @Override
     public void runOpMode() throws InterruptedException {

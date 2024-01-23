@@ -14,13 +14,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class RedColorProcessor extends OpenCvPipeline {
     public static int rightPointx1 = 0;
-    public static int rightPointy1 = 135;
-    public static int rightPointx2 = 100;
-    public static int rightPointy2 = 190;
+    public static int rightPointy1 = 80;
+    public static int rightPointx2 = 70;
+    public static int rightPointy2 = 130;
     public static int CenterPointx1 = 100;
-    public static int CenterPointy1 = 135;
+    public static int CenterPointy1 = 75;
     public static int CenterPointx2 = 250;
-    public static int CenterPointy2 = 175;
+    public static int CenterPointy2 = 110;
     public static String pos = "notSeen";
     public static Scalar leftTotal = Scalar.all(0);
     public static Scalar centerTotal = Scalar.all(0);
