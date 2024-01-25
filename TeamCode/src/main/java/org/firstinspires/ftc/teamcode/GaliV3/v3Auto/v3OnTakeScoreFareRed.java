@@ -56,19 +56,24 @@ public class v3OnTakeScoreFareRed extends v3autoBase{
                 .lineToLinearHeading(new Pose2d(-59, 90, Math.toRadians(-80)))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(0)))
-                .turn(Math.toRadians(-105))
-                .lineToLinearHeading(new Pose2d(-27, 15, Math.toRadians(-100)))
-                .lineToLinearHeading(new Pose2d(-27, 2, Math.toRadians(-92)))
+                .lineToLinearHeading(new Pose2d(-25, 0, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-26, 0, Math.toRadians(45)))
+                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-28, 20, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-28, 6.5, Math.toRadians(90)))
                 .build();
-
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .lineToLinearHeading(new Pose2d(-27, 0, Math.toRadians(-92)))
-                .lineToLinearHeading(new Pose2d(-55, 0, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-55, 70, Math.toRadians(-89)))
-                .lineToLinearHeading(new Pose2d(-22, 86, Math.toRadians(-89)))
+                .lineToLinearHeading(new Pose2d(-28, 0, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-29, 0, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-50, -4, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-54, -4, Math.toRadians(-93)))
+                .lineToLinearHeading(new Pose2d(-54, 20, Math.toRadians(-93)))
+                .lineToLinearHeading(new Pose2d(-54, 80, Math.toRadians(-93)))
+                .lineToLinearHeading(new Pose2d(-37, 86, Math.toRadians(-93)))
                 .build();
-
+        TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
+                .lineToLinearHeading(new Pose2d(-37, 90, Math.toRadians(-85)))
+                .build();
 
 
         while(!isStarted()) {
@@ -82,68 +87,95 @@ public class v3OnTakeScoreFareRed extends v3autoBase{
         telemetry.addData("rightBlue", rightRedRatio);
         telemetry.update();
         waitForStart();
-       // if(Objects.equals(org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos, "center")) {
-        /*
-        drive.followTrajectorySequence(center1);
-        sleep(1000);
-        robot.intake.setPower(-0.5);
-        sleep(800);
-        robot.intake.setPower(0);
-        drive.followTrajectorySequence(center2);
-        scoreBack();
-        sleep(1000);
-        resetRuntime();
-        while(getRuntime()<0.95){
-            robot.portArm.setPower(1);
-            robot.starArm.setPower(1);
-        }
-        robot.starArm.setPower(0);
-        robot.portArm.setPower(0);
-        sleep(1000);
-        scorePort();
-        sleep(2000);
-        drive.followTrajectorySequence(center3);
-        sleep(1000);
-        robot.door.setPosition(v3Hardware.doorOpen);
-        while(getRuntime()<0.3){
-            robot.portArm.setPower(1);
-            robot.starArm.setPower(1);
-        }
-        sleep(1000);
-        resetArm();
-        sleep(5000);
-
-         */
+       if(Objects.equals(org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos, "center")) {
+           drive.followTrajectorySequence(center1);
+           sleep(1000);
+           robot.intake.setPower(-0.5);
+           sleep(800);
+           robot.intake.setPower(0);
+           drive.followTrajectorySequence(center2);
+           scoreBack();
+           sleep(1000);
+           resetRuntime();
+           while (getRuntime() < 0.95) {
+               robot.portArm.setPower(1);
+               robot.starArm.setPower(1);
+           }
+           robot.starArm.setPower(0);
+           robot.portArm.setPower(0);
+           sleep(1000);
+           scorePort();
+           sleep(2000);
+           drive.followTrajectorySequence(center3);
+           sleep(1000);
+           robot.door.setPosition(v3Hardware.doorOpen);
+           while (getRuntime() < 0.3) {
+               robot.portArm.setPower(1);
+               robot.starArm.setPower(1);
+           }
+           sleep(1000);
+           resetArm();
+           sleep(5000);}
         //V3 left side
-        /*
-        drive.followTrajectorySequence(left1);
-        sleep(1000);
-        robot.intake.setPower(-0.5);
-        sleep(800);
-        robot.intake.setPower(0);
-        drive.followTrajectorySequence(left2);
-        scoreBack();
-        sleep(1000);
-        resetRuntime();
-        while(getRuntime()<0.95){
-            robot.portArm.setPower(1);
-            robot.starArm.setPower(1);
+        if(Objects.equals(org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos, "left")) {
+            drive.followTrajectorySequence(left1);
+            sleep(1000);
+            robot.intake.setPower(-0.5);
+            sleep(600);
+            robot.intake.setPower(0);
+            drive.followTrajectorySequence(left2);
+            scoreBack();
+            sleep(1000);
+            resetRuntime();
+            while (getRuntime() < 0.95) {
+                robot.portArm.setPower(1);
+                robot.starArm.setPower(1);
+            }
+            robot.starArm.setPower(0);
+            robot.portArm.setPower(0);
+            sleep(1000);
+            scorePort();
+            sleep(2000);
+            drive.followTrajectorySequence(left3);
+            sleep(1000);
+            robot.door.setPosition(v3Hardware.doorOpen);
+            while (getRuntime() < 0.3) {
+                robot.portArm.setPower(1);
+                robot.starArm.setPower(1);
+            }
+            sleep(1000);
+            resetArm();
+            sleep(5000);
         }
-        robot.starArm.setPower(0);
-        robot.portArm.setPower(0);
-        sleep(1000);
-        scorePort();
-        sleep(2000);
-        drive.followTrajectorySequence(left3);
-        sleep(1000);
-        robot.door.setPosition(v3Hardware.doorOpen);
-        while(getRuntime()<0.3){
-            robot.portArm.setPower(1);
-            robot.starArm.setPower(1);
-        }
-        sleep(1000);
-        resetArm();
-        sleep(5000);
-         */
+        if(Objects.equals(org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos, "right")) {
+            drive.followTrajectorySequence(right1);
+            sleep(1000);
+            robot.intake.setPower(-0.5);
+            sleep(600);
+            robot.intake.setPower(0);
+            drive.followTrajectorySequence(right2);
+            scoreBack();
+            sleep(1000);
+            resetRuntime();
+            while (getRuntime() < 0.95) {
+                robot.portArm.setPower(1);
+                robot.starArm.setPower(1);
+            }
+            robot.starArm.setPower(0);
+            robot.portArm.setPower(0);
+            sleep(1000);
+            scorePort();
+            sleep(2000);
+            drive.followTrajectorySequence(right3);
+            sleep(1000);
+            robot.door.setPosition(v3Hardware.doorOpen);
+            while (getRuntime() < 0.3) {
+                robot.portArm.setPower(1);
+                robot.starArm.setPower(1);
+            }
+            sleep(1000);
+            resetArm();
+            sleep(5000);
         }
     }
+}

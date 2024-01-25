@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.doorOpen;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowStar;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiExtend;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiRetract;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortDown;
@@ -29,7 +30,6 @@ public class v3Tele extends teleBase {
     Gamepad previousGamepad2 = new Gamepad();
     public double drivePower = 1;
     boolean intakeOn = false, intakeSpit = false;
-    public static double intakePower = -0.8;
     double doorTimer = -2;
     double extendyBoiTimer = -2;
     String doorPos = "closed";
@@ -38,7 +38,7 @@ public class v3Tele extends teleBase {
     public void runOpMode(){
         robot.init(hardwareMap);
         robot.door.setPosition(v3Hardware.doorClosed);
-        robot.extendyBoi.setPosition(v3Hardware.extendyBoiRetract);
+        robot.extendyBoi.setPosition(v3Hardware.extendyBoiDown);
         robot.elbow.setPosition(v3Hardware.elbowNorminal);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
@@ -58,9 +58,9 @@ public class v3Tele extends teleBase {
             robot.fsd.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             robot.bsd.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             if (intakeSpit) {
-                robot.intake.setPower(-intakePower);
+                robot.intake.setPower(-org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.intakeSpeed);
             } else if (intakeOn) {
-                robot.intake.setPower(intakePower);
+                robot.intake.setPower(org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.intakeSpeed);
             }
             else{
                 robot.intake.setPower(0);
@@ -93,7 +93,7 @@ public class v3Tele extends teleBase {
                 robot.elbow.setPosition(elbowNorminal);
                 robot.shoulderStar.setPosition(shoulderStarDown);
                 robot.shoulderPort.setPosition(shoulderPortDown);
-                robot.extendyBoi.setPosition(extendyBoiRetract);
+                robot.extendyBoi.setPosition(extendyBoiDown);
             }
             if(extendyBoiTimer +0.3<=getRuntime()&& extendyBoiTimer +1>=getRuntime()){
                 robot.extendyBoi.setPosition(extendyBoiExtend);

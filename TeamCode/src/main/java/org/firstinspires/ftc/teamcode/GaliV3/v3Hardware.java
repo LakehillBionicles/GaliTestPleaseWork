@@ -23,13 +23,16 @@ public class v3Hardware {
     public static double shoulderPortDown = 0.55; public static double shoulderStarDown = 0.2;
     public static double shoulderPortScore = 0.35; public static double shoulderStarScore = 0.425;
 
-    public static double extendyBoiRetract = 0; public static double extendyBoiExtend = 0.77;
+    public static double extendyBoiRetract = 0.24; public static double extendyBoiDown = 0.28;
+    public static double extendyBoiExtend = 0.77;
 
     public static double wristDown = 0.4928; public static double wristStar = 0.4325; public static double wristPort = 0.55;
     public static double wristLift = 0.3702;
 
     public static double elbowPort = 0.6,elbowStar = 0.4, elbowNorminal = 0.497;
     public static double triggerRelease = 0, triggerHold = 0;
+
+    public static double intakeSpeed = -0.8;
 
 
 

@@ -80,11 +80,11 @@ public class BlueColorProcessor extends OpenCvPipeline {
         }
 
          */
-        if(leftBlueRatio>blueTolerance){
+        if(leftBlueRatio>blueTolerance && leftBlueRatio> centerBlueRatio){
             pos = "left";
             Imgproc.rectangle(input, new Rect(leftLeft, leftRight), new Scalar(0, 0, 255));
         }
-        else if(centerBlueRatio>blueTolerance){
+        else if(centerBlueRatio>blueTolerance && centerBlueRatio> leftBlueRatio){
             pos = "center";
             Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(0, 0, 255));
         }

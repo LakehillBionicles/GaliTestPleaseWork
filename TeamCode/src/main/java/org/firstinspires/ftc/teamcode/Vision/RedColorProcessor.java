@@ -13,39 +13,40 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 
 public class RedColorProcessor extends OpenCvPipeline {
-    public static int rightPointx1 = 0;
-    public static int rightPointy1 = 80;
-    public static int rightPointx2 = 70;
-    public static int rightPointy2 = 130;
+    public static int leftPointx1 = 0;
+    public static int leftPointy1 = 80;
+    public static int leftPointx2 = 70;
+    public static int leftPointy2 = 130;
     public static int CenterPointx1 = 100;
     public static int CenterPointy1 = 75;
     public static int CenterPointx2 = 250;
     public static int CenterPointy2 = 110;
+    public static int rightPointx1 = 100;
+    public static int rightPointy1 = 75;
+    public static int rightPointx2 = 250;
+    public static int rightPointy2 = 110;
     public static String pos = "notSeen";
-    public static Scalar leftTotal = Scalar.all(0);
-    public static Scalar centerTotal = Scalar.all(0);
-    public static Scalar rightTotal = Scalar.all(0);
-    public static double centerRed = 0;
-    public static double rightRed = 0;
+    public static double leftRedRatio = 0;
     public static double centerRedRatio = 0;
     public static double rightRedRatio = 0;
-    public static double redTolerance = 0.5;
+    public static double redTolerance = 0.54;
     @Override
     public Mat processFrame(Mat input) {
         Point rightLeft = new Point(rightPointx1, rightPointy1);
         Point rightRight = new Point(rightPointx2, rightPointy2);
         Point centerLeft = new Point(CenterPointx1, CenterPointy1);
         Point centerRight = new Point(CenterPointx2, CenterPointy2);
+        Point leftLeft = new Point(leftPointx1, leftPointy1);
+        Point leftRight = new Point(leftPointx2, leftPointy2);
         Mat matRight = input.submat(new Rect(rightLeft, rightRight));
         Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
+        Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
         Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
         Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
-        rightTotal = Core.sumElems(matRight);
-        centerTotal = Core.sumElems(matCenter);
-        rightRed = Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height());
-        centerRed = Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height());
+        Imgproc.rectangle(input,new Rect(leftLeft, leftRight), new Scalar(0, 255, 0));
         rightRedRatio = (Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height()))));
         centerRedRatio = (Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height()))));
+        leftRedRatio = (Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height()))));
         /*
         if (leftBlueRatio > centerBlueRatio) {
             if (leftBlueRatio > rightBlueRatio) {
@@ -70,11 +71,11 @@ public class RedColorProcessor extends OpenCvPipeline {
         }
 
          */
-        if(rightRedRatio>redTolerance){
+        if(leftRedRatio>redTolerance&& leftRedRatio>centerRedRatio){
             pos = "left";
             Imgproc.rectangle(input, new Rect(rightLeft, rightRight), new Scalar(255, 0, 0));
         }
-        else if(centerRedRatio>redTolerance){
+        else if(centerRedRatio>redTolerance&&centerRedRatio>leftRedRatio){
             pos = "center";
             Imgproc.rectangle(input, new Rect(centerLeft, centerRight), new Scalar(255, 0, 0));
         }
@@ -85,6 +86,7 @@ public class RedColorProcessor extends OpenCvPipeline {
         }
         matRight.release();
         matCenter.release();
+        matLeft.release();
         return input;
     }
 }

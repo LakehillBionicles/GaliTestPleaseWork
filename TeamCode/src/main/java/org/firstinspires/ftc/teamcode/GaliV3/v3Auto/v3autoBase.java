@@ -11,6 +11,14 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarScore;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristPort;
+import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.blueTolerance;
+import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
+import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
+import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
+import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRedRatio;
+import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
+import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.redTolerance;
+import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,6 +29,9 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor;
 import org.firstinspires.ftc.teamcode.Vision.RedColorProcessor;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -84,25 +95,84 @@ public class v3autoBase extends LinearOpMode {
             propPos = org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
         }
     }
+    public String propPos(String color, String placement){
+
+        if(color.equals("blue")){
+            if(placement.equals("close")){
+                if(leftBlueRatio>blueTolerance && leftBlueRatio> centerBlueRatio){
+                    propPos = "left";
+                }
+                else if(centerBlueRatio>blueTolerance && centerBlueRatio> leftBlueRatio){
+                    propPos = "center";
+                }
+                else{
+                    propPos = "right";
+                }
+            }
+            else{
+                if(rightBlueRatio>blueTolerance && rightBlueRatio> centerBlueRatio){
+                    propPos = "right";
+                }
+                else if(centerBlueRatio>blueTolerance && centerBlueRatio> rightBlueRatio){
+                    propPos = "center";
+                }
+                else{
+                    propPos = "right";
+                }
+            }
+        }
+        else{
+            if(placement.equals("close")){
+                if(rightRedRatio>redTolerance && leftBlueRatio> centerBlueRatio){
+                    propPos = "right";
+                }
+                else if(centerRedRatio>redTolerance && centerBlueRatio> rightRedRatio){
+                    propPos = "center";
+                }
+                else{
+                    propPos = "left";
+                }
+            }
+            else{
+                if(leftRedRatio>redTolerance&& leftRedRatio>centerRedRatio){
+                    propPos = "left";
+                }
+                else if(centerRedRatio>redTolerance&&centerRedRatio>leftRedRatio){
+                    propPos = "center";
+                }
+                else{
+                    propPos = "right";
+                }
+            }
+        }
+       return propPos;
+    }
 
     public void resetArm(){
         robot.shoulderStar.setPosition(shoulderStarScore-0.04);
         robot.shoulderPort.setPosition(shoulderPortScore+0.04);
         robot.elbow.setPosition(elbowNorminal);
-        sleep(1000);
+        sleep(500);
         robot.extendyBoi.setPosition(extendyBoiRetract);
-        sleep(1000);
+        sleep(500);
         robot.wrist.setPosition(wristDown);
         robot.door.setPosition(doorClosed);
+        robot.portArm.setPower(-0.5);
+        robot.starArm.setPower(-0.5);
+        sleep(800);
         robot.shoulderStar.setPosition(shoulderStarDown);
         robot.shoulderPort.setPosition(shoulderPortDown);
+        sleep(1000);
+        robot.portArm.setPower(0);
+        robot.starArm.setPower(0);
+
     }
     public void scorePort(){
         robot.wrist.setPosition(wristPort);
         robot.elbow.setPosition(elbowPort);
         robot.shoulderStar.setPosition(shoulderStarScore);
         robot.shoulderPort.setPosition(shoulderPortScore);
-        sleep(500);
+        sleep(100);
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);
     }
     public void scoreStar(){
@@ -117,7 +187,6 @@ public class v3autoBase extends LinearOpMode {
     public void scoreBack(){
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
-        sleep(1500);
         robot.elbow.setPosition(v3Hardware.elbowNorminal);
         robot.wrist.setPosition(v3Hardware.wristDown);
     }
