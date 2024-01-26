@@ -87,12 +87,10 @@ public class v3autoBase extends LinearOpMode {
         if(Objects.equals(color, "blue")) {
             BlueColorProcessor = new BlueColorProcessor();
             camera.setPipeline(BlueColorProcessor);
-            propPos = org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
         }
         if(Objects.equals(color, "red")){
             RedColorProcessor = new RedColorProcessor();
             camera.setPipeline(RedColorProcessor);
-            propPos = org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
         }
     }
     public String propPos(String color, String placement){
@@ -117,16 +115,16 @@ public class v3autoBase extends LinearOpMode {
                     propPos = "center";
                 }
                 else{
-                    propPos = "right";
+                    propPos = "left";
                 }
             }
         }
         else{
             if(placement.equals("close")){
-                if(rightRedRatio>redTolerance && leftBlueRatio> centerBlueRatio){
+                if(rightRedRatio>redTolerance && leftRedRatio> centerRedRatio){
                     propPos = "right";
                 }
-                else if(centerRedRatio>redTolerance && centerBlueRatio> rightRedRatio){
+                else if(centerRedRatio>redTolerance && centerRedRatio> rightRedRatio){
                     propPos = "center";
                 }
                 else{
@@ -176,12 +174,11 @@ public class v3autoBase extends LinearOpMode {
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);
     }
     public void scoreStar(){
+        robot.wrist.setPosition(v3Hardware.wristStar);
+        robot.elbow.setPosition(v3Hardware.elbowStar);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
-        sleep(1500);
-        robot.elbow.setPosition(v3Hardware.elbowStar);
-        robot.wrist.setPosition(v3Hardware.wristStar);
-        sleep(1000);
+        sleep(100);
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);
     }
     public void scoreBack(){

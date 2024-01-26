@@ -175,7 +175,4 @@ public class v3OnTakeScoreFareRed extends v3autoBase{
             }
             sleep(1000);
             resetArm();
-            sleep(5000);
-        }
-    }
-}
+            sleep(5000);}}}

@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlu
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
+import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRedRatio;
 
@@ -27,6 +28,7 @@ public class v3ScoreCloseRed extends v3autoBase{
     Pose2d startPose = new Pose2d(0, 0, 0);
     double armTime = 0;
     double armTime2 = 0;
+    String pos = "notSeen";
     @Override
     public void runOpMode() {
         super.runOpMode();
@@ -37,20 +39,17 @@ public class v3ScoreCloseRed extends v3autoBase{
 
         robot.door.setPosition(v3Hardware.doorClosed);
 
-        cameraStartup("Webcam 1");
-        propDetection("red");
-
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-37, 12), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(-38, 12, Math.toRadians(-85)))
+                .splineToLinearHeading(new Pose2d(-38, 10), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-39, 10, Math.toRadians(-85)))
                 .build();
 
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
                 //.lineToLinearHeading(new Pose2d(-38.5, -18, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(-8, 36, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-10, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
-                .lineToLinearHeading(new Pose2d(-8, 37, Math.toRadians(-95)))
+                .lineToLinearHeading(new Pose2d(-10, 37, Math.toRadians(-95)))
                 .build();
         TrajectorySequence center4 = drive.trajectorySequenceBuilder(center3.end())
                 .lineToLinearHeading(new Pose2d(0, 36, Math.toRadians(-90)))
@@ -72,26 +71,27 @@ public class v3ScoreCloseRed extends v3autoBase{
                 .build();
 
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-15, -9), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(-16, -9, Math.toRadians(-165)))
+                .splineToLinearHeading(new Pose2d(-15, 9), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-16, 9, Math.toRadians(-165)))
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .lineToLinearHeading(new Pose2d(-13, -9, Math.toRadians(-165)))
-                .lineToLinearHeading(new Pose2d(-5, -36, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-13, 9, Math.toRadians(-165)))
+                .lineToLinearHeading(new Pose2d(-5, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())
-                .lineToLinearHeading(new Pose2d(-5, -37, Math.toRadians(-95)))
+                .lineToLinearHeading(new Pose2d(-5, 37, Math.toRadians(-95)))
                 .build();
         TrajectorySequence left4 = drive.trajectorySequenceBuilder(left3.end())
-                .lineToLinearHeading(new Pose2d(0, -36, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(0, 36, Math.toRadians(-90)))
                 .build();
 
         while(!opModeIsActive()) {
-            telemetry.addData("position", org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos);
-            telemetry.addData("centerBlue", centerRedRatio);
-            telemetry.addData("rightBlue", rightRedRatio);
-            propPos = org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.pos;
+            telemetry.addData("position", pos);
+            telemetry.addData("leftRed", leftRedRatio);
+            telemetry.addData("centerRed", centerRedRatio);
+            telemetry.addData("rightRed", rightRedRatio);
+            pos = propPos("red", "close");
             telemetry.update();
         }
         waitForStart();
@@ -103,7 +103,7 @@ public class v3ScoreCloseRed extends v3autoBase{
             sleep(600);
             robot.intake.setPower(0);
             sleep(150);
-            scorePort();
+            scoreStar();
             robot.portArm.setPower(0.15);
             robot.starArm.setPower(0.05);
             drive.followTrajectorySequence(center2);
@@ -123,7 +123,7 @@ public class v3ScoreCloseRed extends v3autoBase{
             robot.elbow.setPosition(elbowNorminal);
             drive.followTrajectorySequence(center4);
         }
-        else if(propPos.equals("left")){
+        else if(propPos.equals("right")){
             drive.followTrajectorySequence(left1);
             robot.intake.setPower(-0.5);
             sleep(200);
@@ -131,7 +131,7 @@ public class v3ScoreCloseRed extends v3autoBase{
             sleep(600);
             robot.intake.setPower(0);
             sleep(150);
-            scorePort();
+            scoreStar();
             robot.portArm.setPower(0.15);
             robot.starArm.setPower(0.07);
             drive.followTrajectorySequence(left2);
@@ -163,7 +163,7 @@ public class v3ScoreCloseRed extends v3autoBase{
             sleep(600);
             robot.intake.setPower(0);
             sleep(150);
-            scorePort();
+            scoreStar();
             robot.portArm.setPower(0.15);
             robot.starArm.setPower(0.07);
             drive.followTrajectorySequence(right2);
