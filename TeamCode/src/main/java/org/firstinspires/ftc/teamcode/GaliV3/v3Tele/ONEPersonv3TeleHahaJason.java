@@ -24,7 +24,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristStar;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 @TeleOp
 
-public class v3Tele extends teleBase {
+public class ONEPersonv3TeleHahaJason extends teleBase {
     Gamepad currentGamepad1 = new Gamepad();
     Gamepad currentGamepad2 = new Gamepad();
     Gamepad previousGamepad1 = new Gamepad();
@@ -77,18 +77,18 @@ public class v3Tele extends teleBase {
             else{
                 robot.intake.setPower(0);
             }
-            if(gamepad2.dpad_up){
-            robot.wrist.setPosition(wristDown);
-            robot.elbow.setPosition(elbowNorminal);
-            robot.shoulderStar.setPosition(shoulderStarScore);
-            robot.shoulderPort.setPosition(shoulderPortScore);
-            robot.extendyBoi.setPosition(extendyBoiRetract);
+            if(gamepad1.dpad_up){
+                robot.wrist.setPosition(wristDown);
+                robot.elbow.setPosition(elbowNorminal);
+                robot.shoulderStar.setPosition(shoulderStarScore);
+                robot.shoulderPort.setPosition(shoulderPortScore);
+                robot.extendyBoi.setPosition(extendyBoiRetract);
                 wristTimerDown = -3;
                 shoulderTimerDown = -3;
                 armDownTimer = -3;
-            armPos = "up";
+                armPos = "up";
             }
-            if(gamepad2.dpad_left){
+            if(gamepad1.dpad_left){
                 if(robot.shoulderStar.getPosition()==shoulderStarDown||armPos.equals("down")){
                     robot.shoulderStar.setPosition(shoulderStarScore);
                     robot.shoulderPort.setPosition(shoulderPortScore);
@@ -109,7 +109,7 @@ public class v3Tele extends teleBase {
                 }
                 armPos = "left";
             }
-            if(gamepad2.dpad_right){
+            if(gamepad1.dpad_right){
                 if(robot.shoulderStar.getPosition()==shoulderStarDown||armPos.equals("down")){
                     robot.shoulderStar.setPosition(shoulderStarScore);
                     robot.shoulderPort.setPosition(shoulderPortScore);
@@ -130,8 +130,8 @@ public class v3Tele extends teleBase {
                 armPos = "right";
             }
             if((elbowStarTimer+0.5<getRuntime()&&elbowStarTimer+0.7>getRuntime())||(elbowStarTimer+0.5<getRuntime()&&elbowStarTimer+0.7>getRuntime())){
-            robot.portArm.setPower(0.5);
-            robot.starArm.setPower(0.4);
+                robot.portArm.setPower(0.5);
+                robot.starArm.setPower(0.4);
             }
             if(elbowStarTimer + 1.4<getRuntime()&& elbowStarTimer +1.6>getRuntime()){
                 robot.wrist.setPosition(wristStar);
@@ -148,7 +148,7 @@ public class v3Tele extends teleBase {
                 extendyBoiTimerExtend = getRuntime();
             }
             telemetry.addData("elbowPos", robot.elbow.getPosition());
-            if(gamepad2.dpad_down){
+            if(gamepad1.dpad_down){
                 if(armPos.equals("right")||armPos.equals("left")||robot.elbow.getPosition() == elbowStar|| robot.elbow.getPosition() == elbowPort||robot.wrist.getPosition()== wristPort||robot.wrist.getPosition()== wristStar){
                     robot.shoulderStar.setPosition(shoulderStarScore - 0.04);
                     robot.shoulderPort.setPosition(shoulderPortScore + 0.04);
@@ -180,14 +180,22 @@ public class v3Tele extends teleBase {
             telemetry.addData("armdownTimer", armDownTimer);
             telemetry.addData("runtime",getRuntime());
             telemetry.update();
-            if(armDownTimer+1.5< getRuntime()){
-                robot.portArm.setPower(-gamepad2.left_stick_y);
+            if(armDownTimer+1.5< getRuntime()&&armUpTimer+0.9>getRuntime()){
+                if(gamepad1.left_trigger>0){
+                    robot.portArm.setPower(-gamepad1.left_trigger);
+                    robot.starArm.setPower(-gamepad2.left_trigger*2/4);
+                }
+                if(gamepad1.right_trigger>0){
+                    robot.portArm.setPower(gamepad1.right_trigger);
+                    robot.starArm.setPower(gamepad2.right_trigger*2/4);
+                }
+                robot.portArm.setPower(-gamepad1.left_stick_y);
                 robot.starArm.setPower(-gamepad2.left_stick_y*2/4);
             }
             if(extendyBoiTimerExtend +0.3<=getRuntime()&& extendyBoiTimerExtend +0.5>=getRuntime()){
                 robot.extendyBoi.setPosition(extendyBoiExtend);
             }
-            if(gamepad2.y){
+            if(gamepad1.y){
                 robot.elbow.setPosition(elbowNorminal);
                 robot.extendyBoi.setPosition(extendyBoiRetract);
                 robot.shoulderPort.setPosition(shoulderPortLift);
@@ -200,7 +208,7 @@ public class v3Tele extends teleBase {
                 armDownTimer = -3;}
             if(wristLiftTimer + 1< getRuntime()&& wristLiftTimer+1.3>getRuntime()){
                 robot.wrist.setPosition(wristLift);}
-            if(robot.handTS.isPressed()|| gamepad2.a) {
+            if(robot.handTS.isPressed()|| gamepad1.a) {
                 robot.door.setPosition(doorOpen);
                 doorTimer = getRuntime();
                 doorPos = "open";
@@ -220,15 +228,15 @@ public class v3Tele extends teleBase {
                 armDownTimer = getRuntime();
                 armPos = "down";
             }
-            if(gamepad1.dpad_up){
+            if(gamepad1.left_bumper){
                 robot.aimer.setPower(1);}
-            if(gamepad1.dpad_down){
+            else if(gamepad1.right_bumper){
                 robot.aimer.setPower(-1);}
-            if(gamepad1.dpad_right){
+            else{
                 robot.aimer.setPower(0);}
-            if(gamepad1.right_bumper&& gamepad1.left_bumper){
+            if(gamepad1.x){
                 robot.trigger.setPosition(1);}
-            if(gamepad1.left_trigger>0){
+            if(gamepad1.b){
                 robot.trigger.setPosition(0);}
         }
     }

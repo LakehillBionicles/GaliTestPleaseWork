@@ -19,13 +19,14 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 
 public class BlueColorProcessor extends OpenCvPipeline {
+
     public static int leftPointx1 = 0;
-    public static int leftPointy1 = 105;
+    public static int leftPointy1 = 50;
     public static int leftPointx2 = 100;
-    public static int leftPointy2 = 160;
-    public static int CenterPointx1 = 50;
+    public static int leftPointy2 = 120;
+    public static int CenterPointx1 = 150;
     public static int CenterPointy1 = 65;
-    public static int CenterPointx2 = 220;
+    public static int CenterPointx2 = 230;
     public static int CenterPointy2 = 105;
     public static int rightPointx1 = 250;
     public static int rightPointy1 = 55;

@@ -46,37 +46,37 @@ public class v3ScoreCloseRed extends v3autoBase{
 
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
                 //.lineToLinearHeading(new Pose2d(-38.5, -18, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(-10, 36, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-7, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
-                .lineToLinearHeading(new Pose2d(-10, 37, Math.toRadians(-95)))
+                .lineToLinearHeading(new Pose2d(-7, 37, Math.toRadians(-95)))
                 .build();
         TrajectorySequence center4 = drive.trajectorySequenceBuilder(center3.end())
                 .lineToLinearHeading(new Pose2d(0, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(-27, 4, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(-27, -10, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(-27, -6, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-29, 4, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-29, -10, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-29, -5, Math.toRadians(-90)))
                 .build();
 
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .lineToLinearHeading(new Pose2d(-20, 36, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-19, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
-                .lineToLinearHeading(new Pose2d(-20, 37, Math.toRadians(-95)))
+                .lineToLinearHeading(new Pose2d(-19, 37, Math.toRadians(-95)))
                 .build();
         TrajectorySequence right4 = drive.trajectorySequenceBuilder(right3.end())
                 .lineToLinearHeading(new Pose2d(0, 36, Math.toRadians(-90)))
                 .build();
 
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-15, 9), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(-16, 9, Math.toRadians(-165)))
+                .splineToLinearHeading(new Pose2d(-19, 9), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-20, 8, Math.toRadians(-165)))
                 .build();
 
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .lineToLinearHeading(new Pose2d(-13, 9, Math.toRadians(-165)))
+                .lineToLinearHeading(new Pose2d(-13, 8, Math.toRadians(-165)))
                 .lineToLinearHeading(new Pose2d(-5, 36, Math.toRadians(-90)))
                 .build();
         TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())

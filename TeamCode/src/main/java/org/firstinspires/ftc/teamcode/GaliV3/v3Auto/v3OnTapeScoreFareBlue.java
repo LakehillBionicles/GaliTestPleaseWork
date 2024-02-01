@@ -53,20 +53,20 @@ public class v3OnTapeScoreFareBlue extends v3autoBase{
                 .lineToLinearHeading(new Pose2d(-43, -91, Math.toRadians(90)),getVelocityConstraint(MAX_VEL/4, MAX_ANG_VEL/4, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
                 .build();
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(-15, 9), Math.toRadians(0),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/3, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
-                .lineToLinearHeading(new Pose2d(-16, 9, Math.toRadians(-175)),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/3, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
+                .splineToLinearHeading(new Pose2d(-15, 8), Math.toRadians(0),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/3, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
+                .lineToLinearHeading(new Pose2d(-16, 8, Math.toRadians(-185)),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/3, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
                 .build();
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .lineToLinearHeading(new Pose2d(-10, 9, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-10, -2, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-50, -2, Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-50, 5, Math.toRadians(110)))
-                .lineToLinearHeading(new Pose2d(-53, 5, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(-53, -50, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(-53, -86, Math.toRadians(85)))
+                .lineToLinearHeading(new Pose2d(-10, 8, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-10, -4, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-52, -4, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-52, 5, Math.toRadians(110)))
+                .lineToLinearHeading(new Pose2d(-54, 5, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-54, -50, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-54, -83, Math.toRadians(85)))
                 .build();
         TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())
-                .lineToLinearHeading(new Pose2d(-50, -90, Math.toRadians(80)))
+                .lineToLinearHeading(new Pose2d(-54, -90, Math.toRadians(80)))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(-27, 4, Math.toRadians(-90)),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/4, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
@@ -81,10 +81,10 @@ public class v3OnTapeScoreFareBlue extends v3autoBase{
                 .lineToLinearHeading(new Pose2d(-52, 1, Math.toRadians(93)))
                 .lineToLinearHeading(new Pose2d(-52, -20, Math.toRadians(93)))
                 .lineToLinearHeading(new Pose2d(-51, -80, Math.toRadians(93)))
-                .lineToLinearHeading(new Pose2d(-29, -86, Math.toRadians(93)))
+                .lineToLinearHeading(new Pose2d(-32, -87, Math.toRadians(93)))
                 .build();
         TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
-                .lineToLinearHeading(new Pose2d(-29, -90, Math.toRadians(95)),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/4, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
+                .lineToLinearHeading(new Pose2d(-32, -90, Math.toRadians(95)),getVelocityConstraint(MAX_VEL/3, MAX_ANG_VEL/4, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/2))
                 .build();
         while (!isStarted()) {
             telemetry.addData("position", propPos("blue", "far"));

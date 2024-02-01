@@ -9,17 +9,20 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase.robotPosition;
+
+import java.util.Objects;
 
 @Config
 
 public class RedColorProcessor extends OpenCvPipeline {
-    public static int leftPointx1 = 0;
-    public static int leftPointy1 = 80;
-    public static int leftPointx2 = 70;
-    public static int leftPointy2 = 130;
-    public static int CenterPointx1 = 50;
+    public static int leftPointx1 = 20;
+    public static int leftPointy1 = 50;
+    public static int leftPointx2 = 100;
+    public static int  leftPointy2 = 110;
+    public static int CenterPointx1 = 90;
     public static int CenterPointy1 = 60;
-    public static int CenterPointx2 = 200;
+    public static int CenterPointx2 = 150;
     public static int CenterPointy2 = 100;
     public static int rightPointx1 = 250;
     public static int rightPointy1 = 55;
@@ -29,9 +32,15 @@ public class RedColorProcessor extends OpenCvPipeline {
     public static double leftRedRatio = 0;
     public static double centerRedRatio = 0;
     public static double rightRedRatio = 0;
-    public static double redTolerance = 0.54;
+    public static double redTolerance = 0.51;
     @Override
     public Mat processFrame(Mat input) {
+        if(Objects.equals(robotPosition, "far")){
+            CenterPointx1 = 150;
+            CenterPointy1 = 40;
+            CenterPointx2 = 220;
+            CenterPointy2 = 100;
+        }
         Point rightLeft = new Point(rightPointx1, rightPointy1);
         Point rightRight = new Point(rightPointx2, rightPointy2);
         Point centerLeft = new Point(CenterPointx1, CenterPointy1);
