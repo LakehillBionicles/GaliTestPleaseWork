@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.GaliV3;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -11,32 +12,36 @@ public class v3Hardware {
     public DcMotor fpd = null, bpd = null, fsd = null, bsd = null,
 
     intake = null, aimer = null, portArm = null, starArm = null;
+    public DistanceSensor distanceTop = null;
 
-    public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null;
+    public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
+    flipper = null;
     public TouchSensor handTS = null;
 
-    public static double doorOpen = 0.5, doorClosed = 0.46;
+    public static double doorOpen = 0.48, doorClosed = 0.425;
     public static double shoulderPortIntake = 0; public static double shoulderStarIntake = 0;
 
-    public static double shoulderPortLift = 0.4-0.04-(0.26-0.218); public static double shoulderStarLift = 0.35-(0.425-0.33);
+    public static double shoulderPortLift =0.45; public static double shoulderStarLift = 0.1;
 
-    public static double shoulderPortDown = 0.45800000000000004; public static double shoulderStarDown = 0.05500000000000004;
-    public static double shoulderPortScore = 0.25; public static double shoulderStarScore = 0.31;
+    public static double shoulderPortDown = 1; public static double shoulderStarDown = 0;
+    public static double shoulderPortScore = 0; public static double shoulderStarScore = 0.5;
 
     //0.425
     //0.33
     //0.218
-    public static double extendyBoiRetract = 0.23; public static double extendyBoiDown = 0.26;
-    public static double extendyBoiExtend = 0.335;
+    public static double extendyBoiRetract = 0; public static double extendyBoiDown = 0;
+    public static double extendyBoiExtend = 1;
 
-    public static double wristDown = 0.4928; public static double wristStar = 0.4325; public static double wristPort = 0.55;
+    public static double wristDown = 0.4975; public static double wristStar = 0.4325; public static double wristPort = 0.559;
     public static double wristLift = 0.3702;
 
-    public static double elbowPort = 0.6,elbowStar = 0.4, elbowNorminal = 0.497;
-    public static double triggerRelease = 0, triggerHold = 0;
+    public static double elbowPort = 0.58,elbowStar = 0.355, elbowNorminal = 0.47;
+    public static double triggerRelease = 0, triggerHold = 1;
 
-    public static double intakeSpeed = -1;
-
+    public static double intakeSpeed = -1;  
+    public static double flipDown = 0.2;
+    public static double flipUp = 0.69;
+    public static double aimerUp = 1;
 
 
     HardwareMap hwMap = null;
@@ -63,6 +68,8 @@ public class v3Hardware {
         extendyBoi = hwMap.get(Servo.class, "extendyBoi");
         door = hwMap.get(Servo.class, "door");
         handTS = hwMap.get(TouchSensor.class, "handTS");
+        distanceTop = hwMap.get(DistanceSensor.class, "distanceTop");
+        flipper = hwMap.get(Servo.class, "flipper");
         fpd.setDirection(DcMotorSimple.Direction.REVERSE);
         bpd.setDirection(DcMotorSimple.Direction.FORWARD);
         fsd.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -79,12 +86,11 @@ public class v3Hardware {
         fsd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         bsd.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        portArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        starArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        portArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         aimer.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        starArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         fpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bpd.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

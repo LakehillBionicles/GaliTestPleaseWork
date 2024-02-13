@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.GaliV3.v3Tele;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
@@ -39,6 +40,7 @@ public class findShoulderPosition extends LinearOpMode {
     double extendyBoiTimerExtend = -2;
     double extendyBoiTimeRetract = -2;
     double wristTimerDown = -2;
+
     double shoulderTimerDown = -2;
 
     double armDownTimer = -2;
@@ -52,16 +54,16 @@ public class findShoulderPosition extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-        robot.door.setPosition(v3Hardware.doorClosed);
-        robot.extendyBoi.setPosition(v3Hardware.extendyBoiDown);
-        robot.elbow.setPosition(v3Hardware.elbowNorminal);
+        //robot.door.setPosition(v3Hardware.doorClosed);
+        //robot.extendyBoi.setPosition(v3Hardware.extendyBoiDown);
+        //robot.elbow.setPosition(v3Hardware.elbowNorminal);
         //robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
-        robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
-        robot.wrist.setPosition(v3Hardware.wristDown);
+        //robot.shoulderStar.setPosition(shoulderPos);
+        //robot.wrist.setPosition(v3Hardware.wristDown);
         waitForStart();
         while (opModeIsActive()) {
-            robot.shoulderPort.setPosition(shoulderPos);
-
+            //robot.shoulderStar.setPosition(shoulderPos);
+            robot.aimer.setPower(1);
 
 
 

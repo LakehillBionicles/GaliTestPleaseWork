@@ -45,6 +45,7 @@ public class v3Tele extends teleBase {
     double elbowPortTimer = -3;
     double wristLiftTimer =-3;
     String armPos = "down";
+    double aimerTimer = -3;
 
     @Override
     public void runOpMode(){
@@ -55,6 +56,7 @@ public class v3Tele extends teleBase {
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
         robot.wrist.setPosition(v3Hardware.wristDown);
+        robot.flipper.setPosition(v3Hardware.flipDown);
         waitForStart();
         while (opModeIsActive()) {
             previousGamepad1.copy(currentGamepad1);
@@ -182,7 +184,7 @@ public class v3Tele extends teleBase {
             telemetry.update();
             if(armDownTimer+1.5< getRuntime()){
                 robot.portArm.setPower(-gamepad2.left_stick_y);
-                robot.starArm.setPower(-gamepad2.left_stick_y*2/4);
+                robot.starArm.setPower(-gamepad2.left_stick_y);
             }
             if(extendyBoiTimerExtend +0.3<=getRuntime()&& extendyBoiTimerExtend +0.5>=getRuntime()){
                 robot.extendyBoi.setPosition(extendyBoiExtend);
@@ -226,10 +228,14 @@ public class v3Tele extends teleBase {
                 robot.aimer.setPower(-1);}
             if(gamepad1.dpad_right){
                 robot.aimer.setPower(0);}
-            if(gamepad1.right_bumper&& gamepad1.left_bumper){
-                robot.trigger.setPosition(1);}
+            if(gamepad1.right_bumper&& gamepad1.left_bumper) {
+                robot.trigger.setPosition(v3Hardware.triggerRelease);
+            }
             if(gamepad1.left_trigger>0){
-                robot.trigger.setPosition(0);}
-        }
+                robot.trigger.setPosition(v3Hardware.triggerHold);}
+            if(gamepad1.y){
+                robot.flipper.setPosition(v3Hardware.flipDown);}
+            if(gamepad1.b){
+                robot.flipper.setPosition(v3Hardware.flipUp);}}
     }
 }

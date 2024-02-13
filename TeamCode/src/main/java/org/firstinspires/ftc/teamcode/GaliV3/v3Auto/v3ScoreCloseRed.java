@@ -97,7 +97,13 @@ public class v3ScoreCloseRed extends v3autoBase{
         waitForStart();
         if(propPos.equals("center")) {
             drive.followTrajectorySequence(center1);
-            robot.intake.setPower(-0.5);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipDown);
+            sleep(700);
+            robot.intake.setPower(-0.2);
+            sleep(400);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipUp);
             sleep(200);
             scoreBack();
             sleep(600);
@@ -125,13 +131,16 @@ public class v3ScoreCloseRed extends v3autoBase{
         }
         else if(propPos.equals("right")){
             drive.followTrajectorySequence(left1);
-            robot.intake.setPower(-0.5);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipDown);
+            sleep(700);
+            robot.intake.setPower(-0.2);
+            sleep(400);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipUp);
             sleep(200);
             scoreBack();
             sleep(600);
-            robot.intake.setPower(0);
-            sleep(150);
-            scoreStar();
             robot.portArm.setPower(0.15);
             robot.starArm.setPower(0.07);
             drive.followTrajectorySequence(left2);
@@ -157,13 +166,19 @@ public class v3ScoreCloseRed extends v3autoBase{
         }
         else{
             drive.followTrajectorySequence(right1);
-            robot.intake.setPower(-0.5);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipDown);
+            sleep(700);
+            robot.intake.setPower(-0.2);
+            sleep(400);
+            robot.intake.setPower(0);
+            robot.flipper.setPosition(v3Hardware.flipUp);
+            sleep(200);
             sleep(200);
             scoreBack();
             sleep(600);
             robot.intake.setPower(0);
             sleep(150);
-            scoreStar();
             robot.portArm.setPower(0.15);
             robot.starArm.setPower(0.07);
             drive.followTrajectorySequence(right2);

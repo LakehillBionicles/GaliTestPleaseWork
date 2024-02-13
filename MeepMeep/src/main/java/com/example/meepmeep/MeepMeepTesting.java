@@ -15,11 +15,23 @@ public class MeepMeepTesting {
                 .setConstraints(42.5, 62.890756998077265, 3.358942, Math.toRadians(180), 13.4)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                //blue far middle
+                                .back(5)
+                                .turn(Math.toRadians(180))
+                                .splineToLinearHeading((startPose).plus(new Pose2d(-8.3, -17, Math.toRadians(180))),Math.toRadians(-90))
+                                .waitSeconds(1)
+                                .back(5)
+                                .turn(Math.toRadians(-90))
+                                .splineToLinearHeading((startPose).plus(new Pose2d(3, -2, Math.toRadians(90))),Math.toRadians(0))
+                                .splineToLinearHeading((startPose).plus(new Pose2d(70, -2, Math.toRadians(90))),Math.toRadians(0))
+                                .splineToLinearHeading((startPose).plus(new Pose2d(80, -30, Math.toRadians(90))),Math.toRadians(-90))
+                                .splineToLinearHeading((startPose).plus(new Pose2d(90, -32, Math.toRadians(90))),Math.toRadians(0))
+
+                           //blue far middle
+                                /*
                                 .back(5)
                                 .turn(Math.toRadians(-90))
                                 .splineToLinearHeading((startPose).minus(new Pose2d(10, 37, Math.toRadians(90))),Math.toRadians(0))
-                                .splineToLinearHeading((startPose).minus(new Pose2d(-4, 37, Math.toRadians(90))),Math.toRadians(0))
+                                .splineToLinearHeading((startPse).minus(new Pose2d(-4, 37, Math.toRadians(90))),Math.toRadians(0))
                                 .splineToLinearHeading((startPose).minus(new Pose2d(3, 37, Math.toRadians(90))),Math.toRadians(180))
                                 .waitSeconds(1)
                                 .back(10)
@@ -36,6 +48,9 @@ public class MeepMeepTesting {
                                 .splineToLinearHeading((startPose).minus(new Pose2d(-65, 50, Math.toRadians(-90))),Math.toRadians(180))
                                 .splineToLinearHeading((startPose).minus(new Pose2d(18, 50, Math.toRadians(-90))),Math.toRadians(180))
                                 ///blue far right(from robot)
+
+                                 */
+                                //.splineToLinearHeading((startPose).minus(new Pose2d(12, 30, Math.toRadians(-90))),Math.toRadians(0))
 
                                 /*
                                 .back(5)
@@ -66,7 +81,6 @@ public class MeepMeepTesting {
                                 */
                                 .build()
                 );
-
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
