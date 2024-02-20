@@ -60,23 +60,10 @@ public class findShoulderPosition extends LinearOpMode {
         //robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         //robot.shoulderStar.setPosition(shoulderPos);
         //robot.wrist.setPosition(v3Hardware.wristDown);
+        robot.extendyBoi.setPosition(shoulderPos);
         waitForStart();
         while (opModeIsActive()) {
-            //robot.shoulderStar.setPosition(shoulderPos);
-            robot.aimer.setPower(1);
-
-
-
-
-
-
-
-
-
-
-
-
-
+            robot.extendyBoi.setPosition(shoulderPos);
         }
     }
 }

@@ -29,8 +29,8 @@ public class v3Hardware {
     //0.425
     //0.33
     //0.218
-    public static double extendyBoiRetract = 0; public static double extendyBoiDown = 0;
-    public static double extendyBoiExtend = 1;
+    public static double extendyBoiRetract = 0.155; public static double extendyBoiDown = 0;
+    public static double extendyBoiExtend = 0.75;
 
     public static double wristDown = 0.4975; public static double wristStar = 0.4325; public static double wristPort = 0.559;
     public static double wristLift = 0.3702;
@@ -39,8 +39,8 @@ public class v3Hardware {
     public static double triggerRelease = 0, triggerHold = 1;
 
     public static double intakeSpeed = -1;  
-    public static double flipDown = 0.2;
-    public static double flipUp = 0.69;
+    public static double flipDown = 0.63;
+    public static double flipUp = 0.13;
     public static double aimerUp = 1;
 
 
