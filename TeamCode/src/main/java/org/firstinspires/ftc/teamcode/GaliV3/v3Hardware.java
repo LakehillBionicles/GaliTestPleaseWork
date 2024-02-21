@@ -12,7 +12,7 @@ public class v3Hardware {
     public DcMotor fpd = null, bpd = null, fsd = null, bsd = null,
 
     intake = null, aimer = null, portArm = null, starArm = null;
-    public DistanceSensor distanceTop = null;
+    public DistanceSensor distanceTop = null, distanceBottom = null;
 
     public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
     flipper = null;
@@ -69,6 +69,7 @@ public class v3Hardware {
         door = hwMap.get(Servo.class, "door");
         handTS = hwMap.get(TouchSensor.class, "handTS");
         distanceTop = hwMap.get(DistanceSensor.class, "distanceTop");
+        distanceBottom = hwMap.get(DistanceSensor.class,"distanceBottom");
         flipper = hwMap.get(Servo.class, "flipper");
         fpd.setDirection(DcMotorSimple.Direction.REVERSE);
         bpd.setDirection(DcMotorSimple.Direction.FORWARD);

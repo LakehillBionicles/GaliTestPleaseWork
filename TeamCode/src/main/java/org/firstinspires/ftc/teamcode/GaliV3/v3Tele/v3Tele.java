@@ -21,6 +21,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristLift;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristPort;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristStar;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 @TeleOp
 
@@ -59,6 +60,9 @@ public class v3Tele extends teleBase {
         robot.flipper.setPosition(v3Hardware.flipDown);
         waitForStart();
         while (opModeIsActive()) {
+            telemetry.addData("topDist",robot.distanceTop.getDistance(DistanceUnit.MM) );
+            telemetry.addData("BottomDist",robot.distanceBottom.getDistance(DistanceUnit.MM) );
+            telemetry.update();
             previousGamepad1.copy(currentGamepad1);
             previousGamepad2.copy(currentGamepad2);
             currentGamepad1.copy(gamepad1);
