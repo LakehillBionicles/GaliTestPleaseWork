@@ -127,7 +127,7 @@ public class v3autoBase extends LinearOpMode {
         }
         else{
             if(placement.equals("close")){
-                if(rightRedRatio>redTolerance && leftRedRatio> centerRedRatio){
+                if(rightRedRatio>redTolerance && rightRedRatio> centerRedRatio){
                     propPos = "right";
                 }
                 else if(centerRedRatio>redTolerance && centerRedRatio> rightRedRatio){

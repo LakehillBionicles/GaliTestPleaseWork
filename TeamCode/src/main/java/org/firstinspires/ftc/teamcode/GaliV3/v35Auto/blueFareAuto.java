@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
 @Autonomous
-public class redFareAuto extends v3autoBase {
-    Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(-90));
+public class blueFareAuto  extends v3autoBase {
+    Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(90));
     public static double forWard = 0;
     public static double turn1 = 0;
     double armTime = 0;
@@ -26,8 +26,8 @@ public class redFareAuto extends v3autoBase {
         super.runOpMode();
         robot.intake.setPower(0.02);
         cameraStartup("Webcam 1");
-        propDetection("red");
-        propPos("red", "far");
+        propDetection("blue");
+        propPos("blue", "far");
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot.flipper.setPosition(v3Hardware.flipUp);
         robot.intake.setPower(0);
@@ -35,103 +35,114 @@ public class redFareAuto extends v3autoBase {
 
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
                 .back(15)
-                .turn(Math.toRadians(180))
-                .splineToLinearHeading((startPose).plus(new Pose2d(-8, 31, Math.toRadians(180))), Math.toRadians(90))
+                .turn(Math.toRadians(-90))
+                .back(5)
+                .splineToLinearHeading((startPose).plus(new Pose2d(-8, -34, Math.toRadians(-90))), Math.toRadians(-90))
                 .build();
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
                 .back(5)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-180))
                 .waitSeconds(0.2)
+                .strafeRight(5)
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-18, -15, Math.toRadians(95))), Math.toRadians(180))
                 .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
+                .strafeLeft(17)
+                .waitSeconds(0.1)
+                .strafeRight(3)
+                .waitSeconds(0.1)
+                .forward(3)
                 .build();
         TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
-                .back(0.1)
                 .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown-0.1);
-                    robot.intake.setPower(-v3Hardware.intakeSpeed);
+                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
+                    robot.intake.setPower(0);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-18, 53.5, Math.toRadians(-90))), Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(65, 54.5, Math.toRadians(-90))), Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(80, 50, Math.toRadians(-90))), Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 30, Math.toRadians(-90))), Math.toRadians(0))
+                .turn(Math.toRadians(5))
+                .back(3)
+                .splineToLinearHeading((startPose).plus(new Pose2d(-17, -51.5, Math.toRadians(100))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(100))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(100))), Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, -24, Math.toRadians(100))), Math.toRadians(0))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
-                .back(30)
-                .turn(Math.toRadians(90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(5, 33, Math.toRadians(90))),Math.toRadians(0))
+                .back(5)
+                .turn(Math.toRadians(180))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-2, -16, Math.toRadians(180))),Math.toRadians(-90))
                 .build();
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
+                .back(5)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(0.2)
+                .strafeRight(5)
+                .addDisplacementMarker(()->{
+                    robot.flipper.setPosition(v3Hardware.flipDown);
+                })
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -15, Math.toRadians(95))), Math.toRadians(180))
+                .waitSeconds(0.2)
+                .strafeLeft(17)
+                .waitSeconds(0.1)
+                .strafeRight(3)
+                .waitSeconds(0.1)
+                .forward(1)
+                .build();
+        TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
+                .addDisplacementMarker(()->{
+                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
+                    robot.intake.setPower(-v3Hardware.intakeSpeed);
+                })
+                .turn(Math.toRadians(5))
+                .back(2)
+                .turn(Math.toRadians(10))
+                .strafeLeft(20)
+                .turn(Math.toRadians(-20))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-13, -51.5, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, -35, Math.toRadians(90))), Math.toRadians(0))
+                .build();
+        TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
+                .back(27)
+                .turn(Math.toRadians(-90))
+                .forward(10)
+                .back(5)
+                .build();
+        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
                 .back(5)
                 .turn(Math.toRadians(180))
                 .waitSeconds(0.2)
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-19, -15, Math.toRadians(95))), Math.toRadians(180))
                 .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
-                .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 27, Math.toRadians(-90))), Math.toRadians(-90))
-                .build();
-        TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
-                .back(4)
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown-0.1);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
-                })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-15, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(75, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(80, 34, Math.toRadians(-90))),Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 28, Math.toRadians(-90))),Math.toRadians(0))
-                .build();
-        TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
-                .back(8)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-16, 17, Math.toRadians(180))),Math.toRadians(90))
-                .build();
-        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .back(5)
-                .turn(Math.toRadians(90))
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
-                })
-                .waitSeconds(0.5)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
-                .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
+                .strafeLeft(17)
+                .waitSeconds(0.1)
+                .strafeRight(3)
+                .waitSeconds(0.1)
+                .forward(3)
                 .build();
         TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())
-                .back(1)
                 .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipUp);
-                    robot.intake.setPower(0);
+                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
+                    robot.intake.setPower(-v3Hardware.intakeSpeed);
                 })
-                .strafeRight(5)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-18, 50, Math.toRadians(-90))), Math.toRadians(90))
-                .back(10)
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
-                })
-                .splineToLinearHeading((startPose).plus(new Pose2d(0, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(65, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(80, 50, Math.toRadians(-90))),Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 41, Math.toRadians(-90))),Math.toRadians(0))
+                .turn(Math.toRadians(-5))
+                .back(3)
+                .splineToLinearHeading((startPose).plus(new Pose2d(-17, -51.5, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(90))), Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(86, -22, Math.toRadians(90))), Math.toRadians(0))
                 .build();
         while (!isStarted()) {
-            telemetry.addData("position", propPos("red", "far"));
+            telemetry.addData("position", propPos("blue", "blue"));
             telemetry.addData("rightBlue", rightBlueRatio);
             telemetry.addData("centerBlue", centerBlueRatio);
             telemetry.addData("leftBlue", leftBlueRatio);
             telemetry.addData("distance", robot.distanceTop.getDistance(DistanceUnit.MM));
-            propPos =propPos("red", "far");
+            propPos =propPos("blue", "blue");
             telemetry.update();
         }
 
@@ -148,10 +159,6 @@ public class redFareAuto extends v3autoBase {
         }
         robot.flipper.setPosition(v3Hardware.flipDown);
         sleep(1000);
-        robot.flipper.setPosition(v3Hardware.flipUp);
-        sleep(400);
-        robot.flipper.setPosition(v3Hardware.flipDown);
-        sleep(500);
         robot.flipper.setPosition(v3Hardware.flipUp);
         if(propPos.equals("center")) {
             drive.followTrajectorySequence(center2);}
@@ -180,18 +187,16 @@ public class redFareAuto extends v3autoBase {
             }
         }
         drive.setMotorPowers(0,0,0,0);*/
-        sleep(500);
+        robot.intake.setPower(v3Hardware.intakeSpeed);
         robot.flipper.setPosition(v3Hardware.flipDown);
-        robot.intake.setPower(-v3Hardware.intakeSpeed);
+        sleep(1500);
+        robot.intake.setPower(-v3Hardware.intakeSpeed/1.5);
         sleep(500);
         robot.intake.setPower(v3Hardware.intakeSpeed);
-        sleep(1000);
-        robot.intake.setPower(-v3Hardware.intakeSpeed);
         sleep(500);
-        robot.intake.setPower(0);
+        robot.intake.setPower(-v3Hardware.intakeSpeed/1.5);
         if(propPos.equals("center")) {
             drive.followTrajectorySequence(center3);
-            drive.turn(Math.toRadians(5));
         }
         else if(propPos.equals("left")){
             drive.followTrajectorySequence(left3);
@@ -199,9 +204,8 @@ public class redFareAuto extends v3autoBase {
         }
         else{
             drive.followTrajectorySequence(right3);
-            drive.turn(Math.toRadians(5));
         }
-        robot.intake.setPower(0);
+        robot.intake.setPower(v3Hardware.intakeSpeed);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
         sleep(2500);
@@ -213,7 +217,7 @@ public class redFareAuto extends v3autoBase {
         sleep(500);*/
         resetRuntime();
         while(!robot.handTS.isPressed()&& getRuntime()<3){
-            drive.setMotorPowers(-0.2,-0.2,-0.2,-0.2);
+            drive.setMotorPowers(-0.3,-0.3,-0.3,-0.3);
         }
         drive.setMotorPowers(0,0,0,0);
         sleep(300);

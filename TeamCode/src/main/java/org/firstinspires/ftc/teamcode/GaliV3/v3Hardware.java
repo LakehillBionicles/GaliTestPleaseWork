@@ -22,9 +22,8 @@ public class v3Hardware {
     public static double shoulderPortIntake = 0; public static double shoulderStarIntake = 0;
 
     public static double shoulderPortLift =0.45; public static double shoulderStarLift = 0.1;
-
-    public static double shoulderPortDown = 1; public static double shoulderStarDown = 0;
-    public static double shoulderPortScore = 0; public static double shoulderStarScore = 0.5;
+    public static double shoulderPortDown = 0.6; public static double shoulderStarDown = 0;
+    public static double shoulderPortScore = 0.32; public static double shoulderStarScore = 0.5;
 
     //0.425
     //0.33

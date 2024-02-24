@@ -26,7 +26,7 @@ public class BlueColorProcessor extends OpenCvPipeline {
     public static int leftPointy2 = 120;
     public static int CenterPointx1 = 100;
     public static int CenterPointy1 = 65;
-    public static int CenterPointx2 = 160;
+    public static int CenterPointx2 = 230;
     public static int CenterPointy2 = 105;
     public static int rightPointx1 = 230;
     public static int rightPointy1 = 55;
