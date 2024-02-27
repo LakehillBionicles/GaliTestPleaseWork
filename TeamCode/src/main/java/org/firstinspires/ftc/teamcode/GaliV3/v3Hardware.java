@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode.GaliV3;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorTargetVelocityCommand;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
+import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 @Config
 public class v3Hardware {
-    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null,
-
-    intake = null, aimer = null, portArm = null, starArm = null;
+    public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, aimer = null, portArm = null, starArm = null;
+    public DcMotorEx intake = null;
     public DistanceSensor distanceTop = null, distanceBottom = null;
 
     public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
@@ -52,12 +56,9 @@ public class v3Hardware {
         bpd = hwMap.get(DcMotor.class, "bpd");
         fsd = hwMap.get(DcMotor.class, "fsd");
         bsd = hwMap.get(DcMotor.class, "bsd");
-
         portArm = hwMap.get(DcMotor.class, "portArm");
         starArm = hwMap.get(DcMotor.class,"starArm");
-
-        intake = hwMap.get(DcMotor.class, "intake");
-
+        intake = hwMap.get(DcMotorEx.class, "intake");
         aimer = hwMap.get(DcMotor.class, "aimer");
         elbow = hwMap.get(Servo.class, "elbow");
         wrist = hwMap.get(Servo.class, "wrist");

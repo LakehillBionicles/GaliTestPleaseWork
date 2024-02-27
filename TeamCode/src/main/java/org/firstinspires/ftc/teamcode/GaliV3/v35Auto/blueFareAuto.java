@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode.GaliV3.v35Auto;
 
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive.getAccelerationConstraint;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive.getVelocityConstraint;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
 import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
@@ -65,12 +71,12 @@ public class blueFareAuto  extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(-17, -51.5, Math.toRadians(100))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(100))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(100))), Math.toRadians(90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, -24, Math.toRadians(100))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, -29, Math.toRadians(100))), Math.toRadians(0))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .back(5)
                 .turn(Math.toRadians(180))
-                .splineToLinearHeading((startPose).plus(new Pose2d(-2, -16, Math.toRadians(180))),Math.toRadians(-90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-1, -17, Math.toRadians(180))),Math.toRadians(-90))
                 .build();
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
                 .back(5)
@@ -100,24 +106,24 @@ public class blueFareAuto  extends v3autoBase {
                 .turn(Math.toRadians(-20))
                 .splineToLinearHeading((startPose).plus(new Pose2d(-13, -51.5, Math.toRadians(90))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(90))), Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(90))), Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, -35, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(78, -52, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, -40, Math.toRadians(90))), Math.toRadians(0))
                 .build();
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .back(27)
                 .turn(Math.toRadians(-90))
-                .forward(10)
-                .back(5)
+                .forward(10,getVelocityConstraint(MAX_VEL/1.3,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
+                .back(5,getVelocityConstraint(MAX_VEL/1.3,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .build();
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
                 .back(5)
                 .turn(Math.toRadians(180))
-                .waitSeconds(0.2)
+                .waitSeconds(0.1)
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
                 })
                 .splineToLinearHeading((startPose).plus(new Pose2d(-19, -15, Math.toRadians(95))), Math.toRadians(180))
-                .waitSeconds(0.2)
+                .waitSeconds(0.1)
                 .strafeLeft(17)
                 .waitSeconds(0.1)
                 .strafeRight(3)
@@ -134,7 +140,7 @@ public class blueFareAuto  extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(-17, -51.5, Math.toRadians(90))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(65, -49.5, Math.toRadians(90))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(78, -50, Math.toRadians(90))), Math.toRadians(90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(86, -22, Math.toRadians(90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(86, -23.5, Math.toRadians(90))), Math.toRadians(0))
                 .build();
         while (!isStarted()) {
             telemetry.addData("position", propPos("blue", "blue"));
@@ -197,6 +203,7 @@ public class blueFareAuto  extends v3autoBase {
         robot.intake.setPower(-v3Hardware.intakeSpeed/1.5);
         if(propPos.equals("center")) {
             drive.followTrajectorySequence(center3);
+            drive.turn(Math.toRadians(-5));
         }
         else if(propPos.equals("left")){
             drive.followTrajectorySequence(left3);
@@ -221,7 +228,11 @@ public class blueFareAuto  extends v3autoBase {
         }
         drive.setMotorPowers(0,0,0,0);
         sleep(300);
+        robot.portArm.setPower(0.5);
+        robot.starArm.setPower(0.5);
         robot.door.setPosition(v3Hardware.doorOpen);
+        robot.portArm.setPower(0);
+        robot.starArm.setPower(0);
         sleep(1000);
         /*robot.wrist.setPosition(v3Hardware.wristPort);
         sleep(500);

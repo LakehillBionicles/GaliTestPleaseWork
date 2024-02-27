@@ -53,18 +53,26 @@ public class redFareAuto extends v3autoBase {
         TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
                 .back(0.1)
                 .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown-0.1);
+                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
                     robot.intake.setPower(-v3Hardware.intakeSpeed);
                 })
                 .splineToLinearHeading((startPose).plus(new Pose2d(-18, 53.5, Math.toRadians(-90))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(65, 54.5, Math.toRadians(-90))), Math.toRadians(0))
+                .waitSeconds(2)
+                .addDisplacementMarker(()-> {
+                    robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
+                    robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
+                })
                 .splineToLinearHeading((startPose).plus(new Pose2d(80, 50, Math.toRadians(-90))), Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 30, Math.toRadians(-90))), Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, 31.5, Math.toRadians(-90))), Math.toRadians(0))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .back(30)
                 .turn(Math.toRadians(90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(5, 33, Math.toRadians(90))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(3, 33, Math.toRadians(90))),Math.toRadians(0))
+                .forward(10)
+                .waitSeconds(0.1)
+                .back(11)
                 .build();
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
                 .back(5)
@@ -83,17 +91,20 @@ public class redFareAuto extends v3autoBase {
         TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
                 .back(4)
                 .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown-0.1);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
+                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
+                    robot.intake.setPower(-v3Hardware.intakeSpeed);
                 })
                 .splineToLinearHeading((startPose).plus(new Pose2d(-15, 53.5, Math.toRadians(-90))),Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(75, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(80, 34, Math.toRadians(-90))),Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 28, Math.toRadians(-90))),Math.toRadians(0))
+                .addDisplacementMarker(()->{
+                    robot.intake.setPower(0);
+                })
+                .splineToLinearHeading((startPose).plus(new Pose2d(80, 38, Math.toRadians(-90))),Math.toRadians(-90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, 32, Math.toRadians(-90))),Math.toRadians(0))
                 .build();
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .back(8)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-16, 17, Math.toRadians(180))),Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-15, 17, Math.toRadians(180))),Math.toRadians(90))
                 .build();
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
                 .back(5)
@@ -120,10 +131,10 @@ public class redFareAuto extends v3autoBase {
                     robot.flipper.setPosition(v3Hardware.flipDown);
                     robot.intake.setPower(v3Hardware.intakeSpeed);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(0, 53.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(65, 53.5, Math.toRadians(-90))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(0, 54.5, Math.toRadians(-90))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(65, 54.5, Math.toRadians(-90))),Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(80, 50, Math.toRadians(-90))),Math.toRadians(-90))
-                .splineToLinearHeading((startPose).plus(new Pose2d(87, 41, Math.toRadians(-90))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(87, 39.5, Math.toRadians(-90))),Math.toRadians(0))
                 .build();
         while (!isStarted()) {
             telemetry.addData("position", propPos("red", "far"));
@@ -187,11 +198,9 @@ public class redFareAuto extends v3autoBase {
         robot.intake.setPower(v3Hardware.intakeSpeed);
         sleep(1000);
         robot.intake.setPower(-v3Hardware.intakeSpeed);
-        sleep(500);
-        robot.intake.setPower(0);
         if(propPos.equals("center")) {
             drive.followTrajectorySequence(center3);
-            drive.turn(Math.toRadians(5));
+            drive.turn(Math.toRadians(10));
         }
         else if(propPos.equals("left")){
             drive.followTrajectorySequence(left3);
@@ -204,7 +213,7 @@ public class redFareAuto extends v3autoBase {
         robot.intake.setPower(0);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
-        sleep(2500);
+        sleep(2000);
         /*robot.wrist.setPosition(v3Hardware.wristPort);
         sleep(500);
         robot.wrist.setPosition(v3Hardware.extendyBoiExtend);
@@ -216,9 +225,18 @@ public class redFareAuto extends v3autoBase {
             drive.setMotorPowers(-0.2,-0.2,-0.2,-0.2);
         }
         drive.setMotorPowers(0,0,0,0);
+        robot.portArm.setPower(0.5);
+        robot.starArm.setPower(0.5);
         sleep(300);
         robot.door.setPosition(v3Hardware.doorOpen);
-        sleep(1000);
+        robot.portArm.setPower(0);
+        robot.starArm.setPower(0);
+        sleep(300);
+        robot.starArm.setPower(1);
+        robot.portArm.setPower(1);
+        sleep(700);
+        robot.starArm.setPower(0);
+        robot.portArm.setPower(0);
         /*robot.wrist.setPosition(v3Hardware.wristPort);
         sleep(500);
         robot.wrist.setPosition(v3Hardware.extendyBoiRetract);
@@ -226,6 +244,8 @@ public class redFareAuto extends v3autoBase {
         robot.wrist.setPosition(v3Hardware.wristDown);*/
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
-        sleep(2500);
+        sleep(500);
+        robot.portArm.setPower(-1);
+        robot.starArm.setPower(-1);
     }
 }

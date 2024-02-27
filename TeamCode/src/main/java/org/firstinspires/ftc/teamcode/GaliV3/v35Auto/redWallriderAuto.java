@@ -64,14 +64,14 @@ public class redWallriderAuto extends v3autoBase {
                     robot.intake.setPower(-v3Hardware.intakeSpeed);
                 })
                 .splineToLinearHeading((startPose).plus(new Pose2d(-18, 10, Math.toRadians(-90))), Math.toRadians(-90), getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
-                .waitSeconds(1)
+                .waitSeconds(0.1)
                 .turn(Math.toRadians(3))
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipUp);
                     robot.intake.setPower(0);
                 })
                 .back(1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-7, 5, Math.toRadians(-87))), Math.toRadians(0), getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-7, 7, Math.toRadians(-87))), Math.toRadians(0), getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .splineToLinearHeading((startPose).plus(new Pose2d(75, 6.4, Math.toRadians(-87))), Math.toRadians(0),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .splineToLinearHeading((startPose).plus(new Pose2d(80, 14, Math.toRadians(-87))), Math.toRadians(90),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .splineToLinearHeading((startPose).plus(new Pose2d(88, 25, Math.toRadians(-87))), Math.toRadians(0),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
@@ -112,6 +112,10 @@ public class redWallriderAuto extends v3autoBase {
                 .back(1)
                 .splineToLinearHeading((startPose).plus(new Pose2d(-7, 5, Math.toRadians(-87))), Math.toRadians(0), getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .splineToLinearHeading((startPose).plus(new Pose2d(75, 6.4, Math.toRadians(-87))), Math.toRadians(0),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
+                .addDisplacementMarker(()-> {
+                    robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
+                    robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
+                })
                 .splineToLinearHeading((startPose).plus(new Pose2d(80, 14, Math.toRadians(-87))), Math.toRadians(90),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .splineToLinearHeading((startPose).plus(new Pose2d(88, 22, Math.toRadians(-87))), Math.toRadians(0),getVelocityConstraint(MAX_VEL,MAX_ANG_VEL,TRACK_WIDTH), getAccelerationConstraint(MAX_ACCEL))
                 .build();
@@ -231,7 +235,7 @@ public class redWallriderAuto extends v3autoBase {
         robot.intake.setPower(0);
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
-        sleep(2500);
+        sleep(1000);
         /*robot.wrist.setPosition(v3Hardware.wristPort);
         sleep(500);
         robot.wrist.setPosition(v3Hardware.extendyBoiExtend);
