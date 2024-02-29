@@ -345,4 +345,6 @@ public class v3ScoreStackFareRed extends v3autoBase{
             sleep(2000);
         }
     }
+    //Fancy April Tag
+
 }

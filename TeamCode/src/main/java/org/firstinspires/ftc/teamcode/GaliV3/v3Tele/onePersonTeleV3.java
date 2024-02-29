@@ -48,6 +48,9 @@ public class onePersonTeleV3 extends teleBase {
     String armPos = "down";
     double aimerTimer = -3;
     double runtime = 0;
+    double spitRuntime = -3;
+    double spitLength = 0;
+    boolean spitTracker = false;
     boolean flipperDown = true;
 
 
@@ -65,11 +68,20 @@ public class onePersonTeleV3 extends teleBase {
         waitForStart();
         while (opModeIsActive()) {
             runtime = getRuntime();
+            if(robot.intake.getVelocity()<40&&!intakeSpit&&intakeOn&&flipperDown){
+                if(!spitTracker){
+                    spitRuntime = runtime;
+                }
+            spitTracker = true;
+            }
             previousGamepad1.copy(currentGamepad1);
             previousGamepad2.copy(currentGamepad2);
             currentGamepad1.copy(gamepad1);
             currentGamepad2.copy(gamepad2);
             intakeSpit = gamepad1.x;
+            if(runtime-spitRuntime>2&&runtime-spitRuntime<3){
+                intakeSpit = true;
+            }
             if (!previousGamepad1.back && gamepad1.back) {
                 intakeOn = !intakeOn;
             }
@@ -250,5 +262,7 @@ public class onePersonTeleV3 extends teleBase {
             else{
                 robot.flipper.setPosition(v3Hardware.flipUp);}
         }
+        telemetry.addData("fps", 1/(getRuntime()-runtime));
+        telemetry.update();
     }
 }

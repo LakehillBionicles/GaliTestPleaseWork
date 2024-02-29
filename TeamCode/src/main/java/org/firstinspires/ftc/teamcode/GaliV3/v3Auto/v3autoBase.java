@@ -45,7 +45,6 @@ public class v3autoBase extends LinearOpMode {
     public org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor BlueColorProcessor;
     public String  propPos = "notSeen";
     public static String robotPosition = "notSeen";
-
     public BNO055IMU imu;
     private String webcam1 = "Webcam 1";
     public Orientation robotTheta;
@@ -62,6 +61,7 @@ public class v3autoBase extends LinearOpMode {
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
     OpenCvCamera camera;
+
     public void runOpMode(){
         robot.init(hardwareMap);
         robot.door.setPosition(v3Hardware.doorClosed);
@@ -72,6 +72,7 @@ public class v3autoBase extends LinearOpMode {
         robot.wrist.setPosition(v3Hardware.wristDown);
     }
     public void cameraStartup(String cameraName){
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cameraName), cameraMonitorViewId);
     }
