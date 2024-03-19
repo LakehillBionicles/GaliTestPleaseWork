@@ -288,14 +288,12 @@ public class TrajectorySequenceRunner {
             fieldOverlay.setStroke("#4CAF50");
             DashboardUtil.drawRobot(fieldOverlay, targetPose);
         }
-
         fieldOverlay.setStroke("#3F51B5");
         DashboardUtil.drawPoseHistory(fieldOverlay, poseHistory);
 
         fieldOverlay.setStroke("#3F51B5");
         DashboardUtil.drawRobot(fieldOverlay, poseEstimate);
     }
-
     public Pose2d getLastPoseError() {
         return lastPoseError;
     }

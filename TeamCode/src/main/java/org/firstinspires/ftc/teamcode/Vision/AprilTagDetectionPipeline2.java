@@ -1,4 +1,3 @@
-package org.firstinspires.ftc.teamcode.Vision;
 /*
  * Copyright (c) 2021 OpenFTC Team
  *
@@ -19,7 +18,13 @@ package org.firstinspires.ftc.teamcode.Vision;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+package org.firstinspires.ftc.teamcode.Vision;
+
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase.robotPosition;
+
 import org.opencv.calib3d.Calib3d;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
@@ -27,17 +32,19 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
 import org.opencv.core.Point;
 import org.opencv.core.Point3;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.apriltag.AprilTagDetectorJNI;
-import org.openftc.apriltag.AprilTagPose;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-class AprilTagDetectionPipeline extends OpenCvPipeline
+public class AprilTagDetectionPipeline2 extends OpenCvPipeline
 {
+    public static double n = 0;
     private long nativeApriltagPtr;
     private Mat grey = new Mat();
     private ArrayList<AprilTagDetection> detections = new ArrayList<>();
@@ -66,7 +73,7 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
     private boolean needToSetDecimation;
     private final Object decimationSync = new Object();
 
-    public AprilTagDetectionPipeline(double tagsize, double fx, double fy, double cx, double cy)
+    public AprilTagDetectionPipeline2(double tagsize, double fx, double fy, double cx, double cy)
     {
         this.tagsize = tagsize;
         this.tagsizeX = tagsize;
@@ -101,38 +108,78 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
     @Override
     public Mat processFrame(Mat input)
     {
-        // Convert to greyscale
-        Imgproc.cvtColor(input, grey, Imgproc.COLOR_RGBA2GRAY);
+        if(AprilTagIntegrationTest.getPipeline().equals("propBlue")) {
+            Point leftLeft = new Point(BlueColorProcessor.leftPointx1, BlueColorProcessor.leftPointy1);
+            Point leftRight = new Point(BlueColorProcessor.leftPointx2, BlueColorProcessor.leftPointy2);
+            Point centerLeft = new Point(BlueColorProcessor.CenterPointx1, BlueColorProcessor.CenterPointy1);
+            Point centerRight = new Point(BlueColorProcessor.CenterPointx2, BlueColorProcessor.CenterPointy2);
+            Point rightLeft = new Point(BlueColorProcessor.rightPointx1, BlueColorProcessor.rightPointy1);
+            Point rightRight = new Point(BlueColorProcessor.rightPointx2, BlueColorProcessor.rightPointy2);
+            Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
+            Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
+            Mat matRight = input.submat(new Rect(rightLeft, rightRight));
+            Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
+            Imgproc.rectangle(input,new Rect(leftLeft,leftRight), new Scalar(0, 255, 0));
+            Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
+            BlueColorProcessor.leftBlueRatio = (Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height()))));
+            BlueColorProcessor.centerBlueRatio = (Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height()))));
+            BlueColorProcessor.rightBlueRatio = (Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height()))));
+        }
+        else if(AprilTagIntegrationTest.getPipeline().equals("propRed")) {
+            if(Objects.equals(robotPosition, "far")){
+                RedColorProcessor.CenterPointx1 = 150;
+                RedColorProcessor.CenterPointy1 = 40;
+                RedColorProcessor.CenterPointx2 = 220;
+                RedColorProcessor.CenterPointy2 = 100;
+            }
+            Point rightLeft = new Point(RedColorProcessor.rightPointx1, RedColorProcessor.rightPointy1);
+            Point rightRight = new Point(RedColorProcessor.rightPointx2, RedColorProcessor.rightPointy2);
+            Point centerLeft = new Point(RedColorProcessor.CenterPointx1, RedColorProcessor.CenterPointy1);
+            Point centerRight = new Point(RedColorProcessor.CenterPointx2, RedColorProcessor.CenterPointy2);
+            Point leftLeft = new Point(RedColorProcessor.leftPointx1, RedColorProcessor.leftPointy1);
+            Point leftRight = new Point(RedColorProcessor.leftPointx2, RedColorProcessor.leftPointy2);
+            Mat matRight = input.submat(new Rect(rightLeft, rightRight));
+            Mat matCenter = input.submat(new Rect(centerLeft, centerRight));
+            Mat matLeft = input.submat(new Rect(leftLeft, leftRight));
+            Imgproc.rectangle(input,new Rect(rightLeft,rightRight), new Scalar(0, 255, 0));
+            Imgproc.rectangle(input,new Rect(centerLeft, centerRight), new Scalar(0, 255, 0));
+            Imgproc.rectangle(input,new Rect(leftLeft, leftRight), new Scalar(0, 255, 0));
+            RedColorProcessor.rightRedRatio = (Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height()))));
+            RedColorProcessor.centerRedRatio = (Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height()))));
+            RedColorProcessor.leftRedRatio = (Core.sumElems(matLeft).val[0]/(matLeft.width()*matLeft.height())/((Core.sumElems(matLeft).val[1]/(matLeft.width()*matLeft.height()))+(Core.sumElems(matLeft).val[2]/(matLeft.width()*matLeft.height()))));
+        }
+        else{
+            n++;
+            // Convert to greyscale
+            Imgproc.cvtColor(input, grey, Imgproc.COLOR_RGBA2GRAY);
 
-        synchronized (decimationSync)
-        {
-            if(needToSetDecimation)
-            {
-                AprilTagDetectorJNI.setApriltagDetectorDecimation(nativeApriltagPtr, decimation);
-                needToSetDecimation = false;
+            synchronized (decimationSync) {
+                if (needToSetDecimation) {
+                    AprilTagDetectorJNI.setApriltagDetectorDecimation(nativeApriltagPtr, decimation);
+                    needToSetDecimation = false;
+                }
+            }
+
+            // Run AprilTag
+            detections = AprilTagDetectorJNI.runAprilTagDetectorSimple(nativeApriltagPtr, grey, tagsize, fx, fy, cx, cy);
+
+            synchronized (detectionsUpdateSync) {
+                detectionsUpdate = detections;
+            }
+
+            // For fun, use OpenCV to draw 6DOF markers on the image. We actually recompute the pose using
+            // OpenCV because I haven't yet figured out how to re-use AprilTag's pose in OpenCV.
+            for (AprilTagDetection detection : detections) {
+                Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
+                drawAxisMarker(input, tagsizeY / 2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
+                draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
             }
         }
-
-        // Run AprilTag
-        detections = AprilTagDetectorJNI.runAprilTagDetectorSimple(nativeApriltagPtr, grey, tagsize, fx, fy, cx, cy);
-
-        synchronized (detectionsUpdateSync)
-        {
-            detectionsUpdate = detections;
-        }
-
-        // For fun, use OpenCV to draw 6DOF markers on the image.
-        for(AprilTagDetection detection : detections)
-        {
-            Pose pose = aprilTagPoseToOpenCvPose(detection.pose);
-            //Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
-            drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
-            draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
-        }
-
         return input;
     }
-
+    public static double getn(){
+        return n;
+    }
     public void setDecimation(float decimation)
     {
         synchronized (decimationSync)
@@ -257,28 +304,6 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
         Imgproc.line(buf, projectedPoints[4], projectedPoints[7], green, thickness);
     }
 
-    Pose aprilTagPoseToOpenCvPose(AprilTagPose aprilTagPose)
-    {
-        Pose pose = new Pose();
-        pose.tvec.put(0,0, aprilTagPose.x);
-        pose.tvec.put(1,0, aprilTagPose.y);
-        pose.tvec.put(2,0, aprilTagPose.z);
-
-        Mat R = new Mat(3, 3, CvType.CV_32F);
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                R.put(i,j, aprilTagPose.R.get(i,j));
-            }
-        }
-
-        Calib3d.Rodrigues(R, pose.rvec);
-
-        return pose;
-    }
-
     /**
      * Extracts 6DOF pose from a trapezoid, using a camera intrinsics matrix and the
      * original size of the tag.
@@ -320,8 +345,8 @@ class AprilTagDetectionPipeline extends OpenCvPipeline
 
         public Pose()
         {
-            rvec = new Mat(3, 1, CvType.CV_32F);
-            tvec = new Mat(3, 1, CvType.CV_32F);
+            rvec = new Mat();
+            tvec = new Mat();
         }
 
         public Pose(Mat rvec, Mat tvec)

@@ -18,6 +18,10 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
+import org.openftc.apriltag.AprilTagDetection;
+
+import java.util.ArrayList;
+
 @Autonomous
 public class redWallriderAuto extends v3autoBase {
     Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(-90));

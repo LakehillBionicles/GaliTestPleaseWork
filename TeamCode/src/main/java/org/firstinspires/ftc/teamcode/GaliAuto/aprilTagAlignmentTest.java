@@ -1,50 +1,14 @@
 package org.firstinspires.ftc.teamcode.GaliAuto;
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowDown;
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowScore;
-import static org.firstinspires.ftc.teamcode.GaliHardware.elbowTape;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerPortClosed;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerPortOpen;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerStarClosed;
-import static org.firstinspires.ftc.teamcode.GaliHardware.fingerStarOpen;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristDown;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristScore;
-import static org.firstinspires.ftc.teamcode.GaliHardware.wristTape;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.pos;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.GaliHardware;
-import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor;
-import org.firstinspires.ftc.teamcode.Vision.RedColorProcessor;
 import org.openftc.apriltag.AprilTagDetection;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
-import org.openftc.apriltag.AprilTagDetection;
 
-import java.util.Objects;
-import java.util.Vector;
 @Autonomous
 
 public class aprilTagAlignmentTest extends GaliAutobase{

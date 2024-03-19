@@ -2,23 +2,21 @@ package org.firstinspires.ftc.teamcode.Vision;
 
 import android.annotation.SuppressLint;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.GaliHardware;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.firstinspires.ftc.vision.VisionPortal;
+
 import java.util.ArrayList;
 @TeleOp
 
 public class AprilTagAligner extends LinearOpMode{
         OpenCvCamera camera;
-        AprilTagDetectionPipeline aprilTagDetectionPipeline;
+        AprilTagDetectionPipeline2 aprilTagDetectionPipeline;
 
         static final double FEET_PER_METER = 3.28084;
 

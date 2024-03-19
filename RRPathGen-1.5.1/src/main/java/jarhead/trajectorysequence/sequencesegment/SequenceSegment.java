@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.sequencesegment;
+package jarhead.trajectorysequence.sequencesegment;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 
+import java.awt.*;
 import java.util.List;
 
 public abstract class SequenceSegment {
@@ -38,4 +39,20 @@ public abstract class SequenceSegment {
         return markers;
     }
 
+    public Graphics renderSplines(Graphics g, double resolution, double scale) {
+        // TrajectorySegment overrides this
+        Pose2d startPose = getStartPose();
+        Pose2d endPose = getEndPose();
+        g.drawLine((int)startPose.getX(), (int)startPose.getY(), (int)endPose.getX(), (int)endPose.getY());
+
+        return g;
+    }
+
+    public Graphics renderPoints(Graphics g, double scale, double ovalScale) {
+        // scale and ovalScale are needed since TrajectorySegment overrides this method
+        Pose2d startPose = getStartPose();
+        Pose2d endPose = getEndPose();
+        g.drawLine((int) startPose.getX(), (int) startPose.getY(), (int) endPose.getX(), (int) endPose.getY());
+        return g;
+    }
 }

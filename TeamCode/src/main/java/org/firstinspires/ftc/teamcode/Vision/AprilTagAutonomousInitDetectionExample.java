@@ -30,7 +30,6 @@
     import org.openftc.easyopencv.OpenCvCamera;
     import org.openftc.easyopencv.OpenCvCameraFactory;
     import org.openftc.easyopencv.OpenCvCameraRotation;
-    import org.openftc.apriltag.AprilTagPose;
 
 
     import java.util.ArrayList;
@@ -38,7 +37,7 @@
     @TeleOp
     public class AprilTagAutonomousInitDetectionExample extends LinearOpMode {
         OpenCvCamera camera;
-        AprilTagDetectionPipeline aprilTagDetectionPipeline;
+        AprilTagDetectionPipeline2 aprilTagDetectionPipeline;
 
         static final double FEET_PER_METER = 3.28084;
 
@@ -63,7 +62,7 @@
         {
             int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-            aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+            aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
 
             camera.setPipeline(aprilTagDetectionPipeline);
             camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()

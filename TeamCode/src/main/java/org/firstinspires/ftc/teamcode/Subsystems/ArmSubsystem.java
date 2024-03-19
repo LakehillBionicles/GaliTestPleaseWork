@@ -37,7 +37,6 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem(DcMotor motor1, DcMotor motor2, Servo servo){
         this.elbow = motor1; this.shoulder = motor2; this.wrist = servo;
     }
-
     public Command setArmPos(ArmPos targetPos){
         return new InstantCommand(() -> armToPosition(targetPos, .25));
     }

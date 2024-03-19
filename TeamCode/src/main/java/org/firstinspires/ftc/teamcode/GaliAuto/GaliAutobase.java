@@ -13,30 +13,24 @@ import static org.firstinspires.ftc.teamcode.GaliHardware.wristLift;
 import static org.firstinspires.ftc.teamcode.GaliHardware.wristScore;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.GaliHardware;
-import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline2;
 import org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor;
 import org.firstinspires.ftc.teamcode.Vision.RedColorProcessor;
-import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class GaliAutobase extends LinearOpMode {
     public GaliHardware robot = new GaliHardware();
     public RedColorProcessor RedColorProcessor;
-    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    AprilTagDetectionPipeline2 aprilTagDetectionPipeline;
     public BlueColorProcessor BlueColorProcessor;
     public String  propPos = "notSeen";
 
@@ -86,7 +80,7 @@ public class GaliAutobase extends LinearOpMode {
         aprilTagDetection();
     }
     public void aprilTagDetection(){
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {

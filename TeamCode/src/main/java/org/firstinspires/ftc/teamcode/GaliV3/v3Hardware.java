@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.GaliV3;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorTargetVelocityCommand;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
@@ -21,7 +24,7 @@ public class v3Hardware {
     public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
     flipper = null;
     public TouchSensor handTS = null;
-
+    public IMU imu = null;
     public static double doorOpen = 0.48, doorClosed = 0.425;
     public static double shoulderPortIntake = 0; public static double shoulderStarIntake = 0;
 
@@ -52,6 +55,7 @@ public class v3Hardware {
     public void runOpMode() {}
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
+        imu = hwMap.get(BHI260IMU.class, "imu");
         fpd = hwMap.get(DcMotor.class, "fpd" );
         bpd = hwMap.get(DcMotor.class, "bpd");
         fsd = hwMap.get(DcMotor.class, "fsd");

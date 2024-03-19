@@ -5,7 +5,6 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.extendyBoiRetract;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortDown;
-import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortLift;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderPortScore;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.shoulderStarScore;
@@ -26,12 +25,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
-import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline2;
 import org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor;
 import org.firstinspires.ftc.teamcode.Vision.RedColorProcessor;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -39,9 +35,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.Objects;
 
 public class v3autoBase extends LinearOpMode {
+    public static String pipeline;
     public v3Hardware robot = new v3Hardware();
     public org.firstinspires.ftc.teamcode.Vision.RedColorProcessor RedColorProcessor;
-    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    AprilTagDetectionPipeline2 aprilTagDetectionPipeline;
     public org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor BlueColorProcessor;
     public String  propPos = "notSeen";
     public static String robotPosition = "notSeen";
@@ -64,6 +61,7 @@ public class v3autoBase extends LinearOpMode {
 
     public void runOpMode(){
         robot.init(hardwareMap);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
         robot.door.setPosition(v3Hardware.doorClosed);
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiRetract);
         robot.elbow.setPosition(v3Hardware.elbowNorminal);
@@ -72,7 +70,7 @@ public class v3autoBase extends LinearOpMode {
         robot.wrist.setPosition(v3Hardware.wristDown);
     }
     public void cameraStartup(String cameraName){
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cameraName), cameraMonitorViewId);
     }
@@ -88,12 +86,15 @@ public class v3autoBase extends LinearOpMode {
         });
         if(Objects.equals(color, "blue")) {
             BlueColorProcessor = new BlueColorProcessor();
-            camera.setPipeline(BlueColorProcessor);
+            pipeline="propBlue";
+            //camera.setPipeline(BlueColorProcessor);
         }
         if(Objects.equals(color, "red")){
             RedColorProcessor = new RedColorProcessor();
-            camera.setPipeline(RedColorProcessor);
+            pipeline="propRed";
+            //camera.setPipeline(RedColorProcessor);
         }
+        camera.setPipeline(aprilTagDetectionPipeline);
     }
     public String propPos(String color, String placement){
         if(placement.equals("close")){

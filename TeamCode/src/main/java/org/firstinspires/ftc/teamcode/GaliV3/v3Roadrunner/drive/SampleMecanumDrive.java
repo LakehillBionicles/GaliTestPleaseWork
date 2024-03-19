@@ -176,7 +176,28 @@ public class SampleMecanumDrive extends MecanumDrive {
         turnAsync(angle);
         waitForIdle();
     }
-
+    public void backAsync(double distance){
+        trajectorySequenceRunner.followTrajectorySequenceAsync(
+                trajectorySequenceBuilder(getPoseEstimate())
+                        .back(distance)
+                        .build()
+        );
+    }
+    public void back(double distance) {
+        backAsync(distance);
+        waitForIdle();
+    }
+    public void forwardAsync(double distance){
+        trajectorySequenceRunner.followTrajectorySequenceAsync(
+                trajectorySequenceBuilder(getPoseEstimate())
+                        .forward(distance)
+                        .build()
+        );
+    }
+    public void forward(double distance) {
+        backAsync(distance);
+        waitForIdle();
+    }
     public void followTrajectoryAsync(Trajectory trajectory) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
                 trajectorySequenceBuilder(trajectory.start())
@@ -289,11 +310,11 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     @Override
-    public void setMotorPowers(double v, double v1, double v2, double v3) {
-        leftFront.setPower(v);
-        leftRear.setPower(v1);
-        rightRear.setPower(v2);
-        rightFront.setPower(v3);
+    public void setMotorPowers(double fpd, double bpd, double fsd, double bsd) {
+        leftFront.setPower(fpd);
+        leftRear.setPower(bpd);
+        rightRear.setPower(fsd);
+        rightFront.setPower(bsd);
     }
 
     @Override
