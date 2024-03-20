@@ -10,6 +10,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
@@ -48,6 +51,7 @@ public class AprilTagIntegrationTest extends v3autoBase {
         public org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor BlueColorProcessor;
         public String  propPos = "notSeen";
         public static String pipeline = "";
+        public Orientation robotOrientation = new Orientation();
         public static String robotPosition = "notSeen";
         public double x = 0;
         public double y = 0;
@@ -57,6 +61,7 @@ public class AprilTagIntegrationTest extends v3autoBase {
         public BNO055IMU imu;
         private String webcam = "Webcam ";
         public Orientation robotTheta;
+        public YawPitchRollAngles yawPitchRollAngles = new YawPitchRollAngles(AngleUnit.DEGREES, 0, 0,0, (long) 2);
         static final double FEET_PER_METER = 3.28084;
         double fx = 578.272;
         double fy = 578.272;
@@ -94,6 +99,7 @@ public class AprilTagIntegrationTest extends v3autoBase {
             telemetry.update();
         }
         */
+        robot.imu.resetYaw();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline2 = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -121,6 +127,7 @@ public class AprilTagIntegrationTest extends v3autoBase {
             telemetry.addData("leftBlue", leftBlueRatio);
             telemetry.update();
         }
+        robotOrientation = robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             pipeline="AprilTags";
             telemetry.addData("setPipeline", "sí");
             telemetry.update();
@@ -180,15 +187,20 @@ public class AprilTagIntegrationTest extends v3autoBase {
                                 stayInLoop = false;
                             }
                         }
-
                         telemetry.update();
                     }
                     sleep(20);
                 }
-                //TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        //.lineToLinearHeading(new Pose2d(-z, x, robot.imu.getRobotOrientation));
-                        //.build();
-                //drive.followTrajectorySequence(aprilTagAdjustment);
+                while (!gamepad1.b) {
+                    telemetry.addData("robot", robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
+                    telemetry.addData("robot", yawPitchRollAngles = robot.imu.getRobotYawPitchRollAngles());
+                    telemetry.update();}
+                robotOrientation = robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                yawPitchRollAngles = robot.imu.getRobotYawPitchRollAngles();
+                TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(new Pose2d(-z, x, yawPitchRollAngles.getYaw(AngleUnit.RADIANS)))
+                        .build();
+                drive.followTrajectorySequence(aprilTagAdjustment);
                 telemetry.addData("heading",drive.getRawExternalHeading());
                 telemetry.update();
                 camera.closeCameraDevice();
