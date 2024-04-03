@@ -12,12 +12,14 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
+@Disabled
 @Autonomous
 public class blueFareAuto  extends v3autoBase {
     Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(90));

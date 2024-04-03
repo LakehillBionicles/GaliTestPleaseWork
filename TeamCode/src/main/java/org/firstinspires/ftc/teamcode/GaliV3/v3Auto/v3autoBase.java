@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.GaliV3.v3Auto;
 
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Auto.visionFunctions.aprilTagDetectionPipeline2;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.doorClosed;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowNorminal;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.elbowPort;
@@ -19,7 +20,6 @@ import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRat
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.redTolerance;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -28,21 +28,23 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline2;
 import org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor;
 import org.firstinspires.ftc.teamcode.Vision.RedColorProcessor;
+import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class v3autoBase extends LinearOpMode {
-    public static String pipeline;
+    public static String pipeline = "April Tags";
     public v3Hardware robot = new v3Hardware();
     public org.firstinspires.ftc.teamcode.Vision.RedColorProcessor RedColorProcessor;
     AprilTagDetectionPipeline2 aprilTagDetectionPipeline;
     public org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor BlueColorProcessor;
     public String  propPos = "notSeen";
     public static String robotPosition = "notSeen";
-    public BNO055IMU imu;
     private String webcam1 = "Webcam 1";
     public Orientation robotTheta;
     static final double FEET_PER_METER = 3.28084;
@@ -58,10 +60,13 @@ public class v3autoBase extends LinearOpMode {
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
     OpenCvCamera camera;
-
+    public double x = 0;
+    public double y = 0;
+    public double z = 0;
+    public double yaw = 0;
     public void runOpMode(){
         robot.init(hardwareMap);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
+        aprilTagDetectionPipeline2 = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
         robot.door.setPosition(v3Hardware.doorClosed);
         robot.extendyBoi.setPosition(v3Hardware.extendyBoiRetract);
         robot.elbow.setPosition(v3Hardware.elbowNorminal);
@@ -70,7 +75,7 @@ public class v3autoBase extends LinearOpMode {
         robot.wrist.setPosition(v3Hardware.wristDown);
     }
     public void cameraStartup(String cameraName){
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
+        aprilTagDetectionPipeline2 = new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cameraName), cameraMonitorViewId);
     }
@@ -153,6 +158,128 @@ public class v3autoBase extends LinearOpMode {
         }
        return propPos;
     }
+    public void updateAprilTagPosition(double aprilTagId){
+        boolean stayInLoop = true;
+        while(stayInLoop) {
+            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline2.getDetectionsUpdate();
+            // If there's been a new frame...
+            if (detections != null) {
+                telemetry.addData("wohooo", "");
+                telemetry.update();
+                    /*telemetry.addData("FPS", camera.getFps());
+                    telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+                    telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+
+                     */
+
+                // If we don't see any tags
+                if (detections.size() == 0) {
+                    numFramesWithoutDetection++;
+
+                    // If we haven't seen a tag for a few frames, lower the decimation
+                    // so we can hopefully pick one up if we're e.g. far back
+                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_LOW);
+                    }
+                }
+                // We do see tags!
+                else {
+
+                    numFramesWithoutDetection = 0;
+
+                    // If the target is within 1 meter, turn on high decimation to
+                    // increase the frame rate
+                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_HIGH);
+                    }
+
+                    for (AprilTagDetection detection : detections) {
+                        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+                        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
+                        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
+                        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+                        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.R.get(2,1))));//bueno
+                        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.R.get(1,1))));
+                        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.R.get(0,2))));
+                        if(detection.id == aprilTagId) {
+                            x = detection.pose.x * FEET_PER_METER * 12;
+                            y = detection.pose.y * FEET_PER_METER * 12;
+                            z = detection.pose.z * FEET_PER_METER * 12;
+                            yaw = detection.pose.R.get(2, 1);
+                            //telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+                            //telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+                            //telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+                            stayInLoop = false;
+                        }
+                    }
+                    telemetry.update();
+                }
+            }
+            sleep(20);
+        }
+    }
+    public boolean checkBoardForRobot(double aprilTagId){
+            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline2.getDetectionsUpdate();
+            // If there's been a new frame...
+            if (detections != null) {
+                telemetry.addData("wohooo", "");
+                telemetry.update();
+                    /*telemetry.addData("FPS", camera.getFps());
+                    telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+                    telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+
+                     */
+
+                // If we don't see any tags
+                if (detections.size() == 0) {
+                    numFramesWithoutDetection++;
+
+                    // If we haven't seen a tag for a few frames, lower the decimation
+                    // so we can hopefully pick one up if we're e.g. far back
+                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_LOW);
+                    }
+                }
+                // We do see tags!
+                else {
+
+                    numFramesWithoutDetection = 0;
+
+                    // If the target is within 1 meter, turn on high decimation to
+                    // increase the frame rate
+                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_HIGH);
+                    }
+                    for (AprilTagDetection detection : detections) {
+                        if(detection.id == aprilTagId) {
+                            x = detection.pose.x * FEET_PER_METER * 12;
+                            y = detection.pose.y * FEET_PER_METER * 12;
+                            z = detection.pose.z * FEET_PER_METER * 12;
+                            yaw = detection.pose.R.get(2, 1);
+                            return false;
+                            //telemetry.addLine(String.format("Rotatio
+                            //n Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+                            //telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+                            //telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+                        }
+                    }
+                    if (detections.size() >= 3) {
+                        return false;
+                    }
+                    telemetry.addData("detections size",detections.size());
+                    telemetry.update();
+                }
+            }
+        if (detections != null) {
+            telemetry.addData("detections size", detections.size());
+            telemetry.update();
+        }else{
+            telemetry.addData("detections is null", "yes");
+            telemetry.update();
+        }
+            sleep(20);
+        return true;}
+
 
     public void resetArm(){
         robot.shoulderStar.setPosition(shoulderStarScore-0.04);

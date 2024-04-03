@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMUNew;
 import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorTargetVelocityCommand;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -15,6 +16,12 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 @Config
 public class v3Hardware {
     public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, aimer = null, portArm = null, starArm = null;
@@ -24,13 +31,12 @@ public class v3Hardware {
     public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
     flipper = null;
     public TouchSensor handTS = null;
-    public IMU imu = null;
     public static double doorOpen = 0.48, doorClosed = 0.425;
     public static double shoulderPortIntake = 0; public static double shoulderStarIntake = 0;
 
-    public static double shoulderPortLift =0.45; public static double shoulderStarLift = 0.1;
-    public static double shoulderPortDown = 0.6; public static double shoulderStarDown = 0;
-    public static double shoulderPortScore = 0.32; public static double shoulderStarScore = 0.5;
+    public static double shoulderPortLift =0.43; public static double shoulderStarLift = 0.72;
+    public static double shoulderPortDown = 0.6; public static double shoulderStarDown = 0.55;
+    public static double shoulderPortScore = 0.35; public static double shoulderStarScore = 0.8;
 
     //0.425
     //0.33
@@ -45,8 +51,8 @@ public class v3Hardware {
     public static double triggerRelease = 0, triggerHold = 1;
 
     public static double intakeSpeed = -1;  
-    public static double flipDown = 0.63;
-    public static double flipUp = 0.13;
+    public static double flipDown = 0.625;
+    public static double flipUp = 0.08;
     public static double aimerUp = 1;
 
 
@@ -55,7 +61,6 @@ public class v3Hardware {
     public void runOpMode() {}
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
-        imu = hwMap.get(BHI260IMU.class, "imu");
         fpd = hwMap.get(DcMotor.class, "fpd" );
         bpd = hwMap.get(DcMotor.class, "bpd");
         fsd = hwMap.get(DcMotor.class, "fsd");

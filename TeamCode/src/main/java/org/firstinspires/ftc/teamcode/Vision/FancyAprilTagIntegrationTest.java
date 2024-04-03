@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -26,6 +27,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMec
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 
 @Autonomous
+@Disabled
 public class FancyAprilTagIntegrationTest extends v3autoBase {
         public v3Hardware robot = new v3Hardware();
         public org.firstinspires.ftc.teamcode.Vision.RedColorProcessor RedColorProcessor;

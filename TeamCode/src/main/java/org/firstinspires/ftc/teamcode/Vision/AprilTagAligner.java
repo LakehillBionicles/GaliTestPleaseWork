@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Vision;
 
 import android.annotation.SuppressLint;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,6 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 @TeleOp
+@Disabled
 
 public class AprilTagAligner extends LinearOpMode{
         OpenCvCamera camera;

@@ -23,6 +23,7 @@ package org.firstinspires.ftc.teamcode.Vision;
 
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase.robotPosition;
 
+import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -104,11 +105,9 @@ public class AprilTagDetectionPipeline2 extends OpenCvPipeline
             System.out.println("AprilTagDetectionPipeline.finalize(): nativeApriltagPtr was NULL");
         }
     }
-
     @Override
-    public Mat processFrame(Mat input)
-    {
-        if(AprilTagIntegrationTest.getPipeline().equals("propBlue")) {
+    public Mat processFrame(Mat input) {
+        if(v3autoBase.pipeline.equals("propBlue")) {
             Point leftLeft = new Point(BlueColorProcessor.leftPointx1, BlueColorProcessor.leftPointy1);
             Point leftRight = new Point(BlueColorProcessor.leftPointx2, BlueColorProcessor.leftPointy2);
             Point centerLeft = new Point(BlueColorProcessor.CenterPointx1, BlueColorProcessor.CenterPointy1);
@@ -125,7 +124,7 @@ public class AprilTagDetectionPipeline2 extends OpenCvPipeline
             BlueColorProcessor.centerBlueRatio = (Core.sumElems(matCenter).val[2]/(matCenter.width()*matCenter.height())/((Core.sumElems(matCenter).val[1]/(matCenter.width()*matCenter.height()))+(Core.sumElems(matCenter).val[0]/(matCenter.width()*matCenter.height()))));
             BlueColorProcessor.rightBlueRatio = (Core.sumElems(matRight).val[2]/(matRight.width()*matRight.height())/((Core.sumElems(matRight).val[1]/(matRight.width()*matRight.height()))+(Core.sumElems(matRight).val[0]/(matRight.width()*matRight.height()))));
         }
-        else if(AprilTagIntegrationTest.getPipeline().equals("propRed")) {
+        else if(v3autoBase.pipeline.equals("propRed")) {
             if(Objects.equals(robotPosition, "far")){
                 RedColorProcessor.CenterPointx1 = 150;
                 RedColorProcessor.CenterPointy1 = 40;

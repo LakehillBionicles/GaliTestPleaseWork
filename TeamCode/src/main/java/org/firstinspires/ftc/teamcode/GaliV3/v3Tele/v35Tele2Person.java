@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristLift;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 @TeleOp
 public class v35Tele2Person extends teleBase {
@@ -35,6 +36,7 @@ public class v35Tele2Person extends teleBase {
     double starTimer = -3;
     double portTimer = -3;
     String armPos = "down";
+    double intakeTimer = -3;
 
     @Override
     public void runOpMode() {
@@ -57,10 +59,12 @@ public class v35Tele2Person extends teleBase {
             robot.bpd.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x) * drivePower);
             robot.fsd.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             robot.bsd.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
-            intakeSpit = gamepad1.x;
             //Intake stuff that works no touch
+            intakeSpit = gamepad1.x|| (intakeOn && robot.intake.getVelocity(AngleUnit.RADIANS) >= 0 && intakeTimer + 0.5 < getRuntime());
             if (!previousGamepad1.back && gamepad1.back) {
                 intakeOn = !intakeOn;
+                if(intakeOn){
+                    intakeTimer = getRuntime();}
             }
             if (intakeSpit) {
                 robot.intake.setPower(-org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.intakeSpeed);
@@ -84,14 +88,14 @@ public class v35Tele2Person extends teleBase {
             if (gamepad1.left_trigger > 0) {
                 robot.trigger.setPosition(v3Hardware.triggerHold);
             }
-            //Timer is to make us launch and then bring down launcher. Austin sometime dumb and forgets
+            //Timer is to make us launch and then bring down launcher. Austin sometimes dumb and forgets
             if (gamepad1.right_bumper && gamepad1.left_bumper) {
                 robot.trigger.setPosition(v3Hardware.triggerRelease);
                 launcherTimerDown = getRuntime();
             }
             if (launcherTimerDown + 1 < getRuntime() && launcherTimerDown + 1.3 > getRuntime()) {
                 robot.aimer.setPower(-v3Hardware.aimerUp);
-            } else if (launcherTimerDown + 3 < getRuntime()) {
+            } else if (launcherTimerDown + 3 < getRuntime()&&launcherTimerDown+3.5>getRuntime()) {
                 robot.aimer.setPower(0);
             }
             //Door stuff
@@ -201,17 +205,15 @@ public class v35Tele2Person extends teleBase {
                 robot.starArm.setPower(0.5);
             }else {
                 robot.portArm.setPower(-gamepad2.left_stick_y);
-                robot.starArm.setPower(-gamepad2.left_stick_y * 2 / 4);
+                //Star arm seems more power don't know this is quick fix to stop belt skipping
+                robot.starArm.setPower(-gamepad2.left_stick_y * ((double) 2 / 4));
             }
             if (extendyBoiTimerExtend + 0.7 < getRuntime() && extendyBoiTimerExtend + 0.9 > getRuntime()) {
-                robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);
-            }
+                robot.extendyBoi.setPosition(v3Hardware.extendyBoiExtend);}
             if(gamepad1.y){
-                robot.flipper.setPosition(v3Hardware.flipUp);
-            }
+                robot.flipper.setPosition(v3Hardware.flipUp);}
             if(gamepad1.a){
-                robot.flipper.setPosition(v3Hardware.flipDown);
-            }
+                robot.flipper.setPosition(v3Hardware.flipDown);}
         }
     }
 }

@@ -4,7 +4,9 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.doorClosed;
@@ -51,6 +53,7 @@ public class findShoulderPosition extends LinearOpMode {
     double wristLiftTimer =-3;
     String armPos = "down";
     public static double shoulderPos = 0.5;
+    boolean shoulderPort = false;
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
@@ -60,10 +63,65 @@ public class findShoulderPosition extends LinearOpMode {
         //robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         //robot.shoulderStar.setPosition(shoulderPos);
         //robot.wrist.setPosition(v3Hardware.wristDown);
-        robot.shoulderPort.setPosition(shoulderPos);
+        robot.shoulderPort.close();
+        robot.shoulderStar.close();
         waitForStart();
-        while (opModeIsActive()) {
+        while(!gamepad1.b||!gamepad1.x){
+            telemetry.addData("press b to choose shoulderPort", "");
+            telemetry.addData("press x to choose shoulderStar", "");
+            telemetry.update();
+        }
+        if(gamepad1.b){
+            robot.shoulderPort = hardwareMap.get(Servo.class, "shoulderPort");
             robot.shoulderPort.setPosition(shoulderPos);
+            shoulderPort = true;
+        }
+        else{
+            robot.shoulderStar = hardwareMap.get(Servo.class, "shoulderStar");
+            robot.shoulderStar.setPosition(shoulderPos);
+            shoulderPort = false;
+        }
+        while (opModeIsActive()) {
+            previousGamepad1.copy(currentGamepad1);
+            previousGamepad2.copy(currentGamepad2);
+            currentGamepad1.copy(gamepad1);
+            currentGamepad2.copy(gamepad2);
+            if(shoulderPort){
+                robot.shoulderPort.setPosition(shoulderPos);
+            }
+            else{
+                robot.shoulderStar.setPosition(shoulderPos);
+            }
+            if(gamepad1.b){
+                robot.shoulderStar.close();
+                robot.shoulderPort = hardwareMap.get(Servo.class, "portArm");
+                robot.shoulderPort.setPosition(shoulderPos);
+                shoulderPort = true;
+            }
+            else if(gamepad1.x){
+                robot.shoulderPort.close();
+                robot.shoulderStar = hardwareMap.get(Servo.class, "portArm");
+                robot.shoulderStar.setPosition(shoulderPos);
+                shoulderPort = false;
+            }
+            if(!previousGamepad1.dpad_up&&gamepad1.dpad_up){
+                shoulderPos = shoulderPos+0.1;
+            }
+            if(!previousGamepad1.dpad_down&&gamepad1.dpad_down){
+                shoulderPos = shoulderPos-0.1;
+            }
+            if(!previousGamepad1.dpad_right&&gamepad1.dpad_right){
+                shoulderPos = shoulderPos+0.01;
+            }
+            if(!previousGamepad1.dpad_left&&gamepad1.dpad_left){
+                shoulderPos = shoulderPos-0.01;
+            }
+            if(!previousGamepad1.y&&gamepad1.y){
+                shoulderPos = shoulderPos+0.001;
+            }
+            if(!previousGamepad1.a&&gamepad1.a){
+                shoulderPos = shoulderPos-0.001;
+            }
         }
     }
 }

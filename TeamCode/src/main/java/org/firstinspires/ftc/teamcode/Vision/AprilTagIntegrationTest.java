@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlue
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
+import org.opencv.core.Mat;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -34,6 +36,9 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMec
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive.getVelocityConstraint;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
@@ -57,10 +62,9 @@ public class AprilTagIntegrationTest extends v3autoBase {
         public double y = 0;
         public double z = 0;
         public double yaw = 0;
-
-        public BNO055IMU imu;
         private String webcam = "Webcam ";
         public Orientation robotTheta;
+        public IMU imu;
         public YawPitchRollAngles yawPitchRollAngles = new YawPitchRollAngles(AngleUnit.DEGREES, 0, 0,0, (long) 2);
         static final double FEET_PER_METER = 3.28084;
         double fx = 578.272;
@@ -81,10 +85,12 @@ public class AprilTagIntegrationTest extends v3autoBase {
         OpenCvCamera camera;
         OpenCvCamera camera1;
         boolean stayInLoop = true;
+        double headingError = 0;
         double i = 0;
     @Override
     public void runOpMode() {
         super.runOpMode();
+        imu = hardwareMap.get(IMU.class, "imu");
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         pipeline = "propRed";
         /*
@@ -99,7 +105,21 @@ public class AprilTagIntegrationTest extends v3autoBase {
             telemetry.update();
         }
         */
-        robot.imu.resetYaw();
+        IMU.Parameters myIMUParameters;
+        myIMUParameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        new Orientation(
+                                AxesReference.INTRINSIC,
+                                AxesOrder.ZYX,
+                                AngleUnit.DEGREES,
+                                0,
+                                90,
+                                60,
+                                0  // acquisitionTime, not used
+                        )
+                ));
+        imu.initialize(myIMUParameters);
+        imu.resetYaw();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline2 = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -125,9 +145,12 @@ public class AprilTagIntegrationTest extends v3autoBase {
             telemetry.addData("rightBlue", rightBlueRatio);
             telemetry.addData("centerBlue", centerBlueRatio);
             telemetry.addData("leftBlue", leftBlueRatio);
+            telemetry.addData("yaw hopefully", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            telemetry.addData("Pitch hopefully", imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES));
+            telemetry.addData("Roll hopefully", imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES));
             telemetry.update();
         }
-        robotOrientation = robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        robotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
             pipeline="AprilTags";
             telemetry.addData("setPipeline", "sí");
             telemetry.update();
@@ -138,6 +161,10 @@ public class AprilTagIntegrationTest extends v3autoBase {
                 // processed since the last time we called it. Otherwise, it will return null. This
                 // enables us to only run logic when there has been a new frame, as opposed to the
                 // getLatestDetections() method which will always return an object.
+                //drive.turn(-(Math.toRadians(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+82)));
+                resetRuntime();
+                headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+90;
+                drive.turn(Math.toRadians(-headingError));
                 while(stayInLoop) {
                     ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline2.getDetectionsUpdate();
                     // If there's been a new frame...
@@ -172,11 +199,66 @@ public class AprilTagIntegrationTest extends v3autoBase {
                             }
 
                             for (AprilTagDetection detection : detections) {
-                                telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
+                                if(detection.id==4) {
+                                    telemetry.addData("id", detection.id);
+                                    telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER * 12));
+                                    x = detection.pose.x * FEET_PER_METER * 12;
+                                    telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER * 12));
+                                    y = detection.pose.y * FEET_PER_METER * 12;
+                                    telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER * 12));
+                                    z = detection.pose.z * FEET_PER_METER * 12;
+                                    yaw = detection.pose.R.get(2, 1);
+                                    telemetry.addLine(String.format("yawRadians", detection.pose.R.get(2, 1)));
+                                    telemetry.addLine(String.format("yawDegrees", Math.toRadians(detection.pose.R.get(2, 1))));
+                                    telemetry.update();
+                                    stayInLoop = false;
+                                }
+                            }
+                        }
+                    }
+                    sleep(20);
+                }
+                /*
+                if(stayInLoop){
+                    drive.turn(-(Math.toRadians(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+82)));
+                }
+                resetRuntime();
+                while(stayInLoop&&getRuntime()<2) {
+                    ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline2.getDetectionsUpdate();
+                    // If there's been a new frame...
+                    if (detections != null) {
+                        telemetry.addData("wohooo", "");
+                        telemetry.update();
+                    /*telemetry.addData("FPS", camera.getFps());
+                    telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
+                    telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
+                        // If we don't see any tags
+                        if (detections.size() == 0) {
+                            numFramesWithoutDetection++;
+
+                            // If we haven't seen a tag for a few frames, lower the decimation
+                            // so we can hopefully pick one up if we're e.g. far back
+                            if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
+                                aprilTagDetectionPipeline2.setDecimation(DECIMATION_LOW);
+                            }
+                        }
+                        // We do see tags!
+                        else {
+
+                            numFramesWithoutDetection = 0;
+
+                            // If the target is within 1 meter, turn on high decimation to
+                            // increase the frame rate
+                            if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
+                                aprilTagDetectionPipeline2.setDecimation(DECIMATION_HIGH);
+                            }
+
+                            for (AprilTagDetection detection : detections) {
+                                telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER*12));
                                 x = detection.pose.x * FEET_PER_METER;
-                                telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
+                                telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER*12));
                                 y = detection.pose.y * FEET_PER_METER;
-                                telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
+                                telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER*12));
                                 z = detection.pose.z * FEET_PER_METER;
                                 yaw = detection.pose.R.get(2,1);
                                 telemetry.addLine(String.format("yawRadians", detection.pose.R.get(2,1)));
@@ -191,20 +273,26 @@ public class AprilTagIntegrationTest extends v3autoBase {
                     }
                     sleep(20);
                 }
-                while (!gamepad1.b) {
-                    telemetry.addData("robot", robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS));
-                    telemetry.addData("robot", yawPitchRollAngles = robot.imu.getRobotYawPitchRollAngles());
-                    telemetry.update();}
-                robotOrientation = robot.imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-                yawPitchRollAngles = robot.imu.getRobotYawPitchRollAngles();
-                TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .lineToLinearHeading(new Pose2d(-z, x, yawPitchRollAngles.getYaw(AngleUnit.RADIANS)))
-                        .build();
-                drive.followTrajectorySequence(aprilTagAdjustment);
-                telemetry.addData("heading",drive.getRawExternalHeading());
+                if(stayInLoop){
+                    stop();
+                }
+                */
+                headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+90;
+                robotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+                yawPitchRollAngles = imu.getRobotYawPitchRollAngles();
+                telemetry.addData("x",x);
+                telemetry.addData("z",z);
                 telemetry.update();
+                sleep(200);
+                drive.setPoseEstimate(new Pose2d(0,0,0));
+                TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(new Pose2d(-z+9, x, Math.toRadians(0)))
+                        .strafeRight(2)
+                        //.lineToLinearHeading(new Pose2d(-z+4, x-2, 0))
+                        .build();
                 camera.closeCameraDevice();
-                sleep(5000);}}
+                drive.followTrajectorySequence(aprilTagAdjustment);
+                sleep(10000);}}
 public static String getPipeline(){
  return pipeline;
 }

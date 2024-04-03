@@ -198,6 +198,28 @@ public class SampleMecanumDrive extends MecanumDrive {
         backAsync(distance);
         waitForIdle();
     }
+    public void strafeRightAsync(double distance){
+        trajectorySequenceRunner.followTrajectorySequenceAsync(
+                trajectorySequenceBuilder(getPoseEstimate())
+                        .strafeRight(distance)
+                        .build()
+        );
+    }
+    public void strafeRight(double distance){
+        strafeRightAsync(distance);
+        waitForIdle();
+    }
+    public void strafeLeftAsync(double distance){
+        trajectorySequenceRunner.followTrajectorySequenceAsync(
+                trajectorySequenceBuilder(getPoseEstimate())
+                        .strafeLeft(distance)
+                        .build()
+        );
+    }
+    public void strafeLeft(double distance){
+        strafeLeftAsync(distance);
+        waitForIdle();
+    }
     public void followTrajectoryAsync(Trajectory trajectory) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
                 trajectorySequenceBuilder(trajectory.start())
