@@ -8,7 +8,7 @@ import com.noahbres.meepmeep.roadrunner.Constraints;
 import com.noahbres.meepmeep.roadrunner.DriveTrainType;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class CenterRedFare {
+public class centerFareWallriderRed{
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(700);
         Pose2d startPose = new Pose2d(-38, -61, Math.toRadians(-90));
@@ -63,11 +63,18 @@ public class CenterRedFare {
                 .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
                 .waitSeconds(1)
                 //grab pixels
-                .back(0.1)
+                /*.back(0.1)
                 .splineToLinearHeading((startPose).plus(new Pose2d(-10, 51.5, Math.toRadians(-90))), Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(0, 52.5, Math.toRadians(-90))),Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(68, 52.5, Math.toRadians(-90))),Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(75, 26, Math.toRadians(-90))),Math.toRadians(-90))
+                 */
+                .strafeLeft(28)
+                .back(46.5)
+                .waitSeconds(1)
+                .back(46.5)
+                .strafeRight(27.5)
+                .back(5)
                 .build()
         );
 
@@ -78,4 +85,3 @@ public class CenterRedFare {
                 .start();
     }
 }
-

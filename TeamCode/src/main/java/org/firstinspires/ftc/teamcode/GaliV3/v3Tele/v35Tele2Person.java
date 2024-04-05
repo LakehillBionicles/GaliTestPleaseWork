@@ -60,7 +60,7 @@ public class v35Tele2Person extends teleBase {
             robot.fsd.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             robot.bsd.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             //Intake stuff that works no touch
-            intakeSpit = gamepad1.x|| (intakeOn && robot.intake.getVelocity(AngleUnit.RADIANS) >= 0 && intakeTimer + 0.5 < getRuntime());
+            intakeSpit = gamepad1.x|| (intakeOn && robot.intake.getVelocity(AngleUnit.RADIANS) >= -1 && intakeTimer + 0.5 < getRuntime());
             if (!previousGamepad1.back && gamepad1.back) {
                 intakeOn = !intakeOn;
                 if(intakeOn){

@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.GaliV3.v35Auto.TappsAuto;
 
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.centerBlueRatio;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.leftBlueRatio;
-import static org.firstinspires.ftc.teamcode.Vision.BlueColorProcessor.rightBlueRatio;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive.getAccelerationConstraint;
+import static org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive.getVelocityConstraint;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.centerRedRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.leftRedRatio;
 import static org.firstinspires.ftc.teamcode.Vision.RedColorProcessor.rightRedRatio;
@@ -23,18 +26,14 @@ import org.firstinspires.ftc.teamcode.GaliV3.v3Auto.v3autoBase;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Hardware;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.GaliV3.v3Roadrunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.Vision.AprilTagDetectionPipeline2;
-import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
-import java.util.ArrayList;
 @Autonomous
 
-public class redFareTappsAuto extends v3autoBase {
-    Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(-90));
+public class blueFareTappsWallriderAuto extends v3autoBase {
+    Pose2d startPose = new Pose2d(-38, 61, Math.toRadians(90));
     public String  propPos = "notSeen";
     public static double forWard = 0;
     public static double turn1 = 0;
@@ -53,17 +52,12 @@ public class redFareTappsAuto extends v3autoBase {
     OpenCvCamera camera;
     AprilTagDetectionPipeline2 aprilTagDetectionPipeline2= new AprilTagDetectionPipeline2(tagsize, fx, fy, cx, cy);
     static final double FEET_PER_METER = 3.28084;
-    public boolean checkForRobot = true;
-    public double x = 0;
-    public double y = 0;
-    public double z = 0;
-    public double yaw = 0;
     @Override
     public void runOpMode() {
         super.runOpMode();
         imu = hardwareMap.get(IMU.class, "imu");
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        v3autoBase.pipeline = "propRed";
+        v3autoBase.pipeline = "propBlue";
         v3autoBase.robotPosition = "far";
         /*
         cameraStartup("Webcam 1");
@@ -121,108 +115,93 @@ public class redFareTappsAuto extends v3autoBase {
 
         TrajectorySequence center1 = drive.trajectorySequenceBuilder(startPose)
                 .back(9)
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-2, 28)), Math.toRadians(90))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-2, -30.5)), Math.toRadians(-90))
                 //drop pixels
                 .forward(10)
                 .turn(Math.toRadians(-90))
-                .waitSeconds(0.2)
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
-                .waitSeconds(0.5)
-                //.build();
-        //TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
                 .waitSeconds(0.2)
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipDown);
-                    robot.intake.setPower(v3Hardware.intakeSpeed);
-                })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -13, Math.toRadians(90))), Math.toRadians(180))
                 .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -27.5, Math.toRadians(90))), Math.toRadians(-90))
                 .build();
         TrajectorySequence center2 = drive.trajectorySequenceBuilder(center1.end())
+                /*
                 .back(0.1)
                 .splineToLinearHeading((startPose).plus(new Pose2d(-10, 51.5, Math.toRadians(-90))), Math.toRadians(0))
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
-                    robot.intake.setPower(-v3Hardware.intakeSpeed);
-                })
                 .splineToLinearHeading((startPose).plus(new Pose2d(0, 52.5, Math.toRadians(-90))),Math.toRadians(0))
-                .back(1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(68, 52.5, Math.toRadians(-115))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(68, 52.5, Math.toRadians(-90))),Math.toRadians(0)
+                */
+                .strafeRight(24.5)
+                .turn(Math.toRadians(-2.5))
+                .back(46.5)
+                .waitSeconds(1)
+                .back(46.5)
+                .strafeLeft(20.5)
+                .back(5)
                 .build();
-        TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(75, 26, Math.toRadians(-90))),Math.toRadians(-90))
-                .build();
-        TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .back(1)
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-10, 14)), Math.toRadians(90))
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-3, 26)), Math.toRadians(0))
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(8, 26)), Math.toRadians(0))
-                .forward(11)
-                //drop pixels
+                //.waitSeconds(0.1)
+                //.strafeRight(10)
+                //.waitSeconds(0.1)
+                //.back(2)
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-10, -14)), Math.toRadians(-90),getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-3, -26)), Math.toRadians(0),getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(8, -26)), Math.toRadians(0),getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-18, 13, Math.toRadians(-90))), Math.toRadians(180))
-                //.build();
-        //TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .waitSeconds(0.3)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
+                .forward(11)
+                //drop pixels
+                .splineToLinearHeading((startPose).plus(new Pose2d(-18, -13, Math.toRadians(90))), Math.toRadians(180))
+                .waitSeconds(0.5)
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -27.5, Math.toRadians(90))), Math.toRadians(-90))
                 .build();
-        TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
+        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
+                .strafeRight(22.5)
+                .turn(Math.toRadians(-2.5))
+                .back(46.5)
+                .waitSeconds(1)
+                .back(46.5)
+                .strafeLeft(12)
                 .back(5)
-                .addDisplacementMarker(()->{
-                    robot.flipper.setPosition(v3Hardware.flipUp+0.3);
-                    robot.intake.setPower(-v3Hardware.intakeSpeed);
-                })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-10, 54.5, Math.toRadians(-90))),Math.toRadians(0))
-                .back(1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(68, 54.5, Math.toRadians(-115))),Math.toRadians(0))
                 .build();
-        TrajectorySequence right3 = drive.trajectorySequenceBuilder(right2.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(75, 21, Math.toRadians(-90))),Math.toRadians(-90))
-                .build();
-        TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .back(3)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-10, 19, Math.toRadians(0))),Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-11, -19, Math.toRadians(0))),Math.toRadians(-90))
 
                 //drop pixels
                 .forward(7)
-                .turn(Math.toRadians(-90))
+                .turn(Math.toRadians(90))
                 .waitSeconds(0.2)
                 .addDisplacementMarker(()->{
                     robot.flipper.setPosition(v3Hardware.flipDown);
                 })
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -13, Math.toRadians(90))), Math.toRadians(180))
                 .waitSeconds(0.5)
                 //.build();
-        //TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 25.5, Math.toRadians(-90))), Math.toRadians(90))
+                //TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
+                .splineToLinearHeading((startPose).plus(new Pose2d(-20, -27.5, Math.toRadians(90))), Math.toRadians(-90))
                 .build();
-        TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
-                .back(1)
-                .strafeRight(5)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-18, 50, Math.toRadians(-90))), Math.toRadians(90))
-                .waitSeconds(0.5)
-                .splineToLinearHeading((startPose).plus(new Pose2d(0, 54.5, Math.toRadians(-90))),Math.toRadians(0))
-                .back(1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(75, 54.5, Math.toRadians(-90))),Math.toRadians(0))
-                .build();
-        TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())
-                .strafeLeft(11.5)
-                //.splineToLinearHeading((startPose).plus(new Pose2d(75, 38, Math.toRadians(-90))),Math.toRadians(-90))
+        TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
+                .strafeRight(23.5)
+                .turn(Math.toRadians(-3))
+                .back(46.5)
+                .waitSeconds(1)
+                .back(46.5)
+                .strafeLeft(29.5)
+                .back(5)
                 .build();
         while (!isStarted()) {
-            telemetry.addData("position", propPos("red", "far"));
+            telemetry.addData("position", propPos("blue", "far"));
             telemetry.addData("rightBlue", rightRedRatio);
             telemetry.addData("centerBlue", centerRedRatio);
             telemetry.addData("leftBlue", leftRedRatio);
             telemetry.addData("distance", robot.distanceTop.getDistance(DistanceUnit.MM));
-            propPos =propPos("red", "far");
+            propPos =propPos("blue", "far");
             telemetry.update();
         }
         waitForStart();
@@ -261,11 +240,11 @@ public class redFareTappsAuto extends v3autoBase {
         drive.setMotorPowers(0,0,0,0);*/
         robot.intake.setPower(v3Hardware.intakeSpeed);
         sleep(1000);
-        robot.intake.setPower(-v3Hardware.intakeSpeed);
+        robot.intake.setPower(-v3Hardware.intakeSpeed/2);
         sleep(500);
         robot.intake.setPower(v3Hardware.intakeSpeed);
         sleep(1000);
-        robot.intake.setPower(-v3Hardware.intakeSpeed);
+        robot.intake.setPower(-v3Hardware.intakeSpeed/2);
         sleep(1000);
         robot.intake.setPower(0);
         robot.flipper.setPosition(v3Hardware.flipUp);
@@ -286,98 +265,17 @@ public class redFareTappsAuto extends v3autoBase {
         telemetry.addData("at shoulder", "");
         telemetry.update();
         resetRuntime();
-        while(checkForRobot&&getRuntime()<1){
-            if(propPos.equals("center")) {
-                checkForRobot = checkBoardForRobot(5);
-            }
-            else if(propPos.equals("left")){
-                checkForRobot = checkBoardForRobot(4);
-            }
-            else{
-                checkForRobot = checkBoardForRobot(6);
-            }
-            sleep(50);
-        }
-        if(propPos.equals("center")) {
-            drive.followTrajectorySequence(center3);
-        }
-        else if(propPos.equals("left")){
-            drive.followTrajectorySequence(left3);
-        }
-        else{
-            drive.followTrajectorySequence(right3);
-        }
         telemetry.addData("yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+84;
         telemetry.addData("yaw", headingError);
         telemetry.update();
         sleep(500);
-        if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)>5||imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)<-5) {
+        if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)>45||imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)<-45) {
             drive.turn(Math.toRadians(-headingError));
         }
-        else{
+        else if(propPos.equals("left")){
             drive.turn(Math.toRadians(10));
         }
-        resetRuntime();
-        x = 0;
-        y = 0;
-        z = 0;
-        stayInLoop = true;
-        yaw = 0;
-        while(stayInLoop) {
-            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline2.getDetectionsUpdate();
-            // If there's been a new frame...
-            if (detections != null) {
-                telemetry.addData("wohooo", "");
-                telemetry.update();
-                    /*telemetry.addData("FPS", camera.getFps());
-                    telemetry.addData("Overhead ms", camera.getOverheadTimeMs());
-                    telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
-
-                     */
-
-                // If we don't see any tags
-                if (detections.size() == 0) {
-                    numFramesWithoutDetection++;
-
-                    // If we haven't seen a tag for a few frames, lower the decimation
-                    // so we can hopefully pick one up if we're e.g. far back
-                    if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
-                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_LOW);
-                    }
-                }
-                // We do see tags!
-                else {
-
-                    numFramesWithoutDetection = 0;
-
-                    // If the target is within 1 meter, turn on high decimation to
-                    // increase the frame rate
-                    if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
-                        aprilTagDetectionPipeline2.setDecimation(DECIMATION_HIGH);
-                    }
-
-                    for (AprilTagDetection detection : detections) {
-                        if(detection.id==4) {
-                            telemetry.addData("id", detection.id);
-                            telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER * 12));
-                            x = detection.pose.x * FEET_PER_METER*12;
-                            telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER * 12));
-                            y = detection.pose.y * FEET_PER_METER*12;
-                            telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER * 12));
-                            z = detection.pose.z * FEET_PER_METER*12;
-                            yaw = detection.pose.R.get(2, 1);
-                            telemetry.addLine(String.format("yawRadians", detection.pose.R.get(2, 1)));
-                            telemetry.addLine(String.format("yawDegrees", Math.toRadians(detection.pose.R.get(2, 1))));
-                            telemetry.update();
-                            stayInLoop = false;
-                        }
-                    }
-                }
-            }
-            sleep(20);
-        }
-
         /*
         if(propPos.equals("center")) {
             updateAprilTagPosition(5);
@@ -388,16 +286,12 @@ public class redFareTappsAuto extends v3autoBase {
         else{
             updateAprilTagPosition(6);
         }
-
-         */
-        if(getRuntime()<5) {
-            drive.setPoseEstimate(new Pose2d(0, 0, 0));
-            TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                    .lineToLinearHeading(new Pose2d(-z+9,  x, 0))
-                    //.lineToLinearHeading(new Pose2d(-z+4, x-2, 0))
-                    .build();
-            drive.followTrajectorySequence(aprilTagAdjustment);
-        }
+        drive.setPoseEstimate(new Pose2d(0, 0, 0));
+        TrajectorySequence aprilTagAdjustment = drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .lineToLinearHeading(new Pose2d(-z+9,  x, 0))
+                //.lineToLinearHeading(new Pose2d(-z+4, x-2, 0))
+                .build();
+        drive.followTrajectorySequence(aprilTagAdjustment);
         /*
         if(propPos.equals("left")){
             drive.strafeRight(2);}
@@ -428,15 +322,11 @@ public class redFareTappsAuto extends v3autoBase {
         sleep(700);
         robot.starArm.setPower(0);
         robot.portArm.setPower(0);
-        /*robot.wrist.setPosition(v3Hardware.wristPort);
-        sleep(500);
-        robot.wrist.setPosition(v3Hardware.extendyBoiRetract);
-        sleep(1000);
-        robot.wrist.setPosition(v3Hardware.wristDown);*/
         robot.shoulderPort.setPosition(v3Hardware.shoulderPortDown);
         robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         sleep(500);
         robot.portArm.setPower(-1);
         robot.starArm.setPower(-1);
+        sleep(2000);
     }
 }

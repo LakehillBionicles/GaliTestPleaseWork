@@ -195,7 +195,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         );
     }
     public void forward(double distance) {
-        backAsync(distance);
+        forwardAsync(distance);
         waitForIdle();
     }
     public void strafeRightAsync(double distance){

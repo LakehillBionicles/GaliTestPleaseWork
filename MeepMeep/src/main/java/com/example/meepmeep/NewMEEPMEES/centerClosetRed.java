@@ -8,10 +8,10 @@ import com.noahbres.meepmeep.roadrunner.Constraints;
 import com.noahbres.meepmeep.roadrunner.DriveTrainType;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class CenterRedFare {
+public class centerClosetRed {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(700);
-        Pose2d startPose = new Pose2d(-38, -61, Math.toRadians(-90));
+        Pose2d startPose = new Pose2d(16, -61, Math.toRadians(-90));
         ColorSchemeBlueDark colorSchemeBlueDark = new ColorSchemeBlueDark();
         Constraints myBotConstraints = new Constraints(42.5, 62.890756998077265, 3.358942, Math.toRadians(180), 13.4);
         RoadRunnerBotEntity myBot = new RoadRunnerBotEntity(meepMeep,
@@ -53,21 +53,13 @@ public class CenterRedFare {
         myBot.followTrajectorySequence(myBot.getDrive()
                 .trajectorySequenceBuilder(startPose)
                 .back(9)
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-2, 28)), Math.toRadians(90))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(2, 28)), Math.toRadians(90))
                 //drop pixels
                 .forward(10)
                 .turn(Math.toRadians(-90))
                 .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 13, Math.toRadians(-90))), Math.toRadians(180))
-                .waitSeconds(0.2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-20, 30.5, Math.toRadians(-90))), Math.toRadians(90))
-                .waitSeconds(1)
-                //grab pixels
-                .back(0.1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-10, 51.5, Math.toRadians(-90))), Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(0, 52.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(68, 52.5, Math.toRadians(-90))),Math.toRadians(0))
-                .splineToLinearHeading((startPose).plus(new Pose2d(75, 26, Math.toRadians(-90))),Math.toRadians(-90))
+                .back(1)
+                .splineToLinearHeading((startPose).plus(new Pose2d(30, 26, Math.toRadians(-90))), Math.toRadians(0))
                 .build()
         );
 
@@ -78,4 +70,3 @@ public class CenterRedFare {
                 .start();
     }
 }
-

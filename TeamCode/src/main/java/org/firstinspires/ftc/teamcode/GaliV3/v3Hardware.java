@@ -26,7 +26,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class v3Hardware {
     public DcMotor fpd = null, bpd = null, fsd = null, bsd = null, aimer = null, portArm = null, starArm = null;
     public DcMotorEx intake = null;
-    public DistanceSensor distanceTop = null, distanceBottom = null;
+    public DistanceSensor distanceTop = null, distanceBottom = null, blinkerPort = null, blinkerStar = null;
 
     public Servo shoulderPort = null, shoulderStar = null, elbow = null, extendyBoi = null, wrist = null, door = null, trigger = null,
     flipper = null;
@@ -79,7 +79,9 @@ public class v3Hardware {
         handTS = hwMap.get(TouchSensor.class, "handTS");
         distanceTop = hwMap.get(DistanceSensor.class, "distanceTop");
         distanceBottom = hwMap.get(DistanceSensor.class,"distanceBottom");
-        flipper = hwMap.get(Servo.class, "flipper");
+        blinkerPort = hwMap.get(DistanceSensor.class, "blinkerPort");
+        blinkerStar = hwMap.get(DistanceSensor.class, "blinkerStar");
+;       flipper = hwMap.get(Servo.class, "flipper");
         fpd.setDirection(DcMotorSimple.Direction.REVERSE);
         bpd.setDirection(DcMotorSimple.Direction.FORWARD);
         fsd.setDirection(DcMotorSimple.Direction.REVERSE);
