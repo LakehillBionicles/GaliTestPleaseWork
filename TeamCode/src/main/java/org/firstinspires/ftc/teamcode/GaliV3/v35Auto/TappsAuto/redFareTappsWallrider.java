@@ -134,8 +134,8 @@ public class redFareTappsWallrider extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(0, 52.5, Math.toRadians(-90))),Math.toRadians(0))
                 .splineToLinearHeading((startPose).plus(new Pose2d(68, 52.5, Math.toRadians(-90))),Math.toRadians(0)
                 */
-                .strafeLeft(24.5)
-                .turn(Math.toRadians(2.5))
+                .strafeLeft(23.5)
+                //.turn(Math.toRadians(1.5))
                 .back(46.5)
                 .waitSeconds(1)
                 .back(46.5)
@@ -161,8 +161,8 @@ public class redFareTappsWallrider extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(-20, 27.5, Math.toRadians(-90))), Math.toRadians(90))
                 .build();
         TrajectorySequence right2 = drive.trajectorySequenceBuilder(right1.end())
-                .strafeLeft(22.5)
-                .turn(Math.toRadians(2.5))
+                .strafeLeft(23.5)
+                //.turn(Math.toRadians(1.5))
                 .back(46.5)
                 .waitSeconds(1)
                 .back(46.5)
@@ -171,7 +171,7 @@ public class redFareTappsWallrider extends v3autoBase {
                 .build();
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .back(3)
-                .splineToLinearHeading((startPose).plus(new Pose2d(-11, 19, Math.toRadians(0))),Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(-9, 21, Math.toRadians(0))),Math.toRadians(90))
 
                 //drop pixels
                 .forward(7)
@@ -188,11 +188,11 @@ public class redFareTappsWallrider extends v3autoBase {
                 .build();
         TrajectorySequence left2 = drive.trajectorySequenceBuilder(left1.end())
                 .strafeLeft(23.5)
-                .turn(Math.toRadians(3))
+                //.turn(Math.toRadians(1.5))
                 .back(46.5)
                 .waitSeconds(1)
                 .back(46.5)
-                .strafeRight(29.5)
+                .strafeRight(28)
                 .back(5)
                 .build();
         while (!isStarted()) {
@@ -201,6 +201,8 @@ public class redFareTappsWallrider extends v3autoBase {
             telemetry.addData("centerBlue", centerRedRatio);
             telemetry.addData("leftBlue", leftRedRatio);
             telemetry.addData("distance", robot.distanceTop.getDistance(DistanceUnit.MM));
+            telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+            telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
             propPos =propPos("red", "far");
             telemetry.update();
         }
@@ -257,6 +259,91 @@ public class redFareTappsWallrider extends v3autoBase {
         else{
             drive.followTrajectorySequence(right2);
         }
+        if(propPos.equals("left")&&robot.blinkerStar.getDistance(DistanceUnit.MM)<800&&robot.blinkerPort.getDistance(DistanceUnit.MM)<800){
+            int i=0;
+            double gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+100;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >230 && robot.blinkerPort.getDistance(DistanceUnit.MM) >230 && i<12){
+                drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+50;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeRight(4);
+                drive.turn(Math.toRadians(drive.getPoseEstimate().getHeading()));
+                i++;
+
+                 */
+                drive.setMotorPowers(0.4,-0.4,0.4,-0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            i=0;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeLeft(1);
+                drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()));
+                i++;
+                 */
+                drive.setMotorPowers(-0.5,0.5,-0.5,0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            //drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()+90));
+        }
+        if(propPos.equals("right")&&robot.blinkerStar.getDistance(DistanceUnit.MM)<800&&robot.blinkerPort.getDistance(DistanceUnit.MM)<800){
+            int i=0;
+            double gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+100;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >230 && robot.blinkerPort.getDistance(DistanceUnit.MM) >230 && i<12){
+                drive.setMotorPowers(-0.5,-0.5,-0.5,-0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+50;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeRight(4);
+                drive.turn(Math.toRadians(drive.getPoseEstimate().getHeading()));
+                i++;
+
+                 */
+                drive.setMotorPowers(-0.4,0.4,-0.4,0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            i=0;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) >gatekeeper && i<12 ){
+                /*
+                drive.strafeLeft(1);
+                drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()));
+                i++;
+                 */
+                drive.setMotorPowers(0.5,-0.5,0.5,-0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            //drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()+90));
+        }
+        drive.setMotorPowers(0,0,0,0);
         telemetry.addData("Past 2nd path", "");
         telemetry.update();
         robot.intake.setPower(0);
@@ -266,7 +353,7 @@ public class redFareTappsWallrider extends v3autoBase {
         telemetry.update();
         resetRuntime();
         telemetry.addData("yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-        headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+84;
+        headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)+90;
         telemetry.addData("yaw", headingError);
         telemetry.update();
         sleep(500);

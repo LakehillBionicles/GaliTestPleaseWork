@@ -63,24 +63,20 @@ public class findShoulderPosition extends LinearOpMode {
         //robot.shoulderStar.setPosition(v3Hardware.shoulderStarDown);
         //robot.shoulderStar.setPosition(shoulderPos);
         //robot.wrist.setPosition(v3Hardware.wristDown);
-        robot.shoulderPort.close();
-        robot.shoulderStar.close();
-        waitForStart();
-        while(!gamepad1.b||!gamepad1.x){
+        while(!gamepad1.b&&!gamepad1.x){
             telemetry.addData("press b to choose shoulderPort", "");
             telemetry.addData("press x to choose shoulderStar", "");
             telemetry.update();
         }
         if(gamepad1.b){
-            robot.shoulderPort = hardwareMap.get(Servo.class, "shoulderPort");
             robot.shoulderPort.setPosition(shoulderPos);
             shoulderPort = true;
         }
         else{
-            robot.shoulderStar = hardwareMap.get(Servo.class, "shoulderStar");
             robot.shoulderStar.setPosition(shoulderPos);
             shoulderPort = false;
         }
+        waitForStart();
         while (opModeIsActive()) {
             previousGamepad1.copy(currentGamepad1);
             previousGamepad2.copy(currentGamepad2);
@@ -91,18 +87,6 @@ public class findShoulderPosition extends LinearOpMode {
             }
             else{
                 robot.shoulderStar.setPosition(shoulderPos);
-            }
-            if(gamepad1.b){
-                robot.shoulderStar.close();
-                robot.shoulderPort = hardwareMap.get(Servo.class, "portArm");
-                robot.shoulderPort.setPosition(shoulderPos);
-                shoulderPort = true;
-            }
-            else if(gamepad1.x){
-                robot.shoulderPort.close();
-                robot.shoulderStar = hardwareMap.get(Servo.class, "portArm");
-                robot.shoulderStar.setPosition(shoulderPos);
-                shoulderPort = false;
             }
             if(!previousGamepad1.dpad_up&&gamepad1.dpad_up){
                 shoulderPos = shoulderPos+0.1;

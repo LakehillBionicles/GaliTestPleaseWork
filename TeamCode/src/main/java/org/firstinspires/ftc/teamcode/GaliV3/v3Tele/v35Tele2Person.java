@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristDown;
 import static org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.wristLift;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -60,11 +61,14 @@ public class v35Tele2Person extends teleBase {
             robot.fsd.setPower((-gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             robot.bsd.setPower((-gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x) * drivePower);
             //Intake stuff that works no touch
-            intakeSpit = gamepad1.x|| (intakeOn && robot.intake.getVelocity(AngleUnit.RADIANS) >= -1 && intakeTimer + 0.5 < getRuntime());
+            intakeSpit = gamepad1.x;
+                    //|| (intakeOn && robot.intake.getVelocity(AngleUnit.RADIANS) >= -0.3 && intakeTimer + 2 < getRuntime());
             if (!previousGamepad1.back && gamepad1.back) {
                 intakeOn = !intakeOn;
-                if(intakeOn){
+                /*if(intakeOn){
                     intakeTimer = getRuntime();}
+
+                 */
             }
             if (intakeSpit) {
                 robot.intake.setPower(-org.firstinspires.ftc.teamcode.GaliV3.v3Hardware.intakeSpeed);
@@ -214,6 +218,8 @@ public class v35Tele2Person extends teleBase {
                 robot.flipper.setPosition(v3Hardware.flipUp);}
             if(gamepad1.a){
                 robot.flipper.setPosition(v3Hardware.flipDown);}
+            //robot.starArm.setPower(0);
+            //robot.starArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
     }
 }

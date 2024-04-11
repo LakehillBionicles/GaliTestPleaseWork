@@ -34,9 +34,9 @@ public class v3Hardware {
     public static double doorOpen = 0.48, doorClosed = 0.425;
     public static double shoulderPortIntake = 0; public static double shoulderStarIntake = 0;
 
-    public static double shoulderPortLift =0.43; public static double shoulderStarLift = 0.72;
-    public static double shoulderPortDown = 0.6; public static double shoulderStarDown = 0.55;
-    public static double shoulderPortScore = 0.35; public static double shoulderStarScore = 0.8;
+    public static double shoulderPortLift =0.5; public static double shoulderStarLift = 0.45;
+    public static double shoulderPortDown = 0.64; public static double shoulderStarDown = 0.34;
+    public static double shoulderPortScore = 0.33; public static double shoulderStarScore = 0.57;
 
     //0.425
     //0.33
@@ -48,7 +48,7 @@ public class v3Hardware {
     public static double wristLift = 0.3702;
 
     public static double elbowPort = 0.58,elbowStar = 0.355, elbowNorminal = 0.47;
-    public static double triggerRelease = 0, triggerHold = 1;
+    public static double triggerRelease = 1, triggerHold = 0.5;
 
     public static double intakeSpeed = -1;  
     public static double flipDown = 0.625;

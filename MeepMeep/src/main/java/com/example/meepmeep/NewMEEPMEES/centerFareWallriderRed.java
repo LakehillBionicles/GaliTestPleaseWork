@@ -73,8 +73,9 @@ public class centerFareWallriderRed{
                 .back(46.5)
                 .waitSeconds(1)
                 .back(46.5)
-                .strafeRight(27.5)
-                .back(5)
+                        .strafeRight(50)
+                .strafeRight(4)
+                .splineToLinearHeading((startPose).plus(new Pose2d(80, 70, Math.toRadians(-90))),Math.toRadians(90))
                 .build()
         );
 

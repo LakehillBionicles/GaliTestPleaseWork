@@ -119,15 +119,23 @@ public class redClosetTappsAuto extends v3autoBase {
                 //drop pixels
                 .forward(10)
                 .turn(Math.toRadians(-90))
+                .addDisplacementMarker(()->{
+                    robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
+                    robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
+                })
                 .waitSeconds(0.2)
                 .back(1)
                 .splineToLinearHeading((startPose).plus(new Pose2d(33, 29, Math.toRadians(-90))), Math.toRadians(0))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .back(5)
-                .splineToLinearHeading((startPose).plus(new Pose2d(8, 19, Math.toRadians(0))),Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(8, 24, Math.toRadians(0))),Math.toRadians(90))
                 //drop pixels
                 .forward(8)
+                .addDisplacementMarker(()->{
+                    robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
+                    robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
+                })
                 .turn(Math.toRadians(-90))
                 .back(4)
                 .splineToLinearHeading((startPose).plus(new Pose2d(33, 20, Math.toRadians(-90))),Math.toRadians(0))
@@ -138,13 +146,17 @@ public class redClosetTappsAuto extends v3autoBase {
                 //.strafeLeft(10)
                 //.waitSeconds(0.1)
                 //.back(2)
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(5, 18)), Math.toRadians(90), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(5, 26)), Math.toRadians(-180), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-9, 29)), Math.toRadians(-180), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/4))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(5, 18)), Math.toRadians(90), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/3))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(5, 26)), Math.toRadians(-180), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/3))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-9, 29)), Math.toRadians(-180), getVelocityConstraint(MAX_VEL/1.2, MAX_ANG_VEL/2, TRACK_WIDTH),getAccelerationConstraint(MAX_ACCEL/3))
                 .forward(11)
                 .turn(Math.toRadians(180))
+                .addDisplacementMarker(()->{
+                    robot.shoulderPort.setPosition(v3Hardware.shoulderPortScore);
+                    robot.shoulderStar.setPosition(v3Hardware.shoulderStarScore);
+                })
                 .back(2)
-                .splineToLinearHeading((startPose).plus(new Pose2d(33, 34, Math.toRadians(-90))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(33, 35, Math.toRadians(-90))),Math.toRadians(0))
                 .build();
 
         while (!isStarted()) {
@@ -211,11 +223,11 @@ public class redClosetTappsAuto extends v3autoBase {
          */
         camera.closeCameraDevice();
         resetRuntime();
-        while(!robot.handTS.isPressed()&& getRuntime()<3){
+        while(!robot.handTS.isPressed()&& getRuntime()<1.5){
             drive.setMotorPowers(-0.2,-0.2,-0.2,-0.2);}
         drive.setMotorPowers(0,0,0,0);
         robot.door.setPosition(v3Hardware.doorOpen);
-        sleep(1000);
+        sleep(600);
         /*robot.wrist.setPosition(v3Hardware.wristPort);
         sleep(500);
         robot.wrist.setPosition(v3Hardware.extendyBoiRetract);
@@ -226,7 +238,6 @@ public class redClosetTappsAuto extends v3autoBase {
         sleep(500);
         robot.portArm.setPower(-1);
         robot.starArm.setPower(-1);
-        sleep(2000);
         drive.strafeLeft(30);
     }
 }

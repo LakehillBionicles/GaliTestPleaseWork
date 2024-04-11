@@ -147,13 +147,13 @@ public class blueFareTappsAuto extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(78, -54.5, Math.toRadians(94))),Math.toRadians(0))
                 .build();
         TrajectorySequence center3 = drive.trajectorySequenceBuilder(center2.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(78, -27.5, Math.toRadians(90))),Math.toRadians(90))
+                .splineToLinearHeading((startPose).plus(new Pose2d(78, -28.5, Math.toRadians(90))),Math.toRadians(90))
                 .build();
         TrajectorySequence left1 = drive.trajectorySequenceBuilder(startPose)
                 .back(1)
                 .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-10, -14)), Math.toRadians(-90))
                 .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(-3, -26)), Math.toRadians(0))
-                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(8, -26)), Math.toRadians(0))
+                .splineTo((new Vector2d(startPose.getX(),startPose.getY())).plus(new Vector2d(8.5, -27)), Math.toRadians(0))
                 .forward(11)
                 //drop pixels
                 .addDisplacementMarker(()->{
@@ -178,10 +178,12 @@ public class blueFareTappsAuto extends v3autoBase {
                 .splineToLinearHeading((startPose).plus(new Pose2d(0, -54.5, Math.toRadians(94))),Math.toRadians(0))
                 .waitSeconds(0.5)
                 .back(1)
-                .splineToLinearHeading((startPose).plus(new Pose2d(78, -54.5, Math.toRadians(94))),Math.toRadians(0))
+                .splineToLinearHeading((startPose).plus(new Pose2d(80, -54.5, Math.toRadians(94))),Math.toRadians(0))
                 .build();
         TrajectorySequence left3 = drive.trajectorySequenceBuilder(left2.end())
-                .splineToLinearHeading((startPose).plus(new Pose2d(78, -21, Math.toRadians(90))),Math.toRadians(90))
+                .turn(Math.toRadians(-4))
+                .strafeRight(4)
+                .splineToLinearHeading((startPose).plus(new Pose2d(80, -20, Math.toRadians(90))),Math.toRadians(90))
                 .build();
         TrajectorySequence right1 = drive.trajectorySequenceBuilder(startPose)
                 .back(3)
@@ -299,16 +301,101 @@ public class blueFareTappsAuto extends v3autoBase {
         else{
             drive.followTrajectorySequence(right3);
         }
+        if(propPos.equals("left")&&robot.blinkerStar.getDistance(DistanceUnit.MM)<800&&robot.blinkerPort.getDistance(DistanceUnit.MM)<800){
+            int i=0;
+            double gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+100;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >230 && robot.blinkerPort.getDistance(DistanceUnit.MM) >230 && i<12){
+                drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+50;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeRight(4);
+                drive.turn(Math.toRadians(drive.getPoseEstimate().getHeading()));
+                i++;
+
+                 */
+                drive.setMotorPowers(0.4,-0.4,0.4,-0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            i=0;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeLeft(1);
+                drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()));
+                i++;
+                 */
+                drive.setMotorPowers(-0.5,0.5,-0.5,0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            //drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()+90));
+        }
+        if(propPos.equals("right")&&robot.blinkerStar.getDistance(DistanceUnit.MM)<800&&robot.blinkerPort.getDistance(DistanceUnit.MM)<800){
+            int i=0;
+            double gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+100;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) >230 && robot.blinkerPort.getDistance(DistanceUnit.MM) >230 && i<12){
+                drive.setMotorPowers(-0.5,-0.5,-0.5,-0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            gatekeeper = Math.min(robot.blinkerStar.getDistance(DistanceUnit.MM), robot.blinkerPort.getDistance(DistanceUnit.MM))+50;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) <gatekeeper && i<12 ){
+                /*
+                drive.strafeRight(4);
+                drive.turn(Math.toRadians(drive.getPoseEstimate().getHeading()));
+                i++;
+
+                 */
+                drive.setMotorPowers(-0.4,0.4,-0.4,0.4);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            i=0;
+            while(robot.blinkerStar.getDistance(DistanceUnit.MM) <gatekeeper && robot.blinkerPort.getDistance(DistanceUnit.MM) >gatekeeper && i<12 ){
+                /*
+                drive.strafeLeft(1);
+                drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()));
+                i++;
+                 */
+                drive.setMotorPowers(0.5,-0.5,0.5,-0.5);
+                telemetry.addData("gatekeeper",gatekeeper);
+                telemetry.addData("heading",drive.getPoseEstimate().getHeading());
+                telemetry.addData("blinker left", robot.blinkerPort.getDistance(DistanceUnit.MM));
+                telemetry.addData("blinker right", robot.blinkerStar.getDistance(DistanceUnit.MM));
+                telemetry.update();
+            }
+            //drive.turn(-Math.toRadians(-drive.getPoseEstimate().getHeading()+90));
+        }
+        drive.setMotorPowers(0,0,0,0);
         telemetry.addData("yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         headingError = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)-90;
         telemetry.addData("yaw", headingError);
         telemetry.update();
         sleep(500);
-        if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)>5||imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)<-5) {
+        if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)>45||imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)<-45) {
             drive.turn(Math.toRadians(-headingError));
         }
         else if(propPos.equals("left")){
-            drive.turn(Math.toRadians(10));
+            //drive.turn(Math.toRadians(10));
         }
         resetRuntime();
         x = 0;
