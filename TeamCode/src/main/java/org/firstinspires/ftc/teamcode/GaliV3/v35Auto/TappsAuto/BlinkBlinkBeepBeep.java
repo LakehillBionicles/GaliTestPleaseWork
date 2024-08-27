@@ -26,7 +26,10 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 @Autonomous
 public class BlinkBlinkBeepBeep extends v3autoBase {
     public v3Hardware robot = new v3Hardware();
@@ -66,9 +69,14 @@ public class BlinkBlinkBeepBeep extends v3autoBase {
     double headingError = 0;
     double i = 0;
     double blinkerGatekeep = 0;
+    double[] derivative = new double[1];
+    double dv = 0;
     @Override
     public void runOpMode() {
         super.runOpMode();
+        derivative[0] = 0;
+        derivative[1] = 0;
+        dv = derivative[1]-derivative[0];
         robot.init(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
